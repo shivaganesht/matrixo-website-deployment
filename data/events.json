@@ -1,204 +1,41 @@
 [
   {
-    "id": "1",
-    "slug": "fullstack-bootcamp-jan-2025",
-    "title": "Full-Stack Web Development Bootcamp",
-    "tagline": "Build Real-World Projects",
-    "description": "Intensive 6-week bootcamp covering MERN stack, building real-world projects from scratch with expert mentorship and placement assistance.",
-    "date": "2025-01-15T10:00:00",
-    "endDate": "2025-02-28T17:00:00",
-    "venue": "Multiple Campuses, Hyderabad",
-    "location": "Hyderabad, Telangana",
-    "totalCapacity": 100,
-    "ticketsSold": 68,
-    "featured": true,
-    "status": "upcoming",
-    "category": "Bootcamp",
-    "images": {
-      "banner": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800",
-      "thumbnail": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
-      "gallery": []
-    },
-    "tickets": [
-      {
-        "id": "early-bird",
-        "name": "Early Bird",
-        "price": 8999,
-        "originalPrice": 9999,
-        "available": 0,
-        "description": "Early bird pricing - SOLD OUT",
-        "perks": ["Live projects", "Industry mentorship", "Placement assistance", "Certificate", "Lifetime access"]
-      },
-      {
-        "id": "regular",
-        "name": "Regular",
-        "price": 9999,
-        "available": 32,
-        "description": "Regular bootcamp admission",
-        "perks": ["Live projects", "Industry mentorship", "Placement assistance", "Certificate"]
-      }
-    ],
-    "partners": ["matriXO", "Tech Mahindra", "Infosys"],
-    "sponsors": ["TCS", "Wipro"],
-    "speakers": [],
-    "agenda": [
-      { "time": "Week 1-2", "title": "Frontend: React.js & State Management" },
-      { "time": "Week 3-4", "title": "Backend: Node.js, Express & MongoDB" },
-      { "time": "Week 5-6", "title": "Full-Stack Projects & Deployment" }
-    ],
-    "tags": ["Bootcamp", "Full-Stack", "MERN", "Web Development"]
-  },
-  {
-    "id": "2",
-    "slug": "ai-ml-workshop-jan-2025",
-    "title": "AI & Machine Learning Workshop",
-    "tagline": "Build Your First ML Model",
-    "description": "One-day intensive workshop on AI/ML fundamentals, Python libraries, and building your first machine learning model with real datasets.",
-    "date": "2025-01-20T09:00:00",
-    "endDate": "2025-01-20T18:00:00",
-    "venue": "KITS College, Warangal",
-    "location": "Warangal, Telangana",
-    "totalCapacity": 150,
-    "ticketsSold": 127,
+    "id": "test-1",
+    "slug": "test-razorpay-payment",
+    "title": "Test Payment - Razorpay Integration",
+    "tagline": "₹10 Test Event",
+    "description": "This is a test event to verify Razorpay payment gateway integration. Only ₹10 for testing purposes.",
+    "date": "2025-10-15T10:00:00",
+    "endDate": "2025-10-15T12:00:00",
+    "venue": "Online",
+    "location": "Virtual Event",
+    "totalCapacity": 10,
+    "ticketsSold": 0,
     "featured": true,
     "status": "upcoming",
     "category": "Workshop",
     "images": {
-      "banner": "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=800",
-      "thumbnail": "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=400",
+      "banner": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800",
+      "thumbnail": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400",
       "gallery": []
     },
     "tickets": [
       {
-        "id": "student",
-        "name": "Student Pass",
-        "price": 499,
-        "available": 23,
-        "description": "Workshop admission for students",
-        "perks": ["Hands-on labs", "Learning materials", "Certificate", "Lunch included"]
-      }
-    ],
-    "partners": ["matriXO", "KITS College"],
-    "sponsors": ["Google Developers", "AI Community"],
-    "tags": ["Workshop", "AI", "Machine Learning", "Python"]
-  },
-  {
-    "id": "3",
-    "slug": "code-sprint-hackathon-2025",
-    "title": "Code Sprint 2025 - 24hr Hackathon",
-    "tagline": "Code. Build. Win.",
-    "description": "24-hour coding marathon with real industry problem statements. Build innovative solutions, network with peers, and win prizes up to ₹1 Lakh.",
-    "date": "2025-02-01T08:00:00",
-    "endDate": "2025-02-02T08:00:00",
-    "venue": "T-Hub, Hyderabad",
-    "location": "Hyderabad, Telangana",
-    "totalCapacity": 200,
-    "ticketsSold": 156,
-    "featured": true,
-    "status": "upcoming",
-    "category": "Hackathon",
-    "images": {
-      "banner": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800",
-      "thumbnail": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400",
-      "gallery": []
-    },
-    "tickets": [
-      {
-        "id": "team",
-        "name": "Team Pass (4 members)",
-        "price": 2000,
-        "available": 11,
-        "description": "Team registration for 4 members",
-        "perks": ["24hr access", "Meals & beverages", "Mentorship", "Prizes", "Certificates"]
-      },
-      {
-        "id": "individual",
-        "name": "Individual",
-        "price": 500,
-        "available": 33,
-        "description": "Individual participation",
-        "perks": ["24hr access", "Meals", "Mentorship", "Certificate"]
-      }
-    ],
-    "partners": ["matriXO", "T-Hub", "GitHub"],
-    "sponsors": ["Microsoft", "AWS", "Postman", "MongoDB"],
-    "tags": ["Hackathon", "Coding", "Competition", "Innovation"]
-  },
-  {
-    "id": "4",
-    "slug": "cloud-devops-workshop-feb-2025",
-    "title": "Cloud Computing & DevOps Workshop",
-    "tagline": "Master AWS & Kubernetes",
-    "description": "Learn AWS, Docker, Kubernetes, and CI/CD pipelines in this comprehensive 2-day hands-on workshop.",
-    "date": "2025-02-10T10:00:00",
-    "endDate": "2025-02-11T17:00:00",
-    "venue": "VR Siddhartha Engineering College, Vijayawada",
-    "location": "Vijayawada, Andhra Pradesh",
-    "totalCapacity": 80,
-    "ticketsSold": 52,
-    "featured": false,
-    "status": "upcoming",
-    "category": "Workshop",
-    "images": {
-      "banner": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
-      "thumbnail": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400",
-      "gallery": []
-    },
-    "tickets": [
-      {
-        "id": "2-day-pass",
-        "name": "2-Day Pass",
-        "price": 899,
-        "available": 28,
-        "description": "Full 2-day workshop access",
-        "perks": ["AWS hands-on labs", "Docker & Kubernetes", "CI/CD training", "Certificate", "Meals"]
-      }
-    ],
-    "partners": ["matriXO", "VR Siddhartha College"],
-    "sponsors": ["AWS Educate", "Docker"],
-    "tags": ["Workshop", "Cloud", "DevOps", "AWS", "Kubernetes"]
-  },
-  {
-    "id": "5",
-    "slug": "react-native-bootcamp-mar-2025",
-    "title": "React Native Mobile App Development",
-    "tagline": "Build Cross-Platform Apps",
-    "description": "Build cross-platform mobile apps with React Native in this 4-week intensive online bootcamp. Learn iOS & Android development together.",
-    "date": "2025-03-01T18:00:00",
-    "endDate": "2025-03-28T21:00:00",
-    "venue": "Online (Zoom)",
-    "location": "Online",
-    "totalCapacity": 50,
-    "ticketsSold": 31,
-    "featured": false,
-    "status": "upcoming",
-    "category": "Bootcamp",
-    "images": {
-      "banner": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
-      "thumbnail": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400",
-      "gallery": []
-    },
-    "tickets": [
-      {
-        "id": "early-bird",
-        "name": "Early Bird",
-        "price": 4999,
-        "originalPrice": 5999,
-        "available": 0,
-        "description": "Early bird pricing - SOLD OUT",
-        "perks": ["Build 3 apps", "iOS & Android", "Firebase integration", "Portfolio projects", "Certificate"]
-      },
-      {
-        "id": "regular",
-        "name": "Regular",
-        "price": 5999,
-        "available": 19,
-        "description": "Regular bootcamp admission",
-        "perks": ["Build 3 apps", "iOS & Android", "Firebase integration", "Certificate"]
+        "id": "test-ticket",
+        "name": "Test Ticket",
+        "price": 10,
+        "available": 10,
+        "description": "₹10 test ticket for payment gateway testing",
+        "perks": ["Test payment", "Quick checkout", "Instant confirmation"]
       }
     ],
     "partners": ["matriXO"],
-    "sponsors": ["Expo", "React Native Community"],
-    "tags": ["Bootcamp", "Mobile Dev", "React Native", "App Development"]
+    "sponsors": [],
+    "speakers": [],
+    "agenda": [
+      { "time": "10:00 AM", "title": "Test Event Start" },
+      { "time": "12:00 PM", "title": "Test Event End" }
+    ],
+    "tags": ["Test", "Payment", "Workshop"]
   }
 ]
