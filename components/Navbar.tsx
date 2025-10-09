@@ -18,8 +18,10 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
     }
@@ -28,29 +30,25 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (!mounted) return
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setDarkMode(true)
-      document.documentElement.classList.add('dark')
-    } else {
-      setDarkMode(false)
-      document.documentElement.classList.remove('dark')
-    }
-  }, [])
+    // Check current state from DOM
+    const isDark = document.documentElement.classList.contains('dark')
+    setDarkMode(isDark)
+  }, [mounted])
 
   const toggleDarkMode = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-      setDarkMode(false)
-    } else {
+    const newDarkMode = !darkMode
+    
+    if (newDarkMode) {
       document.documentElement.classList.add('dark')
       localStorage.setItem('theme', 'dark')
-      setDarkMode(true)
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
     }
+    
+    setDarkMode(newDarkMode)
   }
 
   return (
@@ -102,38 +100,40 @@ export default function Navbar() {
 
           {/* Dark Mode Toggle & CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleDarkMode}
-              className="relative p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 
-                       hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
-              aria-label="Toggle dark mode"
-            >
-              <AnimatePresence mode="wait">
-                {darkMode ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <FaSun className="text-xl text-yellow-500" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <FaMoon className="text-xl text-blue-500" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            {mounted && (
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 180 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleDarkMode}
+                className="relative p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 
+                         hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200"
+                aria-label="Toggle dark mode"
+              >
+                <AnimatePresence mode="wait">
+                  {darkMode ? (
+                    <motion.div
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <FaSun className="text-xl text-yellow-500" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <FaMoon className="text-xl text-blue-500" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            )}
 
             <Link href="/events">
               <motion.button
@@ -148,14 +148,16 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-3">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? <FaSun className="text-lg" /> : <FaMoon className="text-lg" />}
-            </motion.button>
+            {mounted && (
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleDarkMode}
+                className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+                aria-label="Toggle dark mode"
+              >
+                {darkMode ? <FaSun className="text-lg text-yellow-500" /> : <FaMoon className="text-lg text-blue-500" />}
+              </motion.button>
+            )}
 
             <button
               onClick={() => setIsOpen(!isOpen)}

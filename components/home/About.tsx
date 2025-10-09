@@ -49,7 +49,7 @@ export default function About() {
               transition={{ delay: index * 0.2, duration: 0.6 }}
               className="glass-card p-8 hover-lift hover-glow"
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center mb-6 text-white">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 text-white">
                 <item.icon size={28} />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
