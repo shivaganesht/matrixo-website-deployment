@@ -248,7 +248,7 @@ export default function EventsListing() {
                                 </span>
                                 {event.tickets.some((t: any) => t.originalPrice) && (
                                   <span className="text-sm text-gray-400 line-through">
-                                    ₹{event.tickets.find((t: any) => t.originalPrice)?.originalPrice}
+                                    ₹{(event.tickets.find((t: any) => t.originalPrice) as any)?.originalPrice}
                                   </span>
                                 )}
                               </div>
