@@ -3,6 +3,14 @@ import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Razorpay secret is configured
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      return NextResponse.json(
+        { error: 'Payment system not configured. Please contact support.' },
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     const {
       razorpay_order_id,
@@ -18,7 +26,7 @@ export async function POST(request: NextRequest) {
     // Verify signature (following Razorpay official documentation)
     const sign = razorpay_order_id + '|' + razorpay_payment_id
     const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || '')
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
       .update(sign.toString())
       .digest('hex')
 
