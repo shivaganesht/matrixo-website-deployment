@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const data = await resend.emails.send({
-      from: 'matriXO Contact Form <onboarding@resend.dev>', // You'll update this with your domain
+      from: process.env.RESEND_FROM_EMAIL || 'matriXO Contact Form <onboarding@resend.dev>',
       to: ['off.matrixo@gmail.com'],
       subject: `New Contact Form: ${subject || 'No Subject'}`,
       html: `
