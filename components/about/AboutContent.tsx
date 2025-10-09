@@ -204,7 +204,7 @@ export default function AboutContent() {
               Proudly Incubated at <span className="gradient-text">KPRIT IIC</span>
             </h2>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-              We're honored to be part of the KPRIT Industrial Incubation Center, which has provided us with 
+              We&apos;re honored to be part of the KPRIT Industrial Incubation Center, which has provided us with 
               mentorship, resources, and a collaborative environment to grow. This partnership has been instrumental 
               in our journey from an idea to a thriving platform serving thousands of students.
             </p>

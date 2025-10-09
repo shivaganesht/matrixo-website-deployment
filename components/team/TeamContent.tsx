@@ -146,7 +146,7 @@ export default function TeamContent() {
               Want to Join Our Team?
             </h2>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-              We're always looking for talented individuals who share our passion for education and technology.
+              We&apos;re always looking for talented individuals who share our passion for education and technology.
             </p>
             <a href="mailto:off.matrixo@gmail.com?subject=Open%20Position%20Inquiry">
               <button className="btn-primary">

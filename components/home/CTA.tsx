@@ -26,7 +26,7 @@ export default function CTA() {
           </h2>
           
           <p className="text-xl text-gray-700 dark:text-gray-300 mb-12">
-            Join thousands of students building their careers with matriXO's workshops, 
+            Join thousands of students building their careers with matriXO&apos;s workshops, 
             hackathons, and bootcamps.
           </p>
 

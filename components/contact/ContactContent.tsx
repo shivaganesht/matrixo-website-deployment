@@ -38,7 +38,7 @@ export default function ContactContent() {
               Get In <span className="gradient-text">Touch</span>
             </h1>
             <p className="text-2xl text-gray-300">
-              Have questions? We'd love to hear from you.
+              Have questions? We&apos;d love to hear from you.
             </p>
           </motion.div>
         </div>
