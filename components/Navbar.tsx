@@ -55,7 +55,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg shadow-lg'
+          ? 'bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20'
           : 'bg-transparent'
       }`}
     >
@@ -66,12 +66,19 @@ export default function Navbar() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center space-x-3"
+              className="relative h-8 md:h-12 w-auto"
             >
+              {/* Light Mode Logo (Black) */}
               <img 
-                src="/logos/logo with name blk sq final wide.png" 
+                src="/logos/logo-light.png" 
                 alt="matriXO" 
-                className="h-8 md:h-12 w-auto rounded-lg"
+                className="h-8 md:h-12 w-auto block dark:hidden"
+              />
+              {/* Dark Mode Logo (White) */}
+              <img 
+                src="/logos/logo-dark.png" 
+                alt="matriXO" 
+                className="h-8 md:h-12 w-auto hidden dark:block"
               />
             </motion.div>
           </Link>

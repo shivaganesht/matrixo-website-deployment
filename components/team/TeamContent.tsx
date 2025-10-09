@@ -8,7 +8,7 @@ const team = [
     name: 'Shiva Ganesh Talikota',
     role: 'Founder',
     bio: 'Visionary leader driving matriXO\'s mission to empower students through technical education and hands-on workshops.',
-    image: '/team/shiva.jpg',
+    image: 'https://media.licdn.com/dms/image/v2/D5603AQFTVSaOE75yMg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1722352150087?e=1762992000&v=beta&t=idxQdU1Hm7lL2MJgZvLp5i85YUAdJh1QoDjOT860d6E',
     social: {
       linkedin: 'https://linkedin.com/in/shivaganesht',
       email: 'off.matrixo@gmail.com',
@@ -18,7 +18,7 @@ const team = [
     name: 'Kishan Sai Vutukuri',
     role: 'Co-Founder',
     bio: 'Tech innovator focused on building scalable platforms and creating impactful learning experiences for students.',
-    image: '/team/kishan.jpg',
+    image: 'https://media.licdn.com/dms/image/v2/D5603AQGKleEXV-3SOQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1686423933308?e=1762992000&v=beta&t=zOejuSeH7MPOmEOu_GpAbLelclEOjU4fyyxf1kLR3pQ',
     social: {
       linkedin: 'https://www.linkedin.com/in/kishan-sai-vutukuri/',
       email: 'off.matrixo@gmail.com',
@@ -28,7 +28,7 @@ const team = [
     name: 'Jatin Jangir',
     role: 'CFO',
     bio: 'Strategic financial leader ensuring sustainable growth and efficient operations for matriXO\'s expanding programs.',
-    image: '/team/jatin.jpg',
+    image: 'https://media.licdn.com/dms/image/v2/D5635AQGbcdwn0ANocQ/profile-framedphoto-shrink_400_400/B56ZmyzC8pHAAc-/0/1759641350253?e=1760601600&v=beta&t=XEqI3YepxPnHM6HjmVfIkeiVsZuGuxrJHUSSRdhH3DU',
     social: {
       linkedin: 'https://www.linkedin.com/in/astro-jatin-jangir-0287a6228',
       email: 'off.matrixo@gmail.com',
@@ -70,10 +70,25 @@ export default function TeamContent() {
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 className="glass-card p-8 hover-lift hover-glow text-center"
               >
-                {/* Avatar */}
-                <div className="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full 
-                              flex items-center justify-center text-white text-5xl font-bold">
-                  {member.name.split(' ').map(n => n.charAt(0)).join('')}
+                {/* Avatar - Image with fallback to initials */}
+                <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden 
+                              bg-gradient-to-br from-blue-500 to-purple-600">
+                  <img 
+                    src={member.image} 
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // If image fails to load, show initials
+                      e.currentTarget.style.display = 'none'
+                      const parent = e.currentTarget.parentElement
+                      if (parent) {
+                        const fallback = document.createElement('div')
+                        fallback.className = 'absolute inset-0 flex items-center justify-center text-white text-5xl font-bold'
+                        fallback.textContent = member.name.split(' ').map(n => n.charAt(0)).join('')
+                        parent.appendChild(fallback)
+                      }
+                    }}
+                  />
                 </div>
 
                 {/* Info */}

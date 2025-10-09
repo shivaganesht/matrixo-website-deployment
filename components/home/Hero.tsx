@@ -34,11 +34,27 @@ export default function Hero() {
               MSME Registered 🚀
             </span>
           </motion.div>
-
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 leading-tight">
-            <span className="text-gray-900 dark:text-white">matri</span>
-            <span className="gradient-text">XO</span>
-          </h1>
+        <br/>
+          {/* Dynamic Logo */}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="relative inline-block mb-6"
+          >
+            {/* Light Mode Logo (Black) */}
+            <img 
+              src="/logos/logo-light.png" 
+              alt="matriXO" 
+              className="h-24 md:h-32 lg:h-20 w-auto mx-auto block dark:hidden"
+            />
+            {/* Dark Mode Logo (White) */}
+            <img 
+              src="/logos/logo-dark.png" 
+              alt="matriXO" 
+              className="h-24 md:h-32 lg:h-20 w-auto mx-auto transform hidden dark:block"
+            />
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0 }}

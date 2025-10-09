@@ -121,7 +121,7 @@ export default function RazorpayCheckout({ event, ticket, quantity, onClose }: R
         currency: 'INR',
         name: 'matriXO',
         description: `${event.title} - ${ticket.name}`,
-        image: '/logos/matrixo logo wide.png',
+        image: '/logos/logo-light.png', // Use light logo for Razorpay modal
         order_id: orderData.id,
         handler: async function (response: any) {
           // Payment successful - handler function

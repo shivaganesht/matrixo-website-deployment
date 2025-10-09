@@ -10,11 +10,20 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <img 
-              src="/logos/logo with name blk sq final wide.png" 
-              alt="matriXO" 
-              className="h-30 w-auto mb-4 rounded-lg"
-            />
+            <div className="relative h-10 w-auto mb-4">
+              {/* Light Mode Logo (Black) */}
+              <img 
+                src="/logos/logo-light.png" 
+                alt="matriXO" 
+                className="h-10 w-auto rounded-lg block dark:hidden"
+              />
+              {/* Dark Mode Logo (White) */}
+              <img 
+                src="/logos/logo-dark.png" 
+                alt="matriXO" 
+                className="h-10 w-auto rounded-lg absolute top-0 left-0 hidden dark:block"
+              />
+            </div>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Technical workshops, hackathons, and career-focused events for students.
             </p>
