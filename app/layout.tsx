@@ -16,25 +16,42 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: 'matriXO - Technical Workshops, Events & Bootcamps for Students',
+  metadataBase: new URL('https://matrixo.in'),
+  title: {
+    default: 'matriXO - Technical Workshops, Events & Bootcamps for Students',
+    template: '%s | matriXO'
+  },
   description: 'matriXO — Your gateway to technical excellence. Workshops, hackathons, bootcamps, and career-focused events designed for students. MSME Registered.',
   keywords: 'matriXO, technical workshops, hackathons, bootcamps, student events, career development, tech events, coding workshops, student training',
   authors: [{ name: 'matriXO Team' }],
   creator: 'matriXO',
   publisher: 'matriXO',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: 'https://matrixo.in',
     siteName: 'matriXO',
     title: 'matriXO - Technical Workshops & Career-Focused Events',
-    description: 'Technical workshops, hackathons, and bootcamps for student career growth.',
+    description: 'Technical workshops, hackathons, and bootcamps for student career growth. Join our events and accelerate your tech journey.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/logos/logo-dark.png',
         width: 1200,
         height: 630,
-        alt: 'matriXO',
+        alt: 'matriXO - Technical Workshops & Events',
+        type: 'image/png',
+      },
+      {
+        url: '/logos/logo-dark.png',
+        width: 1080,
+        height: 1080,
+        alt: 'matriXO - Technical Workshops & Events',
+        type: 'image/png',
       },
     ],
   },
@@ -42,7 +59,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'matriXO - Technical Workshops & Career-Focused Events',
     description: 'Technical workshops, hackathons, and bootcamps for student career growth.',
-    images: ['/og-image.jpg'],
+    images: ['/logos/logo-dark.png'],
+    creator: '@matrixo',
+  },
+  other: {
+    'instagram:card': 'summary_large_image',
+    'instagram:title': 'matriXO - Technical Workshops & Career-Focused Events',
+    'instagram:description': 'Technical workshops, hackathons, and bootcamps for student career growth. Join our events!',
+    'instagram:image': 'https://matrixo.in/logos/logo-dark.png',
   },
   robots: {
     index: true,

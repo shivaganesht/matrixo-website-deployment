@@ -16,13 +16,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  const eventUrl = `https://matrixo.in/events/${event.slug}`
+  const eventImage = event.images.banner.startsWith('http') 
+    ? event.images.banner 
+    : `https://matrixo.in${event.images.banner}`
+
   return {
     title: `${event.title} - matriXO`,
     description: event.description,
+    keywords: `${event.title}, ${event.tags.join(', ')}, matriXO events, ${event.category}`,
     openGraph: {
-      title: event.title,
+      type: 'website',
+      url: eventUrl,
+      title: `${event.title} | ${event.tagline}`,
       description: event.description,
-      images: [event.images.banner],
+      siteName: 'matriXO',
+      images: [
+        {
+          url: eventImage,
+          width: 1200,
+          height: 630,
+          alt: `${event.title} - ${event.tagline}`,
+          type: 'image/png',
+        },
+        {
+          url: eventImage,
+          width: 1080,
+          height: 1080,
+          alt: `${event.title} - ${event.tagline}`,
+          type: 'image/png',
+        },
+      ],
+      locale: 'en_IN',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${event.title} | ${event.tagline}`,
+      description: event.description,
+      images: [eventImage],
+      creator: '@matrixo',
+    },
+    other: {
+      'instagram:card': 'summary_large_image',
+      'instagram:title': `${event.title} | ${event.tagline}`,
+      'instagram:description': event.description,
+      'instagram:image': eventImage,
     },
   }
 }
