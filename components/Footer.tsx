@@ -77,7 +77,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                T SHIVA GANESH - DOB: 07-May-2005
+                T SHIVA GANESH
               </li>
             </ul>
           </div>
