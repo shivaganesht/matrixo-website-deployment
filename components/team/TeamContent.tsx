@@ -28,7 +28,7 @@ const team = [
     name: 'Jatin Jangir',
     role: 'CFO',
     bio: 'Strategic financial leader ensuring sustainable growth and efficient operations for matriXO\'s expanding programs.',
-    image: 'https://media.licdn.com/dms/image/v2/D5635AQGbcdwn0ANocQ/profile-framedphoto-shrink_400_400/B56ZmyzC8pHAAc-/0/1759641350253?e=1760601600&v=beta&t=XEqI3YepxPnHM6HjmVfIkeiVsZuGuxrJHUSSRdhH3DU',
+    image: 'https://media.licdn.com/dms/image/v2/D5603AQGz0UU_SYDg5w/profile-displayphoto-scale_400_400/B56ZmgmSWhJoAg-/0/1759336016876?e=1762992000&v=beta&t=YmRTYmr9y03ltIjVVwJv9Iju9vDhnMxxdca3Ot7zAek',
     social: {
       linkedin: 'https://www.linkedin.com/in/astro-jatin-jangir-0287a6228',
       email: 'off.matrixo@gmail.com',
