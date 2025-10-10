@@ -1,5 +1,196 @@
 [
   {
+    "id": "tedxkprit-2025",
+    "slug": "tedxkprit-2025-break-the-loop",
+    "title": "TEDxKPRIT 2025",
+    "tagline": "Break The Loop - Unlooped Unbound Unstoppable",
+    "description": "TEDxKPRIT brings together visionary speakers, artists, and innovators to ignite curiosity, challenge perspectives, and inspire action. 'Break The Loop' is a call to disrupt the expected, to challenge cycles of habit, systems of thought, and stories we've outgrown. Whether in technology, culture, or personal growth — this theme invites bold thinking that breaks away from inertia and builds anew.",
+    "date": "2025-10-17T10:00:00",
+    "endDate": "2025-10-17T15:45:00",
+    "venue": "KPRIT Auditorium",
+    "location": "Kommuri Pratap Reddy Institute of Technology, Hyderabad",
+    "totalCapacity": 500,
+    "ticketsSold": 0,
+    "featured": true,
+    "status": "upcoming",
+    "category": "TEDx Conference",
+    "images": {
+      "banner": "https://tedxkprit.in/audit.jpg",
+      "thumbnail": "https://tedxkprit.in/tedx.png",
+      "gallery": [
+        "https://tedxkprit.in/speakers-images/hemathakur.jpg",
+        "https://tedxkprit.in/speakers-images/deepakmishra.jpg",
+        "https://tedxkprit.in/speakers-images/ravidasari.jpeg",
+        "https://tedxkprit.in/speakers-images/sairamatluri.jpg"
+      ]
+    },
+    "tickets": [
+      {
+        "id": "student-pass",
+        "name": "Student Pass",
+        "price": 499,
+        "available": 500,
+        "description": "Full day access to TEDxKPRIT 2025 with swag kit",
+        "perks": [
+          "Full day access to all 12 speakers",
+          "TEDxKPRIT swag kit",
+          "Networking opportunities",
+          "Lunch included",
+          "Coffee breaks",
+          "Participation certificate"
+        ]
+      }
+    ],
+    "partners": ["matriXO"],
+    "sponsors": [],
+    "speakers": [
+      {
+        "name": "Hema Thakur",
+        "title": "Academic Editor, Mentor & Author",
+        "bio": "Academic editing, research mentorship with nearly a decade of experience helping researchers worldwide navigate scholarly publishing.",
+        "image": "https://tedxkprit.in/speakers-images/hemathakur.jpg",
+        "socialLinks": {
+          "website": "https://www.socialsciencespace.com/author/hemathakur/"
+        }
+      },
+      {
+        "name": "Dr. Deepak J. Mashru",
+        "title": "Forensic Linguistics Pioneer",
+        "bio": "Visionary educator at National Forensic Sciences University, redefining how language, law, and technology converge to strengthen justice delivery.",
+        "image": "https://tedxkprit.in/speakers-images/deepakmishra.jpg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/drdeepakmashru/?originalSubdomain=in"
+        }
+      },
+      {
+        "name": "Dr. Ravi Dasari",
+        "title": "President & Group Head-HR, Jasper Industries",
+        "bio": "25+ years of leadership experience with PhD in HRM. Secretary of NHRD Hyderabad and certified executive coach specializing in organizational culture.",
+        "image": "https://tedxkprit.in/speakers-images/ravidasari.jpeg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/dr-ravi-dasari-7495b213/?originalSubdomain=in"
+        }
+      },
+      {
+        "name": "Dr. SaiRam Atluri",
+        "title": "Stem Cell Specialist",
+        "bio": "Internationally recognized with 30+ years of clinical and research experience. Published first U.S. article on stem cells during COVID-19 pandemic.",
+        "image": "https://tedxkprit.in/speakers-images/sairamatluri.jpg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/sairam-atluri-md-24369849/"
+        }
+      },
+      {
+        "name": "Rohit Tiwari",
+        "title": "Sr. Director, DEXIAN India",
+        "bio": "17+ years of expertise in client engagement, digital transformation, and business growth. Drives client success and long-term partnerships.",
+        "image": "https://tedxkprit.in/speakers-images/Rohit%20tiwari%20(2).jpeg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/rohit-tiwari-a468551a/?originalSubdomain=in"
+        }
+      },
+      {
+        "name": "Dr. Divya Raj",
+        "title": "MD Pediatrics & Managing Director",
+        "bio": "Launched first Indian-equivalent MBBS program in Uzbekistan. Leading medical education innovation with NMC-aligned curriculum.",
+        "image": "https://tedxkprit.in/speakers-images/divyaraj.jpg",
+        "socialLinks": {
+          "instagram": "https://www.instagram.com/dr.divya_raj?igsh=a2wzdmY4aGM3bGUy"
+        }
+      },
+      {
+        "name": "Dr. A M Reddy",
+        "title": "Pioneering Homeopathic Physician",
+        "bio": "Founder of Positive Group of Clinics with 50+ branches. First in India to advance homeopathic immunotherapy for autism and ADHD.",
+        "image": "https://tedxkprit.in/speakers-images/amreddy.jpeg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/dr-a-m-reddy-9b6b6035/?originalSubdomain=in"
+        }
+      },
+      {
+        "name": "Ramya Parashar",
+        "title": "COO, MiQ's Bangalore Center",
+        "bio": "Forbes India's W-Power: Self-made Women. AIM's Top 25 GCC Heads for two consecutive years. Champion of inclusive workplaces.",
+        "image": "https://tedxkprit.in/speakers-images/ramya.jpeg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/ramyaparashar/?originalSubdomain=in"
+        }
+      },
+      {
+        "name": "Nithya Rajendran",
+        "title": "Classical Vocalist & Music Healer",
+        "bio": "Trained in Hindustani and Carnatic traditions for 20+ years. Founder of Music Vruksh, exploring healing powers of classical music.",
+        "image": "https://tedxkprit.in/speakers-images/Nithya.jpg",
+        "socialLinks": {
+          "facebook": "https://www.facebook.com/nithya.rajendran.180/"
+        }
+      },
+      {
+        "name": "Sreekanth Erepalli",
+        "title": "Founder & MD, Giosun Healthcare",
+        "bio": "30+ years in Ayurveda and herbal wellness. Global advocate for modern Ayurveda, blending traditional wisdom with science.",
+        "image": "https://tedxkprit.in/speakers-images/sreekanth.jpg"
+      }
+    ],
+    "agenda": [
+      { "time": "10:00 AM", "title": "Speaker 1", "speaker": "Hema Thakur" },
+      { "time": "10:20 AM", "title": "Speaker 2", "speaker": "Dr. Deepak J. Mashru" },
+      { "time": "10:40 AM", "title": "Speaker 3", "speaker": "Dr. Ravi Dasari" },
+      { "time": "11:00 AM", "title": "Break", "duration": "15 minutes" },
+      { "time": "11:15 AM", "title": "Speaker 4", "speaker": "Dr. SaiRam Atluri" },
+      { "time": "11:35 AM", "title": "Speaker 5", "speaker": "Rohit Tiwari" },
+      { "time": "11:55 AM", "title": "Speaker 6", "speaker": "Dr. Divya Raj" },
+      { "time": "12:15 PM", "title": "Lunch Break", "duration": "1 hour" },
+      { "time": "1:15 PM", "title": "Speaker 7", "speaker": "Dr. A M Reddy" },
+      { "time": "1:35 PM", "title": "Speaker 8", "speaker": "Ramya Parashar" },
+      { "time": "1:55 PM", "title": "Speaker 9", "speaker": "Nithya Rajendran" },
+      { "time": "2:15 PM", "title": "Break", "duration": "15 minutes" },
+      { "time": "2:30 PM", "title": "Speaker 10", "speaker": "Sreekanth Erepalli" },
+      { "time": "2:50 PM", "title": "Speaker 11" },
+      { "time": "3:10 PM", "title": "Speaker 12" },
+      { "time": "3:30 PM", "title": "Wrap-up / Closing" }
+    ],
+    "tags": ["TEDx", "Ideas Worth Spreading", "Innovation", "Leadership", "Inspiration"],
+    "organizer": "TEDxKPRIT Team",
+    "ticketingPartner": "matriXO",
+    "contactPerson": "Bhuvaneshwari Pothuraju",
+    "contactEmail": "tedx@kpritech.ac.in",
+    "socialLinks": {
+      "website": "https://tedxkprit.in",
+      "instagram": "https://www.instagram.com/tedxkprit/",
+      "linkedin": "https://www.linkedin.com/company/tedxkprit/posts/?feedView=all"
+    },
+    "highlights": [
+      "12 inspiring speakers from diverse fields",
+      "Theme: Break The Loop - Disruption, Awareness, Breakthrough",
+      "Full day event with lunch and coffee breaks",
+      "TEDxKPRIT swag kit included",
+      "Networking with visionaries and innovators",
+      "Ideas worth spreading - TED license event"
+    ],
+    "theme": {
+      "title": "Break The Loop",
+      "pillars": [
+        {
+          "name": "Disruption",
+          "description": "Question the status quo. Reimagine what's possible when routines are interrupted with intent."
+        },
+        {
+          "name": "Awareness",
+          "description": "Recognize the loops — social, emotional, systemic — that shape our lives and limit our thinking."
+        },
+        {
+          "name": "Breakthrough",
+          "description": "Step into the unknown. Growth often begins the moment you exit the cycle."
+        }
+      ]
+    },
+    "additionalInfo": {
+      "includesMUN": true,
+      "munDescription": "Special Model United Nations experience curated alongside TEDxKPRIT. Build policy, exchange perspectives, and practice consensus-building."
+    }
+  },
+  {
     "id": "origin-2025",
     "slug": "origin-2025-flagship-tech-innovation",
     "title": "Origin 2025",
