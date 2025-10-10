@@ -275,14 +275,14 @@ export default function EventDetail({ event }: { event: any }) {
                         <>
                           <div className="w-full h-20 mb-4 flex items-center justify-center">
                             <Image
-                              src="/logos/logo-dark.png"
+                              src="/logos/logo-light.png"
                               alt="matriXO"
                               width={120}
                               height={60}
                               className="object-contain dark:hidden"
                             />
                             <Image
-                              src="/logos/logo-light.png"
+                              src="/logos/logo-dark.png"
                               alt="matriXO"
                               width={120}
                               height={60}
