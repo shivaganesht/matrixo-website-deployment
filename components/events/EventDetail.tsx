@@ -39,7 +39,7 @@ export default function EventDetail({ event }: { event: any }) {
                 src={event.images.banner}
                 alt="Break The Loop"
                 fill
-                className="object-contain object-top p-8"
+                className="object-contain object-top pt-4"
                 priority
               />
             </div>
