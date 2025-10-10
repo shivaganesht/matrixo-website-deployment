@@ -244,8 +244,8 @@ export default function ServicesContent() {
                 <div className="grid md:grid-cols-3 gap-6 mb-10">
                   {[
                     { icon: '🎫', title: 'Easy Ticketing', desc: 'Create and manage multiple ticket tiers' },
-                    { icon: '💳', title: 'Secure Payments', desc: 'Razorpay-powered payment processing' },
-                    { icon: '📊', title: 'Real-time Analytics', desc: 'Track sales and attendee insights' },
+                    { icon: '✉️', title: 'Email Confirmations', desc: 'Automated registration confirmations' },
+                    { icon: '📊', title: 'Real-time Analytics', desc: 'Track registrations and attendee insights' },
                   ].map((benefit, index) => (
                     <motion.div
                       key={benefit.title}

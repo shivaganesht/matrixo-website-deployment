@@ -5,22 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { FaCalendar, FaMapMarkerAlt, FaClock, FaUsers, FaTag } from 'react-icons/fa'
-import RazorpayCheckout from './RazorpayCheckout'
+import EventRegistrationForm from './EventRegistrationForm'
 
 export default function EventDetail({ event }: { event: any }) {
-  const [showCheckout, setShowCheckout] = useState(false)
+  const [showRegistration, setShowRegistration] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
-  const [quantity, setQuantity] = useState(1)
 
   const handleRegisterNow = (ticket: any) => {
     setSelectedTicket(ticket)
-    setShowCheckout(true)
+    setShowRegistration(true)
   }
 
-  const closeCheckout = () => {
-    setShowCheckout(false)
+  const closeRegistration = () => {
+    setShowRegistration(false)
     setSelectedTicket(null)
-    setQuantity(1)
   }
 
   const percentSold = ((event.ticketsSold / event.totalCapacity) * 100).toFixed(0)
@@ -292,14 +290,13 @@ export default function EventDetail({ event }: { event: any }) {
         </div>
       </section>
 
-      {/* Razorpay Checkout Modal */}
+      {/* Registration Modal */}
       <AnimatePresence>
-        {showCheckout && selectedTicket && (
-          <RazorpayCheckout
+        {showRegistration && selectedTicket && (
+          <EventRegistrationForm
             event={event}
             ticket={selectedTicket}
-            quantity={quantity}
-            onClose={closeCheckout}
+            onClose={closeRegistration}
           />
         )}
       </AnimatePresence>
