@@ -189,7 +189,7 @@ export default function EventsListing() {
                               src={event.images.thumbnail}
                               alt={event.title}
                               fill
-                              className="object-cover"
+                              className="object-cover object-top"
                             />
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">

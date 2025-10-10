@@ -34,12 +34,12 @@ export default function EventDetail({ event }: { event: any }) {
         {isTEDxEvent ? (
           <>
             {/* TEDxKPRIT Banner Image */}
-            <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-gray-900">
+            <div className="absolute inset-0 flex items-start justify-center bg-white dark:bg-gray-900">
               <Image
                 src={event.images.banner}
                 alt="Break The Loop"
                 fill
-                className="object-contain p-8"
+                className="object-contain object-top p-8"
                 priority
               />
             </div>
