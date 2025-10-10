@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { format } from 'date-fns'
 import { FaCalendar, FaMapMarkerAlt, FaClock, FaUsers, FaTag } from 'react-icons/fa'
 import EventRegistrationForm from './EventRegistrationForm'
@@ -22,15 +23,36 @@ export default function EventDetail({ event }: { event: any }) {
   }
 
   const percentSold = ((event.ticketsSold / event.totalCapacity) * 100).toFixed(0)
+  
+  // Check if this is TEDxKPRIT event
+  const isTEDxEvent = event.id === 'tedxkprit-2025'
 
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Banner */}
       <section className="relative h-[60vh] bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20">
-        <div className="absolute inset-0 flex items-center justify-center text-9xl font-bold gradient-text">
-          {event.title.charAt(0)}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        {isTEDxEvent ? (
+          <>
+            {/* TEDxKPRIT Banner Image */}
+            <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-gray-900">
+              <Image
+                src="https://i.postimg.cc/W4PJp5rD/break-the-loop.png"
+                alt="Break The Loop"
+                fill
+                className="object-contain p-8"
+                priority
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 flex items-center justify-center text-9xl font-bold gradient-text">
+              {event.title.charAt(0)}
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          </>
+        )}
         
         <div className="absolute bottom-0 left-0 right-0 container-custom px-6 pb-12">
           <motion.div
@@ -82,6 +104,29 @@ export default function EventDetail({ event }: { event: any }) {
                   {event.description}
                 </p>
               </motion.div>
+
+              {/* Theme Section - TEDxKPRIT Only */}
+              {event.theme && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 }}
+                >
+                  <h2 className="text-3xl font-bold mb-6 gradient-text">{event.theme.title}</h2>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {event.theme.pillars.map((pillar: any, index: number) => (
+                      <div key={index} className="glass-card p-6 hover-lift">
+                        <h3 className="text-xl font-bold mb-3 text-neon-blue">
+                          {pillar.name}
+                        </h3>
+                        <p className="text-gray-700 dark:text-gray-300">
+                          {pillar.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
 
               {/* Venue */}
               <motion.div
@@ -135,19 +180,81 @@ export default function EventDetail({ event }: { event: any }) {
                   <div className="grid md:grid-cols-2 gap-6">
                     {event.speakers.map((speaker: any, index: number) => (
                       <div key={index} className="glass-card p-6 hover-lift">
-                        <div className="w-20 h-20 bg-gradient-to-br from-neon-blue to-neon-purple rounded-full 
-                                      flex items-center justify-center text-white text-2xl font-bold mb-4">
-                          {speaker.name.charAt(0)}
-                        </div>
+                        {speaker.image ? (
+                          <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden">
+                            <Image
+                              src={speaker.image}
+                              alt={speaker.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-20 h-20 bg-gradient-to-br from-neon-blue to-neon-purple rounded-full 
+                                        flex items-center justify-center text-white text-2xl font-bold mb-4">
+                            {speaker.name.charAt(0)}
+                          </div>
+                        )}
                         <h3 className="text-xl font-bold mb-1 text-gray-900 dark:text-white">
                           {speaker.name}
                         </h3>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                          {speaker.designation}
+                          {speaker.title || speaker.designation}
                         </p>
-                        <p className="text-sm text-neon-blue font-medium">
-                          {speaker.topic}
-                        </p>
+                        {speaker.bio && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-3">
+                            {speaker.bio}
+                          </p>
+                        )}
+                        {speaker.topic && (
+                          <p className="text-sm text-neon-blue font-medium">
+                            {speaker.topic}
+                          </p>
+                        )}
+                        {speaker.socialLinks && (
+                          <div className="mt-3 flex gap-2">
+                            {speaker.socialLinks.linkedin && (
+                              <a
+                                href={speaker.socialLinks.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-neon-blue hover:underline"
+                              >
+                                LinkedIn
+                              </a>
+                            )}
+                            {speaker.socialLinks.website && (
+                              <a
+                                href={speaker.socialLinks.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-neon-blue hover:underline"
+                              >
+                                Website
+                              </a>
+                            )}
+                            {speaker.socialLinks.instagram && (
+                              <a
+                                href={speaker.socialLinks.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-neon-blue hover:underline"
+                              >
+                                Instagram
+                              </a>
+                            )}
+                            {speaker.socialLinks.facebook && (
+                              <a
+                                href={speaker.socialLinks.facebook}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-neon-blue hover:underline"
+                              >
+                                Facebook
+                              </a>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
