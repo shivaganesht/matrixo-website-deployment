@@ -40,27 +40,72 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          eventId: event.id,
-          eventTitle: event.title,
-          eventDate: event.date,
-          ticketType: ticket.name
-        }),
-      })
+      // Calculate payment amount
+      const certificateAmount = formData.wantCertificate === 'yes' ? 50 : 0
+      const totalAmount = certificateAmount
 
-      const data = await response.json()
+      // If payment is required, initiate PhonePe payment
+      if (totalAmount > 0) {
+        const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const merchantUserId = `USER_${formData.email.replace(/[^a-zA-Z0-9]/g, '_')}`
 
-      if (response.ok) {
-        toast.success('Registration successful! Check your email for confirmation.')
-        onClose()
+        const paymentResponse = await fetch('/api/phonepe/initiate-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: totalAmount,
+            merchantTransactionId: merchantTransactionId,
+            merchantUserId: merchantUserId,
+            redirectUrl: `${window.location.origin}/payment/callback`,
+            mobileNumber: formData.contactNumber,
+          }),
+        })
+
+        const paymentData = await paymentResponse.json()
+
+        if (paymentResponse.ok && paymentData.success) {
+          // Store registration data in sessionStorage before redirecting to payment
+          sessionStorage.setItem('pendingRegistration', JSON.stringify({
+            ...formData,
+            eventId: event.id,
+            eventTitle: event.title,
+            eventDate: event.date,
+            ticketType: ticket.name,
+            merchantTransactionId: merchantTransactionId,
+            amount: totalAmount
+          }))
+
+          // Redirect to PhonePe payment page
+          window.location.href = paymentData.data.paymentUrl
+        } else {
+          toast.error(paymentData.error || 'Failed to initiate payment. Please try again.')
+        }
       } else {
-        toast.error(data.error || 'Registration failed. Please try again.')
+        // No payment required, proceed with direct registration
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...formData,
+            eventId: event.id,
+            eventTitle: event.title,
+            eventDate: event.date,
+            ticketType: ticket.name
+          }),
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+          toast.success('Registration successful! Check your email for confirmation.')
+          onClose()
+        } else {
+          toast.error(data.error || 'Registration failed. Please try again.')
+        }
       }
     } catch (error) {
       console.error('Registration error:', error)
