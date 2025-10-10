@@ -268,16 +268,45 @@ export default function EventDetail({ event }: { event: any }) {
                 transition={{ delay: 0.4 }}
               >
                 <h2 className="text-3xl font-bold mb-6">Partners & Sponsors</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[...event.partners, ...event.sponsors].map((org: string, index: number) => (
-                    <div key={index} className="glass-card p-4 text-center hover-lift">
-                      <div className="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 
-                                    rounded-full flex items-center justify-center text-2xl font-bold gradient-text">
-                        {org.charAt(0)}
-                      </div>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {org}
-                      </p>
+                    <div key={index} className="glass-card p-6 text-center hover-lift">
+                      {org.toLowerCase() === 'matrixo' ? (
+                        <>
+                          <div className="w-full h-20 mb-4 flex items-center justify-center">
+                            <Image
+                              src="/logos/logo-dark.png"
+                              alt="matriXO"
+                              width={120}
+                              height={60}
+                              className="object-contain dark:hidden"
+                            />
+                            <Image
+                              src="/logos/logo-light.png"
+                              alt="matriXO"
+                              width={120}
+                              height={60}
+                              className="object-contain hidden dark:block"
+                            />
+                          </div>
+                          <p className="text-base font-bold gradient-text mb-1">
+                            matriXO
+                          </p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">
+                            Ticketing & Community Partner
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 
+                                        rounded-full flex items-center justify-center text-2xl font-bold gradient-text">
+                            {org.charAt(0)}
+                          </div>
+                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {org}
+                          </p>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>

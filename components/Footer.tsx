@@ -76,9 +76,6 @@ export default function Footer() {
                   off.matrixo@gmail.com
                 </a>
               </li>
-              <li>
-                T SHIVA GANESH
-              </li>
             </ul>
           </div>
         </div>
