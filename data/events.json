@@ -10,7 +10,7 @@
     "endDate": "2025-10-17T15:45:00",
     "venue": "KPRIT Auditorium",
     "location": "Kommuri Pratap Reddy Institute of Technology, Hyderabad",
-    "totalCapacity": 500,
+    "totalCapacity": 100,
     "ticketsSold": 0,
     "featured": true,
     "status": "upcoming",
@@ -30,7 +30,7 @@
         "id": "student-pass",
         "name": "Student Pass",
         "price": 499,
-        "available": 500,
+        "available": 100,
         "description": "Full day access to TEDxKPRIT 2025 with swag kit",
         "perks": [
           "Full day access to all 12 speakers",

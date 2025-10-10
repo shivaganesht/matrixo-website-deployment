@@ -40,8 +40,9 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     setIsSubmitting(true)
 
     try {
-      // Calculate payment amount
-      const certificateAmount = formData.wantCertificate === 'yes' ? 50 : 0
+      // Calculate payment amount - no certificate for TEDxKPRIT
+      const isTEDxEvent = event.id === 'tedxkprit-2025'
+      const certificateAmount = (!isTEDxEvent && formData.wantCertificate === 'yes') ? 50 : 0
       const totalAmount = certificateAmount
 
       // If payment is required, initiate PhonePe payment
@@ -324,23 +325,26 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
             </h3>
 
             <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Do you prefer a certificate? *
-                </label>
-                <select
-                  name="wantCertificate"
-                  value={formData.wantCertificate}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                           bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                           focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes (₹50)</option>
-                </select>
-              </div>
+              {/* Hide certificate option for TEDxKPRIT */}
+              {event.id !== 'tedxkprit-2025' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Do you prefer a certificate? *
+                  </label>
+                  <select
+                    name="wantCertificate"
+                    value={formData.wantCertificate}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                             bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                             focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="no">No</option>
+                    <option value="yes">Yes (₹50)</option>
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -378,6 +382,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
                 <option value="Instagram">Instagram</option>
                 <option value="LinkedIn">LinkedIn</option>
                 <option value="Facebook">Facebook</option>
+                <option value="matriXO">matriXO</option>
                 <option value="Friend">Friend/Word of mouth</option>
                 <option value="College">College/Professor</option>
                 <option value="WhatsApp">WhatsApp</option>
