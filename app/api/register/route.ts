@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(request: Request) {
   try {
+    // Check if Resend API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        { error: 'Registration service not configured. Please contact us at off.matrixo@gmail.com' },
+        { status: 503 }
+      )
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY)
+    
     const body = await request.json()
     const {
       fullName,
