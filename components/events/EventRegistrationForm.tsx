@@ -363,31 +363,31 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
                   <option value="yes">Yes</option>
                 </select>
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                How did you know about this event? *
-              </label>
-              <select
-                name="hearAboutEvent"
-                value={formData.hearAboutEvent}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                         bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Select an option</option>
-                <option value="Instagram">Instagram</option>
-                <option value="LinkedIn">LinkedIn</option>
-                <option value="Facebook">Facebook</option>
-                <option value="matriXO">matriXO</option>
-                <option value="Friend">Friend/Word of mouth</option>
-                <option value="College">College/Professor</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="Other">Other</option>
-              </select>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  How did you know about this event? *
+                </label>
+                <select
+                  name="hearAboutEvent"
+                  value={formData.hearAboutEvent}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                           bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Select an option</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="matriXO">matriXO</option>
+                  <option value="Friend">Friend/Word of mouth</option>
+                  <option value="College">College/Professor</option>
+                  <option value="WhatsApp">WhatsApp</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
 
