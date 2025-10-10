@@ -163,6 +163,8 @@ export default function EventsListing() {
               {filteredAndSortedEvents.map((event, index) => {
                 const availableTickets = getAvailableTickets(event)
                 const percentSold = ((event.ticketsSold / event.totalCapacity) * 100).toFixed(0)
+                const eventLink = (event as any).externalLink || `/events/${event.slug}`
+                const isExternal = !!(event as any).externalLink
 
                 return (
                   <motion.div
@@ -171,7 +173,11 @@ export default function EventsListing() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05, duration: 0.4 }}
                   >
-                    <Link href={`/events/${event.slug}`}>
+                    <Link 
+                      href={eventLink}
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noopener noreferrer" : undefined}
+                    >
                       <div className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
                                     transition-all duration-200 hover:-translate-y-2 border-2 border-transparent 
                                     hover:border-blue-500/30 h-full flex flex-col">
