@@ -67,7 +67,7 @@ export default function TermsPage() {
 
             <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200">Payments</h3>
             <ul className="list-disc pl-6 mb-4">
-              <li>All payments are processed securely through <strong>Razorpay</strong></li>
+              <li>All payments are processed securely.</li>
               <li>We accept UPI, credit/debit cards, net banking, and wallets</li>
               <li>Prices are subject to change without prior notice</li>
               <li>All sales are final unless covered by our refund policy</li>
@@ -182,7 +182,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">13. Governing Law</h2>
             <p className="mb-4">
               These Terms and Conditions are governed by the laws of India. Any disputes arising from these terms 
-              will be subject to the exclusive jurisdiction of courts in [Your City/State].
+              will be subject to the exclusive jurisdiction of courts in Hyderabad, India.
             </p>
           </section>
 

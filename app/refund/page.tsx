@@ -71,7 +71,7 @@ export default function RefundPage() {
               <li><strong>UPI/Net Banking:</strong> 3-5 business days after approval</li>
               <li><strong>Wallet Payments:</strong> 2-3 business days after approval</li>
             </ul>
-            <p className="mb-4">Note: Refund processing time may vary depending on your bank/payment provider. If you don't receive your refund within the stated period, please contact your bank first, then reach out to us.</p>
+            <p className="mb-4">Note: Refund processing time may vary depending on your bank/payment provider. Refunds will be credited to the original source of payment method. If you don't receive your refund within the stated period, please contact your bank first, then reach out to us.</p>
           </section>
 
           <section className="mb-8">
