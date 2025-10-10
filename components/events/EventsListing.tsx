@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { FaCalendar, FaMapMarkerAlt, FaTicketAlt, FaSearch, FaFilter, FaClock, FaStar } from 'react-icons/fa'
 import eventsData from '@/data/events.json'
 import { format, isFuture, isPast, compareDesc, compareAsc } from 'date-fns'
@@ -183,9 +184,18 @@ export default function EventsListing() {
                                     hover:border-blue-500/30 h-full flex flex-col">
                         {/* Image */}
                         <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-purple-600/20 overflow-hidden">
-                          <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
-                            {event.title.charAt(0)}
-                          </div>
+                          {event.images?.thumbnail ? (
+                            <Image
+                              src={event.images.thumbnail}
+                              alt={event.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+                              {event.title.charAt(0)}
+                            </div>
+                          )}
                           {event.featured && (
                             <div className="absolute top-4 right-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white px-3 py-1 rounded-full text-xs font-bold">
                               FEATURED

@@ -16,8 +16,8 @@
     "status": "upcoming",
     "category": "TEDx Conference",
     "images": {
-      "banner": "https://tedxkprit.in/audit.jpg",
-      "thumbnail": "https://tedxkprit.in/tedx.png",
+      "banner": "/events/tedxkprit-banner.png",
+      "thumbnail": "/events/tedxkprit-logo.png",
       "gallery": [
         "https://tedxkprit.in/speakers-images/hemathakur.jpg",
         "https://tedxkprit.in/speakers-images/deepakmishra.jpg",
