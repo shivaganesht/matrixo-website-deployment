@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaGraduationCap, FaMapMarkerAlt, FaCertificate, FaBus, FaInfoCircle, FaTimes } from 'react-icons/fa'
+import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaGraduationCap, FaMapMarkerAlt, FaBus, FaInfoCircle, FaTimes, FaUpload } from 'react-icons/fa'
 import { toast } from 'sonner'
+import { storage } from '@/lib/firebaseConfig'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 interface EventRegistrationFormProps {
   event: any
@@ -13,6 +15,9 @@ interface EventRegistrationFormProps {
 
 export default function EventRegistrationForm({ event, ticket, onClose }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  
   const [formData, setFormData] = useState({
     fullName: '',
     contactNumber: '',
@@ -28,6 +33,9 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     hearAboutEvent: ''
   })
 
+  // UPI Payment Link for TEDxKPRIT (₹499)
+  const UPI_PAYMENT_LINK = 'upi://pay?pa=vyapar.171588997321@hdfcbank&amt=499&cu=INR&pn=UPIPE%20User'
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -35,85 +43,146 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     })
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please upload an image file')
+        return
+      }
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB')
+        return
+      }
+      setPaymentScreenshot(file)
+      toast.success('Screenshot selected successfully')
+    }
+  }
+
+  const uploadScreenshotToFirebase = async (file: File): Promise<string> => {
+    try {
+      // Create a unique filename with timestamp
+      const timestamp = Date.now()
+      const filename = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`
+      const storageRef = ref(storage, `screenshots/${filename}`)
+
+      // Upload the file to Firebase Storage
+      await uploadBytes(storageRef, file)
+
+      // Get the download URL
+      const downloadURL = await getDownloadURL(storageRef)
+      return downloadURL
+    } catch (error) {
+      console.error('Error uploading screenshot:', error)
+      throw new Error('Failed to upload screenshot')
+    }
+  }
+
+  const sendToGoogleSheet = async (data: any) => {
+    try {
+      // Replace with your actual Google Apps Script Web App URL
+      const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
+
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Important for Google Apps Script
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+
+      // Note: no-cors mode doesn't allow reading response, but the request will be sent
+      return true
+    } catch (error) {
+      console.error('Error sending to Google Sheet:', error)
+      throw new Error('Failed to send data to Google Sheet')
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate payment screenshot
+    if (!paymentScreenshot) {
+      toast.error('Please upload payment screenshot before submitting')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
-      // Calculate payment amount - no certificate for TEDxKPRIT
-      const isTEDxEvent = event.id === 'tedxkprit-2025'
-      const certificateAmount = (!isTEDxEvent && formData.wantCertificate === 'yes') ? 50 : 0
-      const totalAmount = certificateAmount
+      // Step 1: Upload screenshot to Firebase Storage
+      toast.info('Uploading payment screenshot...')
+      const screenshotURL = await uploadScreenshotToFirebase(paymentScreenshot)
 
-      // If payment is required, initiate PhonePe payment
-      if (totalAmount > 0) {
-        const merchantTransactionId = `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-        const merchantUserId = `USER_${formData.email.replace(/[^a-zA-Z0-9]/g, '_')}`
-
-        const paymentResponse = await fetch('/api/phonepe/initiate-payment', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            amount: totalAmount,
-            merchantTransactionId: merchantTransactionId,
-            merchantUserId: merchantUserId,
-            redirectUrl: `${window.location.origin}/payment/callback`,
-            mobileNumber: formData.contactNumber,
-          }),
-        })
-
-        const paymentData = await paymentResponse.json()
-
-        if (paymentResponse.ok && paymentData.success) {
-          // Store registration data in sessionStorage before redirecting to payment
-          sessionStorage.setItem('pendingRegistration', JSON.stringify({
-            ...formData,
-            eventId: event.id,
-            eventTitle: event.title,
-            eventDate: event.date,
-            ticketType: ticket.name,
-            merchantTransactionId: merchantTransactionId,
-            amount: totalAmount
-          }))
-
-          // Redirect to PhonePe payment page
-          window.location.href = paymentData.data.paymentUrl
-        } else {
-          toast.error(paymentData.error || 'Failed to initiate payment. Please try again.')
-        }
-      } else {
-        // No payment required, proceed with direct registration
-        const response = await fetch('/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            ...formData,
-            eventId: event.id,
-            eventTitle: event.title,
-            eventDate: event.date,
-            ticketType: ticket.name
-          }),
-        })
-
-        const data = await response.json()
-
-        if (response.ok) {
-          toast.success('Registration successful! Check your email for confirmation.')
-          onClose()
-        } else {
-          toast.error(data.error || 'Registration failed. Please try again.')
-        }
+      // Step 2: Prepare data to send to Google Sheet
+      const registrationData = {
+        timestamp: new Date().toISOString(),
+        eventId: event.id,
+        eventTitle: event.title,
+        eventDate: event.date,
+        ticketType: ticket.name,
+        ticketPrice: ticket.price,
+        fullName: formData.fullName,
+        contactNumber: formData.contactNumber,
+        email: formData.email,
+        studentId: formData.studentId,
+        collegeName: formData.collegeName,
+        department: formData.department,
+        year: formData.year,
+        emergencyContact: formData.emergencyContact,
+        address: formData.address,
+        wantCertificate: formData.wantCertificate,
+        wantTransport: formData.wantTransport,
+        hearAboutEvent: formData.hearAboutEvent,
+        paymentScreenshotURL: screenshotURL,
+        status: 'Pending Verification'
       }
+
+      // Step 3: Send data to Google Apps Script
+      toast.info('Submitting registration...')
+      await sendToGoogleSheet(registrationData)
+
+      // Step 4: Success message
+      toast.success('✅ Registration submitted successfully! We will verify your payment and send confirmation via email.')
+      
+      // Reset form and close
+      setFormData({
+        fullName: '',
+        contactNumber: '',
+        email: '',
+        studentId: '',
+        collegeName: '',
+        department: '',
+        year: '',
+        emergencyContact: '',
+        address: '',
+        wantCertificate: 'no',
+        wantTransport: 'no',
+        hearAboutEvent: ''
+      })
+      setPaymentScreenshot(null)
+      
+      // Close the form after a short delay
+      setTimeout(() => {
+        onClose()
+      }, 2000)
+
     } catch (error) {
       console.error('Registration error:', error)
-      toast.error('Failed to submit registration. Please try again.')
+      toast.error(error instanceof Error ? error.message : 'Failed to submit registration. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handlePaymentClick = () => {
+    // Open UPI payment link
+    window.location.href = UPI_PAYMENT_LINK
+    toast.info('Complete payment and upload screenshot below')
   }
 
   return (
@@ -387,6 +456,68 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
                   <option value="WhatsApp">WhatsApp</option>
                   <option value="Other">Other</option>
                 </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <FaInfoCircle className="text-orange-500" />
+              Payment
+            </h3>
+
+            <div className="glass-card p-6 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border-2 border-orange-200 dark:border-orange-700">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">Ticket Price: ₹{ticket.price}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Pay via UPI</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handlePaymentClick}
+                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 
+                             text-white rounded-lg font-semibold shadow-lg
+                             hover:shadow-xl transform hover:scale-105 transition-all"
+                  >
+                    Pay Now ₹{ticket.price}
+                  </button>
+                </div>
+
+                <div className="border-t border-orange-300 dark:border-orange-700 pt-4">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Upload Payment Screenshot *
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600
+                               text-gray-700 dark:text-gray-300 rounded-lg font-medium
+                               hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors
+                               flex items-center gap-2"
+                    >
+                      <FaUpload />
+                      Choose File
+                    </button>
+                    {paymentScreenshot && (
+                      <span className="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-2">
+                        ✓ {paymentScreenshot.name}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                    After making payment, please upload the screenshot here (Max 5MB, Image only)
+                  </p>
+                </div>
               </div>
             </div>
           </div>
