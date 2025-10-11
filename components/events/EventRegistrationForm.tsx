@@ -9,7 +9,7 @@ import { QRCodeSVG } from 'qrcode.react'
 interface EventRegistrationFormProps {
   event: any
   ticket: any
-  onClose: () => void
+  onClose: (success?: boolean) => void
 }
 
 export default function EventRegistrationForm({ event, ticket, onClose }: EventRegistrationFormProps) {
@@ -206,10 +206,10 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
       })
       setPaymentScreenshot(null)
       
-      // Close the form after a short delay
+      // Close the form after a short delay and signal success
       setTimeout(() => {
-        console.log('Closing form...')
-        onClose()
+        console.log('✅ Closing form with success=true...')
+        onClose(true) // Pass true to indicate successful registration
       }, 2000)
 
     } catch (error: any) {
@@ -241,7 +241,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         {/* Header */}
         <div className="sticky top-0 z-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
           <button
-            onClick={onClose}
+            onClick={() => onClose(false)}
             className="absolute top-4 right-4 text-white hover:text-gray-200 transition-colors"
           >
             <FaTimes className="text-2xl" />
@@ -613,7 +613,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
           <div className="flex gap-4 pt-4">`
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => onClose(false)}
               className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 
                        text-gray-700 dark:text-gray-300 rounded-lg font-semibold
                        hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

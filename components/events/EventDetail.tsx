@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -13,6 +13,7 @@ export default function EventDetail({ event }: { event: any }) {
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
   const [ticketsSold, setTicketsSold] = useState(event.ticketsSold || 0)
   const [isLoading, setIsLoading] = useState(true)
+  const ticketSectionRef = useRef<HTMLDivElement>(null)
 
   // Fetch live ticket count
   useEffect(() => {
@@ -59,27 +60,45 @@ export default function EventDetail({ event }: { event: any }) {
     setShowRegistration(true)
   }
 
-  const closeRegistration = () => {
+  const scrollToTickets = () => {
+    ticketSectionRef.current?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'start' 
+    })
+  }
+
+  const closeRegistration = async (registrationSuccessful: boolean = false) => {
     setShowRegistration(false)
     setSelectedTicket(null)
-    // Refresh ticket count after registration
-    setTimeout(async () => {
+    
+    // If registration was successful, immediately refresh ticket count
+    if (registrationSuccessful) {
+      console.log('🎉 Registration successful!')
+      setIsLoading(true)
+      
+      // Wait a bit for Google Sheets to update
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
       try {
         const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
         if (GOOGLE_SCRIPT_URL) {
+          console.log('📊 Fetching updated ticket count...')
           const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${event.id}`, {
             method: 'GET',
             cache: 'no-store',
           })
           const data = await response.json()
           if (data.success) {
+            console.log('✅ New ticket count:', data.ticketsSold)
             setTicketsSold(data.ticketsSold)
           }
         }
       } catch (error) {
-        console.error('Error refreshing ticket count:', error)
+        console.error('❌ Error refreshing ticket count:', error)
+      } finally {
+        setIsLoading(false)
       }
-    }, 1000)
+    }
   }
 
   const percentSold = ((ticketsSold / event.totalCapacity) * 100).toFixed(0)
@@ -162,9 +181,31 @@ export default function EventDetail({ event }: { event: any }) {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <h2 className="text-3xl font-bold mb-6 gradient-text">About This Event</h2>
-                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
                   {event.description}
                 </p>
+                
+                {/* Register Now Button - Scrolls to Tickets */}
+                <div className="flex justify-center md:justify-start">
+                  <button
+                    onClick={scrollToTickets}
+                    className="px-8 py-4 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink 
+                             text-white text-lg font-bold rounded-xl shadow-xl
+                             hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
+                             active:scale-95 transition-all duration-300 transform
+                             flex items-center gap-3 group"
+                  >
+                    <span>🎟️ Register Now</span>
+                    <svg 
+                      className="w-5 h-5 group-hover:translate-y-1 transition-transform" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
               </motion.div>
 
               {/* Theme Section - TEDxKPRIT Only */}
@@ -406,11 +447,12 @@ export default function EventDetail({ event }: { event: any }) {
 
             {/* Right Column - Ticket Booking */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24">
+              <div className="sticky top-24" ref={ticketSectionRef}>
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="glass-card p-8 space-y-6"
+                  id="tickets-section"
                 >
                   <h2 className="text-2xl font-bold gradient-text">Get Your Tickets</h2>
 
