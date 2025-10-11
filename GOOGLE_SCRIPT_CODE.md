@@ -7,6 +7,11 @@
 ```javascript
 function doPost(e) {
   try {
+    // Check if request has data
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error('No data received in request');
+    }
+    
     // Get the active sheet
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
@@ -14,7 +19,48 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents);
     
     // Log for debugging
-    Logger.log('Received data: ' + JSON.stringify(data));
+    Logger.log('Received data for: ' + data.fullName);
+    
+    // Validate required fields
+    if (!data.fullName || !data.email) {
+      throw new Error('Missing required fields: fullName or email');
+    }
+    
+    // Save screenshot to Google Drive if present
+    let screenshotUrl = '';
+    if (data.paymentScreenshot && data.paymentScreenshot.length > 0) {
+      try {
+        Logger.log('Processing screenshot...');
+        
+        // Extract base64 data (remove data:image/xxx;base64, prefix)
+        const base64Data = data.paymentScreenshot.split(',')[1];
+        const mimeType = data.paymentScreenshot.split(',')[0].split(':')[1].split(';')[0];
+        
+        // Create blob from base64
+        const blob = Utilities.newBlob(
+          Utilities.base64Decode(base64Data),
+          mimeType,
+          data.screenshotFileName || 'screenshot.jpg'
+        );
+        
+        // Get or create "Payment Screenshots" folder
+        const folders = DriveApp.getFoldersByName('Payment Screenshots');
+        const folder = folders.hasNext() ? folders.next() : DriveApp.createFolder('Payment Screenshots');
+        
+        // Save file to Drive
+        const timestamp = new Date().getTime();
+        const fileName = `${data.fullName}_${timestamp}_${data.screenshotFileName}`;
+        const file = folder.createFile(blob);
+        file.setName(fileName);
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        
+        screenshotUrl = file.getUrl();
+        Logger.log('Screenshot saved: ' + screenshotUrl);
+      } catch (error) {
+        Logger.log('Screenshot error: ' + error.toString());
+        screenshotUrl = 'Error: ' + error.toString();
+      }
+    }
     
     // Add row to sheet with all fields
     sheet.appendRow([
@@ -34,7 +80,7 @@ function doPost(e) {
       data.emergencyContact || '',
       data.city || '',
       data.state || '',
-      data.transactionId || '',
+      screenshotUrl,
       data.wantCertificate || '',
       data.wantTransport || '',
       data.hearAboutEvent || '',
@@ -46,7 +92,8 @@ function doPost(e) {
     // Return success response
     return ContentService.createTextOutput(JSON.stringify({ 
       success: true,
-      message: 'Registration saved successfully'
+      message: 'Registration saved successfully',
+      screenshotUrl: screenshotUrl
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
@@ -82,7 +129,7 @@ Make sure your Google Sheet has these columns in this exact order:
 14. Emergency Contact
 15. City
 16. State
-17. Transaction ID
+17. **Screenshot URL** (Google Drive link)
 18. Want Certificate
 19. Want Transport
 20. Hear About Event

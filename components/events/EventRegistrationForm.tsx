@@ -13,6 +13,8 @@ interface EventRegistrationFormProps {
 
 export default function EventRegistrationForm({ event, ticket, onClose }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -25,7 +27,6 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     emergencyContact: '',
     city: '',
     state: '',
-    transactionId: '',
     wantCertificate: 'no',
     wantTransport: 'no',
     hearAboutEvent: ''
@@ -38,6 +39,33 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    })
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please upload an image file')
+        return
+      }
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB')
+        return
+      }
+      setPaymentScreenshot(file)
+      toast.success('Screenshot uploaded successfully')
+    }
+  }
+
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = error => reject(error)
     })
   }
 
@@ -88,16 +116,26 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
     console.log('🚀 Form submission started')
 
-    // Validate transaction ID for paid events
-    if (ticket.price > 0 && !formData.transactionId) {
-      console.error('❌ No transaction ID provided')
-      toast.error('Please enter the UPI Transaction ID')
+    // Validate payment screenshot for paid events
+    if (ticket.price > 0 && !paymentScreenshot) {
+      console.error('❌ No payment screenshot uploaded')
+      toast.error('Please upload payment screenshot before submitting')
       return
     }
 
     setIsSubmitting(true)
 
     try {
+      let base64Image = ''
+      
+      if (paymentScreenshot) {
+        // Convert screenshot to base64
+        console.log('🔄 Converting screenshot to base64...')
+        toast.info('Processing payment screenshot...')
+        base64Image = await convertFileToBase64(paymentScreenshot)
+        console.log('✅ Screenshot converted to base64')
+      }
+
       // Prepare data to send to Google Sheet
       console.log('📝 Preparing registration data...')
       const registrationData = {
@@ -117,14 +155,15 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         emergencyContact: formData.emergencyContact,
         city: formData.city,
         state: formData.state,
-        transactionId: formData.transactionId,
+        paymentScreenshot: base64Image,
+        screenshotFileName: paymentScreenshot?.name || '',
         wantCertificate: formData.wantCertificate,
         wantTransport: formData.wantTransport,
         hearAboutEvent: formData.hearAboutEvent,
         status: 'Pending Verification'
       }
 
-      console.log('✅ Registration data prepared:', registrationData)
+      console.log('✅ Registration data prepared')
 
       // Send data to Google Apps Script
       console.log('📤 Sending to Google Apps Script...')
@@ -149,11 +188,11 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         emergencyContact: '',
         city: '',
         state: '',
-        transactionId: '',
         wantCertificate: 'no',
         wantTransport: 'no',
         hearAboutEvent: ''
       })
+      setPaymentScreenshot(null)
       
       // Close the form after a short delay
       setTimeout(() => {
@@ -501,21 +540,35 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
                 <div className="border-t border-orange-300 dark:border-orange-700 pt-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    UPI Transaction ID *
+                    Upload Payment Screenshot *
                   </label>
-                  <input
-                    type="text"
-                    name="transactionId"
-                    value={formData.transactionId}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                             bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                             focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter UPI Transaction ID (e.g., 123456789012)"
-                  />
+                  <div className="flex items-center gap-4">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600
+                               text-gray-700 dark:text-gray-300 rounded-lg font-medium
+                               hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors
+                               flex items-center gap-2"
+                    >
+                      <FaUpload />
+                      Choose File
+                    </button>
+                    {paymentScreenshot && (
+                      <span className="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-2">
+                        ✓ {paymentScreenshot.name}
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    After making payment, enter your 12-digit UPI Transaction ID here
+                    After making payment, please upload the screenshot here (Max 5MB, image only)
                   </p>
                 </div>
               </div>
