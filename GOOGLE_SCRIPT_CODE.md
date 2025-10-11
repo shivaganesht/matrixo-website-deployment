@@ -5,6 +5,51 @@
 ## Delete everything and paste THIS:
 
 ```javascript
+// Handle GET requests for ticket counts
+function doGet(e) {
+  try {
+    const action = e.parameter.action;
+    const eventId = e.parameter.eventId;
+    
+    if (action === 'getTicketCount' && eventId) {
+      const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      const data = sheet.getDataRange().getValues();
+      
+      // Count registrations for this event (skip header row)
+      let ticketsSold = 0;
+      for (let i = 1; i < data.length; i++) {
+        const rowEventId = data[i][1]; // Column B (Event ID)
+        if (rowEventId === eventId) {
+          ticketsSold++;
+        }
+      }
+      
+      // TEDxKPRIT has 100 total capacity
+      const totalCapacity = eventId.includes('tedxkprit') ? 100 : 2000;
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        eventId: eventId,
+        ticketsSold: ticketsSold,
+        totalCapacity: totalCapacity,
+        timestamp: new Date().toISOString()
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: 'Invalid action or missing eventId'
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Handle POST requests for registration
 function doPost(e) {
   try {
     // Check if request has data
@@ -24,6 +69,21 @@ function doPost(e) {
     // Validate required fields
     if (!data.fullName || !data.email) {
       throw new Error('Missing required fields: fullName or email');
+    }
+    
+    // Check if event is sold out
+    const eventId = data.eventId;
+    const allData = sheet.getDataRange().getValues();
+    let ticketsSold = 0;
+    for (let i = 1; i < allData.length; i++) {
+      if (allData[i][1] === eventId) {
+        ticketsSold++;
+      }
+    }
+    
+    const totalCapacity = eventId.includes('tedxkprit') ? 100 : 2000;
+    if (ticketsSold >= totalCapacity) {
+      throw new Error('Event is sold out');
     }
     
     // Save screenshot to Google Drive if present
@@ -93,7 +153,8 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({ 
       success: true,
       message: 'Registration saved successfully',
-      screenshotUrl: screenshotUrl
+      screenshotUrl: screenshotUrl,
+      ticketsSold: ticketsSold + 1
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {

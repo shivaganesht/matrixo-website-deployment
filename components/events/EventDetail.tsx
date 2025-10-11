@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -11,8 +11,50 @@ import EventRegistrationForm from './EventRegistrationForm'
 export default function EventDetail({ event }: { event: any }) {
   const [showRegistration, setShowRegistration] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
+  const [ticketsSold, setTicketsSold] = useState(event.ticketsSold || 0)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch live ticket count
+  useEffect(() => {
+    const fetchTicketCount = async () => {
+      try {
+        const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
+        if (!GOOGLE_SCRIPT_URL) {
+          console.log('Google Script URL not configured')
+          setIsLoading(false)
+          return
+        }
+
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${event.id}`, {
+          method: 'GET',
+          cache: 'no-store',
+        })
+
+        const data = await response.json()
+        if (data.success) {
+          setTicketsSold(data.ticketsSold)
+        }
+      } catch (error) {
+        console.error('Error fetching ticket count:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchTicketCount()
+    
+    // Refresh ticket count every 30 seconds
+    const interval = setInterval(fetchTicketCount, 30000)
+    
+    return () => clearInterval(interval)
+  }, [event.id])
 
   const handleRegisterNow = (ticket: any) => {
+    const remainingTickets = event.totalCapacity - ticketsSold
+    if (remainingTickets <= 0) {
+      alert('Sorry, this event is sold out!')
+      return
+    }
     setSelectedTicket(ticket)
     setShowRegistration(true)
   }
@@ -20,9 +62,29 @@ export default function EventDetail({ event }: { event: any }) {
   const closeRegistration = () => {
     setShowRegistration(false)
     setSelectedTicket(null)
+    // Refresh ticket count after registration
+    setTimeout(async () => {
+      try {
+        const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
+        if (GOOGLE_SCRIPT_URL) {
+          const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${event.id}`, {
+            method: 'GET',
+            cache: 'no-store',
+          })
+          const data = await response.json()
+          if (data.success) {
+            setTicketsSold(data.ticketsSold)
+          }
+        }
+      } catch (error) {
+        console.error('Error refreshing ticket count:', error)
+      }
+    }, 1000)
   }
 
-  const percentSold = ((event.ticketsSold / event.totalCapacity) * 100).toFixed(0)
+  const percentSold = ((ticketsSold / event.totalCapacity) * 100).toFixed(0)
+  const remainingTickets = event.totalCapacity - ticketsSold
+  const isSoldOut = remainingTickets <= 0
   
   // Check if this is TEDxKPRIT event
   const isTEDxEvent = event.id === 'tedxkprit-2025'
@@ -327,7 +389,7 @@ export default function EventDetail({ event }: { event: any }) {
                   <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {event.ticketsSold} / {event.totalCapacity} sold
+                        {isLoading ? 'Loading...' : `${ticketsSold} / ${event.totalCapacity} sold`}
                       </span>
                       <span className="text-sm font-bold text-neon-blue">
                         {percentSold}% sold
@@ -341,7 +403,7 @@ export default function EventDetail({ event }: { event: any }) {
                     </div>
                     <div className="mt-2 flex items-center text-sm text-gray-600 dark:text-gray-400">
                       <FaUsers className="mr-2" />
-                      {event.totalCapacity - event.ticketsSold} tickets remaining
+                      {isLoading ? 'Loading...' : isSoldOut ? 'SOLD OUT!' : `${remainingTickets} tickets remaining`}
                     </div>
                   </div>
 
@@ -377,7 +439,9 @@ export default function EventDetail({ event }: { event: any }) {
                         {/* Perks */}
                         {ticket.perks && (
                           <div className="mb-3 space-y-1">
-                            {ticket.perks.map((perk: string, i: number) => (
+                            {ticket.perks
+                              .filter((perk: string) => !perk.toLowerCase().includes('participation certificate'))
+                              .map((perk: string, i: number) => (
                               <div key={i} className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                                 <span className="text-neon-blue mr-2">✓</span>
                                 {perk}
@@ -389,16 +453,20 @@ export default function EventDetail({ event }: { event: any }) {
                         {/* Availability */}
                         <div className="mb-3">
                           <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {ticket.available} tickets available
+                            {isLoading ? 'Checking availability...' : isSoldOut ? 'SOLD OUT' : `${remainingTickets} tickets available`}
                           </span>
                         </div>
 
                         <button
                           onClick={() => handleRegisterNow(ticket)}
-                          disabled={ticket.available === 0}
-                          className="w-full btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={isSoldOut || isLoading}
+                          className={`w-full text-sm transition-all ${
+                            isSoldOut 
+                              ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed' 
+                              : 'btn-primary hover:scale-105'
+                          } disabled:opacity-50 disabled:cursor-not-allowed`}
                         >
-                          {ticket.available === 0 ? 'Sold Out' : 'Register Now'}
+                          {isLoading ? 'Loading...' : isSoldOut ? 'Sold Out' : 'Register Now'}
                         </button>
                       </div>
                     ))}
