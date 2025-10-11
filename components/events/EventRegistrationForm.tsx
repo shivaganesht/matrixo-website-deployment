@@ -13,8 +13,6 @@ interface EventRegistrationFormProps {
 
 export default function EventRegistrationForm({ event, ticket, onClose }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -25,7 +23,9 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     department: '',
     year: '',
     emergencyContact: '',
-    address: '',
+    city: '',
+    state: '',
+    transactionId: '',
     wantCertificate: 'no',
     wantTransport: 'no',
     hearAboutEvent: ''
@@ -41,33 +41,6 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     })
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please upload an image file')
-        return
-      }
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image size should be less than 5MB')
-        return
-      }
-      setPaymentScreenshot(file)
-      toast.success('Screenshot selected successfully')
-    }
-  }
-
-  const convertFileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result as string)
-      reader.onerror = error => reject(error)
-    })
-  }
-
   const sendToGoogleSheet = async (data: any) => {
     try {
       const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
@@ -80,19 +53,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         throw new Error('Google Script URL not configured. Please check .env.local file.')
       }
 
-      console.log('📊 Data to send:', {
-        fullName: data.fullName,
-        email: data.email,
-        hasScreenshot: !!data.paymentScreenshot,
-        screenshotSize: data.paymentScreenshot ? data.paymentScreenshot.length : 0
-      })
-
-      const dataSize = JSON.stringify(data).length
-      console.log(`📦 Total data size: ${dataSize} bytes (${(dataSize / 1024).toFixed(2)} KB)`)
-
-      if (dataSize > 10 * 1024 * 1024) {
-        throw new Error('Data too large. Screenshot must be under 5MB.')
-      }
+      console.log('📊 Data to send:', data)
 
       console.log('🚀 Sending request to Google Apps Script...')
 
@@ -127,26 +88,16 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
     console.log('🚀 Form submission started')
 
-    // Validate payment screenshot
-    if (!paymentScreenshot) {
-      console.error('❌ No payment screenshot uploaded')
-      toast.error('Please upload payment screenshot before submitting')
+    // Validate transaction ID for paid events
+    if (ticket.price > 0 && !formData.transactionId) {
+      console.error('❌ No transaction ID provided')
+      toast.error('Please enter the UPI Transaction ID')
       return
     }
-
-    console.log('✅ Payment screenshot found:', paymentScreenshot.name)
 
     setIsSubmitting(true)
 
     try {
-      // Convert screenshot to base64
-      console.log('🔄 Converting screenshot to base64...')
-      toast.info('Processing payment screenshot...')
-      
-      const base64Image = await convertFileToBase64(paymentScreenshot)
-      console.log('✅ Screenshot converted to base64')
-      console.log('📏 Base64 length:', base64Image.length)
-
       // Prepare data to send to Google Sheet
       console.log('📝 Preparing registration data...')
       const registrationData = {
@@ -164,16 +115,16 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         department: formData.department,
         year: formData.year,
         emergencyContact: formData.emergencyContact,
-        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        transactionId: formData.transactionId,
         wantCertificate: formData.wantCertificate,
         wantTransport: formData.wantTransport,
         hearAboutEvent: formData.hearAboutEvent,
-        paymentScreenshot: base64Image,
-        screenshotFileName: paymentScreenshot.name,
         status: 'Pending Verification'
       }
 
-      console.log('✅ Registration data prepared')
+      console.log('✅ Registration data prepared:', registrationData)
 
       // Send data to Google Apps Script
       console.log('📤 Sending to Google Apps Script...')
@@ -196,12 +147,13 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         department: '',
         year: '',
         emergencyContact: '',
-        address: '',
+        city: '',
+        state: '',
+        transactionId: '',
         wantCertificate: 'no',
         wantTransport: 'no',
         hearAboutEvent: ''
       })
-      setPaymentScreenshot(null)
       
       // Close the form after a short delay
       setTimeout(() => {
@@ -328,21 +280,40 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Address *
-              </label>
-              <textarea
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-                rows={3}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                         bg-white dark:bg-gray-800 text-gray-900 dark:text-white
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your full address"
-              />
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  City *
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                           bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your city"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  State *
+                </label>
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                           bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                           focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your state"
+                />
+              </div>
             </div>
           </div>
 
@@ -530,35 +501,21 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
                 <div className="border-t border-orange-300 dark:border-orange-700 pt-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Upload Payment Screenshot *
+                    UPI Transaction ID *
                   </label>
-                  <div className="flex items-center gap-4">
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="px-4 py-2 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600
-                               text-gray-700 dark:text-gray-300 rounded-lg font-medium
-                               hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors
-                               flex items-center gap-2"
-                    >
-                      <FaUpload />
-                      Choose File
-                    </button>
-                    {paymentScreenshot && (
-                      <span className="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-2">
-                        ✓ {paymentScreenshot.name}
-                      </span>
-                    )}
-                  </div>
+                  <input
+                    type="text"
+                    name="transactionId"
+                    value={formData.transactionId}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                             bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                             focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter UPI Transaction ID (e.g., 123456789012)"
+                  />
                   <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                    After making payment, please upload the screenshot here (Max 5MB, Image only)
+                    After making payment, enter your 12-digit UPI Transaction ID here
                   </p>
                 </div>
               </div>
@@ -566,7 +523,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
           </div>
 
           {/* Submit Button */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-4 pt-4">`
             <button
               type="button"
               onClick={onClose}

@@ -1,4 +1,4 @@
-# 🚨 COPY THIS EXACT CODE TO GOOGLE APPS SCRIPT
+# 🚨 UPDATED GOOGLE APPS SCRIPT CODE - NO IMAGE UPLOAD
 
 ## Open: https://script.google.com
 
@@ -7,71 +7,53 @@
 ```javascript
 function doPost(e) {
   try {
+    // Get the active sheet
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Parse incoming data
     const data = JSON.parse(e.postData.contents);
     
-    // Save screenshot to Google Drive
-    let screenshotUrl = '';
-    if (data.paymentScreenshot) {
-      try {
-        // Get base64 data (remove data:image/jpeg;base64, prefix)
-        const base64Data = data.paymentScreenshot.split(',')[1];
-        const mimeType = data.paymentScreenshot.split(',')[0].split(':')[1].split(';')[0];
-        
-        // Create blob from base64
-        const blob = Utilities.newBlob(
-          Utilities.base64Decode(base64Data),
-          mimeType,
-          data.screenshotFileName || 'screenshot.jpg'
-        );
-        
-        // Get or create "Payment Screenshots" folder
-        const folders = DriveApp.getFoldersByName('Payment Screenshots');
-        const folder = folders.hasNext() ? folders.next() : DriveApp.createFolder('Payment Screenshots');
-        
-        // Save file to Drive
-        const file = folder.createFile(blob);
-        const fileName = `${data.fullName}_${Date.now()}_${data.screenshotFileName}`;
-        file.setName(fileName);
-        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-        
-        screenshotUrl = file.getUrl();
-      } catch (error) {
-        screenshotUrl = 'Error saving screenshot: ' + error.toString();
-      }
-    }
+    // Log for debugging
+    Logger.log('Received data: ' + JSON.stringify(data));
     
-    // Add row to sheet
+    // Add row to sheet with all fields
     sheet.appendRow([
-      data.timestamp,
-      data.eventId,
-      data.eventTitle,
-      data.eventDate,
-      data.ticketType,
-      data.ticketPrice,
-      data.fullName,
-      data.contactNumber,
-      data.email,
-      data.studentId,
-      data.collegeName,
-      data.department,
-      data.year,
-      data.emergencyContact,
-      data.address,
-      data.wantCertificate,
-      data.wantTransport,
-      data.hearAboutEvent,
-      screenshotUrl,
-      data.status
+      data.timestamp || new Date().toISOString(),
+      data.eventId || '',
+      data.eventTitle || '',
+      data.eventDate || '',
+      data.ticketType || '',
+      data.ticketPrice || '',
+      data.fullName || '',
+      data.contactNumber || '',
+      data.email || '',
+      data.studentId || '',
+      data.collegeName || '',
+      data.department || '',
+      data.year || '',
+      data.emergencyContact || '',
+      data.city || '',
+      data.state || '',
+      data.transactionId || '',
+      data.wantCertificate || '',
+      data.wantTransport || '',
+      data.hearAboutEvent || '',
+      data.status || 'Pending'
     ]);
     
+    Logger.log('Row added successfully');
+    
+    // Return success response
     return ContentService.createTextOutput(JSON.stringify({ 
       success: true,
-      message: 'Registration saved successfully',
-      screenshotUrl: screenshotUrl
+      message: 'Registration saved successfully'
     })).setMimeType(ContentService.MimeType.JSON);
     
   } catch (error) {
+    // Log error
+    Logger.log('Error: ' + error.toString());
+    
+    // Return error response
     return ContentService.createTextOutput(JSON.stringify({ 
       success: false, 
       error: error.toString() 
@@ -80,15 +62,41 @@ function doPost(e) {
 }
 ```
 
+## Column Order in Google Sheet:
+
+Make sure your Google Sheet has these columns in this exact order:
+
+1. Timestamp
+2. Event ID
+3. Event Title
+4. Event Date
+5. Ticket Type
+6. Ticket Price
+7. Full Name
+8. Contact Number
+9. Email
+10. Student ID
+11. College Name
+12. Department
+13. Year
+14. Emergency Contact
+15. City
+16. State
+17. Transaction ID
+18. Want Certificate
+19. Want Transport
+20. Hear About Event
+21. Status
+
 ## After pasting:
 
-1. Click Save (💾)
-2. Click Deploy → Manage deployments
-3. Click Edit (pencil icon)
-4. Under "Version", select "New version"
-5. Click Deploy
-6. Copy the NEW URL
-7. Paste it in .env.local as NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-8. Restart your dev server
+1. Click **Save** (💾 or Ctrl+S)
+2. Click **Deploy** → **Manage deployments**
+3. Click **Edit** (pencil icon) on your existing deployment
+4. Under "Version", select **"New version"**
+5. Click **Deploy**
+6. Click **Done**
 
-## Then test again!
+## Then test the registration form!
+
+Your sheet should automatically populate when someone registers.
