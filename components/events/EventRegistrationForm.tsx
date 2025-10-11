@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaGraduationCap, FaMapMarkerAlt, FaBus, FaInfoCircle, FaTimes, FaUpload } from 'react-icons/fa'
 import { toast } from 'sonner'
+import { QRCodeSVG } from 'qrcode.react'
 
 interface EventRegistrationFormProps {
   event: any
@@ -14,6 +15,7 @@ interface EventRegistrationFormProps {
 export default function EventRegistrationForm({ event, ticket, onClose }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const [formData, setFormData] = useState({
@@ -34,6 +36,16 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
   // UPI Payment Link for TEDxKPRIT (₹499)
   const UPI_PAYMENT_LINK = 'upi://pay?pa=vyapar.171588997321@hdfcbank&amt=499&cu=INR&pn=UPIPE%20User'
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -522,21 +534,43 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
             <div className="glass-card p-6 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border-2 border-orange-200 dark:border-orange-700">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">Ticket Price: ₹{ticket.price}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Pay via UPI</p>
+                {/* Mobile: Show Pay Now Button */}
+                {isMobile ? (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-bold text-gray-900 dark:text-white">Ticket Price: ₹{ticket.price}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Pay via UPI</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handlePaymentClick}
+                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 
+                               text-white rounded-lg font-semibold shadow-lg
+                               hover:shadow-xl transform hover:scale-105 transition-all"
+                    >
+                      Pay Now ₹{ticket.price}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handlePaymentClick}
-                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 
-                             text-white rounded-lg font-semibold shadow-lg
-                             hover:shadow-xl transform hover:scale-105 transition-all"
-                  >
-                    Pay Now ₹{ticket.price}
-                  </button>
-                </div>
+                ) : (
+                  /* Desktop: Show QR Code */
+                  <div className="flex flex-col items-center space-y-4">
+                    <div>
+                      <p className="text-lg font-bold text-gray-900 dark:text-white text-center">Ticket Price: ₹{ticket.price}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 text-center">Scan QR code to pay via UPI</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-lg">
+                      <QRCodeSVG 
+                        value={UPI_PAYMENT_LINK}
+                        size={200}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                      Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.)
+                    </p>
+                  </div>
+                )}
 
                 <div className="border-t border-orange-300 dark:border-orange-700 pt-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
