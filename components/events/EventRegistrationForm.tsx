@@ -4,8 +4,6 @@ import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaGraduationCap, FaMapMarkerAlt, FaBus, FaInfoCircle, FaTimes, FaUpload } from 'react-icons/fa'
 import { toast } from 'sonner'
-import { storage } from '@/lib/firebaseConfig'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 interface EventRegistrationFormProps {
   event: any
@@ -61,60 +59,40 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     }
   }
 
-  const uploadScreenshotToFirebase = async (file: File): Promise<string> => {
-    try {
-      console.log('Starting Firebase upload...', file.name)
-      
-      // Create a unique filename with timestamp
-      const timestamp = Date.now()
-      const filename = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`
-      const storageRef = ref(storage, `screenshots/${filename}`)
-
-      console.log('Uploading to path:', `screenshots/${filename}`)
-
-      // Upload the file to Firebase Storage
-      const uploadResult = await uploadBytes(storageRef, file)
-      console.log('Upload complete:', uploadResult)
-
-      // Get the download URL
-      const downloadURL = await getDownloadURL(storageRef)
-      console.log('Download URL:', downloadURL)
-      
-      return downloadURL
-    } catch (error) {
-      console.error('Error uploading screenshot:', error)
-      throw new Error(`Failed to upload screenshot: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    }
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = error => reject(error)
+    })
   }
 
   const sendToGoogleSheet = async (data: any) => {
     try {
-      // Get Google Apps Script URL from environment
       const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
 
-      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL') {
-        console.error('Google Script URL not configured')
-        throw new Error('Google Script URL not configured. Please add NEXT_PUBLIC_GOOGLE_SCRIPT_URL to .env.local')
+      if (!GOOGLE_SCRIPT_URL) {
+        throw new Error('Google Script URL not configured')
       }
 
-      console.log('Sending data to Google Sheet...', data)
-      console.log('Google Script URL:', GOOGLE_SCRIPT_URL)
+      console.log('Sending data to Google Sheet...')
 
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      // Send to Google Apps Script
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Important for Google Apps Script
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       })
 
-      console.log('Google Sheet response sent (no-cors mode)')
-      // Note: no-cors mode doesn't allow reading response, but the request will be sent
+      console.log('Data sent successfully')
       return true
     } catch (error) {
       console.error('Error sending to Google Sheet:', error)
-      throw new Error(`Failed to send data to Google Sheet: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw error
     }
   }
 
@@ -130,11 +108,11 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     setIsSubmitting(true)
 
     try {
-      // Step 1: Upload screenshot to Firebase Storage
-      toast.info('Uploading payment screenshot...')
-      const screenshotURL = await uploadScreenshotToFirebase(paymentScreenshot)
+      // Convert screenshot to base64
+      toast.info('Processing payment screenshot...')
+      const base64Image = await convertFileToBase64(paymentScreenshot)
 
-      // Step 2: Prepare data to send to Google Sheet
+      // Prepare data to send to Google Sheet
       const registrationData = {
         timestamp: new Date().toISOString(),
         eventId: event.id,
@@ -154,18 +132,19 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         wantCertificate: formData.wantCertificate,
         wantTransport: formData.wantTransport,
         hearAboutEvent: formData.hearAboutEvent,
-        paymentScreenshotURL: screenshotURL,
+        paymentScreenshot: base64Image,
+        screenshotFileName: paymentScreenshot.name,
         status: 'Pending Verification'
       }
 
-      // Step 3: Send data to Google Apps Script
+      // Send data to Google Apps Script
       toast.info('Submitting registration...')
       await sendToGoogleSheet(registrationData)
 
-      // Step 4: Success message
+      // Success message
       toast.success('✅ Registration submitted successfully! We will verify your payment and send confirmation via email.')
       
-      // Reset form and close
+      // Reset form
       setFormData({
         fullName: '',
         contactNumber: '',
@@ -189,14 +168,13 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
     } catch (error) {
       console.error('Registration error:', error)
-      toast.error(error instanceof Error ? error.message : 'Failed to submit registration. Please try again.')
+      toast.error('Failed to submit registration. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handlePaymentClick = () => {
-    // Open UPI payment link
     window.location.href = UPI_PAYMENT_LINK
     toast.info('Complete payment and upload screenshot below')
   }
