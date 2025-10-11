@@ -77,9 +77,11 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
       }
 
       console.log('Sending data to Google Sheet...')
+      console.log('Data size:', JSON.stringify(data).length, 'bytes')
+      console.log('Screenshot size:', data.paymentScreenshot ? data.paymentScreenshot.length : 0, 'bytes')
 
       // Send to Google Apps Script
-      await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -88,6 +90,13 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         body: JSON.stringify(data),
       })
 
+      console.log('Request sent to Google Sheet')
+      // Note: With no-cors mode, we can't read the response
+      // But if fetch doesn't throw an error, it means the request was sent
+      
+      // Wait a bit to ensure Google Script has time to process
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
       console.log('Data sent successfully')
       return true
     } catch (error) {
