@@ -63,27 +63,42 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
   const uploadScreenshotToFirebase = async (file: File): Promise<string> => {
     try {
+      console.log('Starting Firebase upload...', file.name)
+      
       // Create a unique filename with timestamp
       const timestamp = Date.now()
       const filename = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`
       const storageRef = ref(storage, `screenshots/${filename}`)
 
+      console.log('Uploading to path:', `screenshots/${filename}`)
+
       // Upload the file to Firebase Storage
-      await uploadBytes(storageRef, file)
+      const uploadResult = await uploadBytes(storageRef, file)
+      console.log('Upload complete:', uploadResult)
 
       // Get the download URL
       const downloadURL = await getDownloadURL(storageRef)
+      console.log('Download URL:', downloadURL)
+      
       return downloadURL
     } catch (error) {
       console.error('Error uploading screenshot:', error)
-      throw new Error('Failed to upload screenshot')
+      throw new Error(`Failed to upload screenshot: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
   const sendToGoogleSheet = async (data: any) => {
     try {
-      // Replace with your actual Google Apps Script Web App URL
-      const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL'
+      // Get Google Apps Script URL from environment
+      const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
+
+      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL') {
+        console.error('Google Script URL not configured')
+        throw new Error('Google Script URL not configured. Please add NEXT_PUBLIC_GOOGLE_SCRIPT_URL to .env.local')
+      }
+
+      console.log('Sending data to Google Sheet...', data)
+      console.log('Google Script URL:', GOOGLE_SCRIPT_URL)
 
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -94,11 +109,12 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         body: JSON.stringify(data),
       })
 
+      console.log('Google Sheet response sent (no-cors mode)')
       // Note: no-cors mode doesn't allow reading response, but the request will be sent
       return true
     } catch (error) {
       console.error('Error sending to Google Sheet:', error)
-      throw new Error('Failed to send data to Google Sheet')
+      throw new Error(`Failed to send data to Google Sheet: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
