@@ -72,13 +72,29 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
     try {
       const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
 
+      console.log('🔍 DEBUG: Starting submission')
+      console.log('🔍 Script URL:', GOOGLE_SCRIPT_URL)
+
       if (!GOOGLE_SCRIPT_URL) {
-        throw new Error('Google Script URL not configured')
+        console.error('❌ Google Script URL is missing!')
+        throw new Error('Google Script URL not configured. Please check .env.local file.')
       }
 
-      console.log('Sending data to Google Sheet...')
-      console.log('Data size:', JSON.stringify(data).length, 'bytes')
-      console.log('Screenshot size:', data.paymentScreenshot ? data.paymentScreenshot.length : 0, 'bytes')
+      console.log('📊 Data to send:', {
+        fullName: data.fullName,
+        email: data.email,
+        hasScreenshot: !!data.paymentScreenshot,
+        screenshotSize: data.paymentScreenshot ? data.paymentScreenshot.length : 0
+      })
+
+      const dataSize = JSON.stringify(data).length
+      console.log(`📦 Total data size: ${dataSize} bytes (${(dataSize / 1024).toFixed(2)} KB)`)
+
+      if (dataSize > 10 * 1024 * 1024) {
+        throw new Error('Data too large. Screenshot must be under 5MB.')
+      }
+
+      console.log('🚀 Sending request to Google Apps Script...')
 
       // Send to Google Apps Script
       const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -90,38 +106,49 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         body: JSON.stringify(data),
       })
 
-      console.log('Request sent to Google Sheet')
-      // Note: With no-cors mode, we can't read the response
-      // But if fetch doesn't throw an error, it means the request was sent
+      console.log('✅ Request sent successfully')
+      console.log('⏳ Waiting for Google Script to process...')
       
-      // Wait a bit to ensure Google Script has time to process
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Wait for Google Script to process
+      await new Promise(resolve => setTimeout(resolve, 2000))
       
-      console.log('Data sent successfully')
+      console.log('✅ Data sent to Google Sheet successfully')
       return true
-    } catch (error) {
-      console.error('Error sending to Google Sheet:', error)
-      throw error
+    } catch (error: any) {
+      console.error('❌ ERROR in sendToGoogleSheet:', error)
+      console.error('❌ Error message:', error.message)
+      console.error('❌ Error stack:', error.stack)
+      throw new Error(`Failed to submit: ${error.message}`)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    console.log('🚀 Form submission started')
+
     // Validate payment screenshot
     if (!paymentScreenshot) {
+      console.error('❌ No payment screenshot uploaded')
       toast.error('Please upload payment screenshot before submitting')
       return
     }
+
+    console.log('✅ Payment screenshot found:', paymentScreenshot.name)
 
     setIsSubmitting(true)
 
     try {
       // Convert screenshot to base64
+      console.log('🔄 Converting screenshot to base64...')
       toast.info('Processing payment screenshot...')
+      
       const base64Image = await convertFileToBase64(paymentScreenshot)
+      console.log('✅ Screenshot converted to base64')
+      console.log('📏 Base64 length:', base64Image.length)
 
       // Prepare data to send to Google Sheet
+      console.log('📝 Preparing registration data...')
       const registrationData = {
         timestamp: new Date().toISOString(),
         eventId: event.id,
@@ -146,10 +173,16 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         status: 'Pending Verification'
       }
 
+      console.log('✅ Registration data prepared')
+
       // Send data to Google Apps Script
+      console.log('📤 Sending to Google Apps Script...')
       toast.info('Submitting registration...')
+      
       await sendToGoogleSheet(registrationData)
 
+      console.log('🎉 Registration submitted successfully!')
+      
       // Success message
       toast.success('✅ Registration submitted successfully! We will verify your payment and send confirmation via email.')
       
@@ -172,14 +205,21 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
       
       // Close the form after a short delay
       setTimeout(() => {
+        console.log('Closing form...')
         onClose()
       }, 2000)
 
-    } catch (error) {
-      console.error('Registration error:', error)
-      toast.error('Failed to submit registration. Please try again.')
+    } catch (error: any) {
+      console.error('❌❌❌ REGISTRATION ERROR:', error)
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      })
+      toast.error(`Failed to submit: ${error.message || 'Please try again'}`)
     } finally {
       setIsSubmitting(false)
+      console.log('Form submission process completed')
     }
   }
 
