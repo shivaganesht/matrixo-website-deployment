@@ -197,12 +197,41 @@ export default function EventDetail({ event }: { event: any }) {
                 transition={{ delay: 0.1 }}
               >
                 <h2 className="text-3xl font-bold mb-6">Venue</h2>
-                <div className="glass-card p-6">
-                  <FaMapMarkerAlt className="text-neon-blue text-2xl mb-3" />
-                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-                    {event.venue}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">{event.location}</p>
+                <div className="glass-card p-6 space-y-4">
+                  <div className="flex items-start gap-3">
+                    <FaMapMarkerAlt className="text-neon-blue text-2xl mt-1 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+                        {event.venue}
+                      </h3>
+                      <a 
+                        href="https://maps.app.goo.gl/phYNNYQyWgacvBA59"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-neon-blue hover:text-neon-purple transition-colors duration-300 
+                                 flex items-center gap-2 group cursor-pointer font-medium"
+                      >
+                        <span className="group-hover:underline">{event.location}</span>
+                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                  
+                  {/* Embedded Google Map */}
+                  <div className="mt-4 rounded-lg overflow-hidden shadow-lg border-2 border-gray-200 dark:border-gray-700">
+                    <iframe 
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.553845987853!2d78.68277187462795!3d17.433186001485225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a33110155555557%3A0xb597e25edcbfbfbb!2sKommuri%20Pratap%20Reddy%20Institute%20Of%20Technology%20(Autonomous%20Institute)!5e0!3m2!1sen!2sin!4v1760181922948!5m2!1sen!2sin" 
+                      width="100%" 
+                      height="300"
+                      style={{ border: 0 }}
+                      allowFullScreen={true}
+                      loading="lazy" 
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full"
+                    />
+                  </div>
                 </div>
               </motion.div>
 
@@ -460,13 +489,27 @@ export default function EventDetail({ event }: { event: any }) {
                         <button
                           onClick={() => handleRegisterNow(ticket)}
                           disabled={isSoldOut || isLoading}
-                          className={`w-full text-sm transition-all ${
+                          className={`w-full py-4 px-6 text-base font-bold rounded-xl transition-all duration-300 transform ${
                             isSoldOut 
                               ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed' 
-                              : 'btn-primary hover:scale-105'
-                          } disabled:opacity-50 disabled:cursor-not-allowed`}
+                              : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink text-white shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
+                          } disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:animate-none`}
                         >
-                          {isLoading ? 'Loading...' : isSoldOut ? 'Sold Out' : 'Register Now'}
+                          {isLoading ? (
+                            <span className="flex items-center justify-center gap-2">
+                              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                              </svg>
+                              Loading...
+                            </span>
+                          ) : isSoldOut ? (
+                            '🎫 Sold Out'
+                          ) : (
+                            <span className="flex items-center justify-center gap-2">
+                              🎟️ Book Now
+                            </span>
+                          )}
                         </button>
                       </div>
                     ))}
