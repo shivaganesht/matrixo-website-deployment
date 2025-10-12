@@ -46,13 +46,13 @@ export default function Hero() {
             <img 
               src="/logos/logo-light.png" 
               alt="matriXO" 
-              className="h-24 md:h-32 lg:h-20 w-auto mx-auto block dark:hidden"
+              className="h-14 md:h-32 lg:h-20 w-auto mx-auto block dark:hidden"
             />
             {/* Dark Mode Logo (White) */}
             <img 
               src="/logos/logo-dark.png" 
               alt="matriXO" 
-              className="h-24 md:h-32 lg:h-20 w-auto mx-auto transform hidden dark:block"
+              className="h-14 md:h-32 lg:h-20 w-auto mx-auto transform hidden dark:block"
             />
           </motion.div>
 

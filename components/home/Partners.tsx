@@ -8,7 +8,7 @@ const partners = [
   { name: 'TEDxIARE', logo: '/partners/tedx-iare.png' },
   { name: 'TEDxCMRIT Hyderabad', logo: '/partners/tedx-cmrit.png' },
   { name: 'Kommuri Pratap Reddy Institute of Technology', logo: '/partners/kprit.png' },
-  { name: 'Sree Indu College of Engineering', logo: '/partners/sree-indu.png' },
+  { name: 'TEDxKPRIT', logo: '/events/tedxkprit-logo.png' },
 ]
 
 export default function Partners() {
