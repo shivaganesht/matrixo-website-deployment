@@ -41,17 +41,17 @@ export const metadata: Metadata = {
     description: 'Technical workshops, hackathons, and bootcamps for student career growth. Join our events and accelerate your tech journey.',
     images: [
       {
-        url: '/logos/logo-dark.png',
+        url: 'https://matrixo.in/logos/matrixo logo wide.png',
         width: 1200,
         height: 630,
         alt: 'matriXO - Technical Workshops & Events',
         type: 'image/png',
       },
       {
-        url: '/logos/logo-dark.png',
+        url: 'https://matrixo.in/logos/logo-dark.png',
         width: 1080,
         height: 1080,
-        alt: 'matriXO - Technical Workshops & Events',
+        alt: 'matriXO Logo',
         type: 'image/png',
       },
     ],
@@ -60,14 +60,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'matriXO - Technical Workshops & Career-Focused Events',
     description: 'Technical workshops, hackathons, and bootcamps for student career growth.',
-    images: ['/logos/logo-dark.png'],
+    images: ['https://matrixo.in/logos/matrixo logo wide.png'],
     creator: '@matrixo',
   },
   other: {
     'instagram:card': 'summary_large_image',
     'instagram:title': 'matriXO - Technical Workshops & Career-Focused Events',
     'instagram:description': 'Technical workshops, hackathons, and bootcamps for student career growth. Join our events!',
-    'instagram:image': 'https://matrixo.in/logos/logo-dark.png',
+    'instagram:image': 'https://matrixo.in/logos/matrixo logo wide.png',
   },
   robots: {
     index: true,

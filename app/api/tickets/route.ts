@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Force dynamic rendering - this route needs to be dynamic
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // This would connect to your Google Sheet to get real-time ticket count
 // For now, we'll create a simple counter that reads from Google Sheets
 
