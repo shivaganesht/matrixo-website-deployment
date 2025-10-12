@@ -84,6 +84,77 @@
     }
   }
 
+  /* Floating particles animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translate(30px, -40px) scale(1.2);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-20px, -80px) scale(0.8);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translate(40px, -60px) scale(1.1);
+      opacity: 0.5;
+    }
+  }
+
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  /* Ripple effect for TED circles */
+  @keyframes ripple {
+    0% {
+      opacity: 0.1;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+    50% {
+      opacity: 0.3;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+    100% {
+      opacity: 0.1;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+  }
+
+  .animate-ripple {
+    animation: ripple 4s ease-in-out infinite;
+  }
+
+  /* Wave animation for gradient movement */
+  @keyframes wave {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes wave-reverse {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .animate-wave {
+    animation: wave 15s linear infinite;
+  }
+
+  .animate-wave-reverse {
+    animation: wave-reverse 20s linear infinite;
+  }
+
   /* TED-inspired radial gradient */
   .bg-gradient-radial {
     background: radial-gradient(circle, var(--tw-gradient-stops));

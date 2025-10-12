@@ -109,37 +109,60 @@ export default function EventDetail({ event }: { event: any }) {
   const isTEDxEvent = event.id === 'tedxkprit-2025'
 
   return (
-    <div className={`min-h-screen pt-20 ${isTEDxEvent ? 'tedx-theme' : ''}`}>
+    <div className={`min-h-screen ${isTEDxEvent ? 'tedx-theme' : 'pt-20'}`}>
       {/* Hero Banner */}
-      <section className={`relative h-[60vh] ${isTEDxEvent ? 'bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
+      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
         {isTEDxEvent ? (
           <>
-            {/* TED-Inspired Red Spotlight Background */}
+            {/* TED-Inspired Red Spotlight Background with Animations */}
             <div className="absolute inset-0 overflow-hidden">
-              {/* Radial red spotlight */}
+              {/* Animated Floating Ideas (Particles) */}
+              <div className="absolute inset-0">
+                {[...Array(20)].map((_, i) => (
+                  <div
+                    key={`particle-${i}`}
+                    className="absolute w-2 h-2 bg-red-500/30 rounded-full animate-float"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                      animationDelay: `${Math.random() * 5}s`,
+                      animationDuration: `${15 + Math.random() * 10}s`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Radial red spotlight with pulse */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] 
                             bg-gradient-radial from-red-600/40 via-red-900/20 to-transparent rounded-full blur-3xl animate-pulse-slow" />
               
-              {/* TED circle pattern */}
+              {/* Animated TED circle pattern - expanding ripples */}
               <div className="absolute inset-0 opacity-10">
                 {[...Array(8)].map((_, i) => (
                   <div
                     key={i}
-                    className="absolute rounded-full border-2 border-red-600"
+                    className="absolute rounded-full border-2 border-red-600 animate-ripple"
                     style={{
                       width: `${(i + 1) * 150}px`,
                       height: `${(i + 1) * 150}px`,
                       top: '50%',
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
+                      animationDelay: `${i * 0.3}s`,
                     }}
                   />
                 ))}
               </div>
+
+              {/* Moving gradient waves */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-600/20 to-transparent animate-wave" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-red-700/20 to-transparent animate-wave-reverse" />
+              </div>
             </div>
 
             {/* TEDxKPRIT Banner Image */}
-            <div className="absolute inset-0 flex items-start justify-center flex items-start">
+            <div className="absolute inset-0 flex items-start justify-center flex items-start pt-20">
               <Image
                 src={event.images.banner}
                 alt="Break The Loop"
@@ -165,9 +188,16 @@ export default function EventDetail({ event }: { event: any }) {
             animate={{ opacity: 1, y: 0 }}
           >
             {event.featured && (
-              <span className={`inline-block mb-4 ${isTEDxEvent ? 'bg-red-600' : 'bg-neon-pink'} text-white px-4 py-2 rounded-full text-sm font-bold`}>
-                {isTEDxEvent ? '🔴 IDEAS WORTH SPREADING' : 'FEATURED EVENT'}
-              </span>
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                {isTEDxEvent && (
+                  <span className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold">
+                    🔴 IDEAS WORTH SPREADING
+                  </span>
+                )}
+                <span className={`inline-block ${isTEDxEvent ? 'bg-gray-800 border-2 border-red-600' : 'bg-neon-pink'} text-white px-4 py-2 rounded-full text-sm font-bold`}>
+                  ⭐ FEATURED EVENT
+                </span>
+              </div>
             )}
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
               {event.title}
@@ -199,6 +229,34 @@ export default function EventDetail({ event }: { event: any }) {
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Left Column - Event Details */}
             <div className="lg:col-span-2 space-y-12">
+              {/* Register Now Button - Mobile Only - Before About Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-center md:hidden"
+              >
+                <button
+                  onClick={scrollToTickets}
+                  className={`px-8 py-4 ${isTEDxEvent 
+                    ? 'bg-red-600 hover:bg-red-700 shadow-red-600/50' 
+                    : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink'} 
+                           text-white text-lg font-bold rounded-3xl shadow-xl
+                           hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
+                           active:scale-95 transition-all duration-300 transform
+                           flex items-center gap-3 group`}
+                >
+                  <span>🎟️ Register Now</span>
+                  <svg 
+                    className="w-5 h-5 group-hover:translate-y-1 transition-transform" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </motion.div>
+
               {/* About */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -207,33 +265,17 @@ export default function EventDetail({ event }: { event: any }) {
                 <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600' : 'gradient-text'}`}>
                   About This Event
                 </h2>
+                
+                {/* Event Title/Theme - Break The Loop */}
+                {isTEDxEvent && event.tagline && (
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                    {event.tagline}
+                  </h3>
+                )}
+                
                 <p className={`${isTEDxEvent ? 'text-gray-300' : 'text-gray-700 dark:text-gray-300'} text-lg leading-relaxed mb-6`}>
                   {event.description}
                 </p>
-                
-                {/* Register Now Button - Scrolls to Tickets */}
-                <div className="flex justify-center md:justify-start">
-                  <button
-                    onClick={scrollToTickets}
-                    className={`px-8 py-4 ${isTEDxEvent 
-                      ? 'bg-red-600 hover:bg-red-700 shadow-red-600/50' 
-                      : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink'} 
-                             text-white text-lg font-bold rounded-xl shadow-xl
-                             hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
-                             active:scale-95 transition-all duration-300 transform
-                             flex items-center gap-3 group`}
-                  >
-                    <span>🎟️ Register Now</span>
-                    <svg 
-                      className="w-5 h-5 group-hover:translate-y-1 transition-transform" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                </div>
               </motion.div>
 
               {/* Theme Section - TEDxKPRIT Only */}
@@ -249,7 +291,7 @@ export default function EventDetail({ event }: { event: any }) {
                   <div className="grid md:grid-cols-3 gap-6">
                     {event.theme.pillars.map((pillar: any, index: number) => (
                       <div key={index} className={`${isTEDxEvent 
-                        ? 'bg-black/40 border border-red-600/20' 
+                        ? 'bg-black/40 border border-red-600/20 rounded-3xl' 
                         : 'glass-card'} p-6 hover-lift`}>
                         <h3 className={`text-xl font-bold mb-3 ${isTEDxEvent ? 'text-red-500' : 'text-neon-blue'}`}>
                           {pillar.name}
@@ -272,7 +314,7 @@ export default function EventDetail({ event }: { event: any }) {
                 <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600' : ''}`}>
                   Venue
                 </h2>
-                <div className={`${isTEDxEvent ? 'bg-black/40 border border-red-600/20' : 'glass-card'} p-6 space-y-4`}>
+                <div className={`${isTEDxEvent ? 'bg-black/40 border border-red-600/20 rounded-3xl' : 'glass-card'} p-6 space-y-4`}>
                   <div className="flex items-start gap-3">
                     <FaMapMarkerAlt className={`${isTEDxEvent ? 'text-red-500' : 'text-neon-blue'} text-2xl mt-1 flex-shrink-0`} />
                     <div className="flex-1">
@@ -323,7 +365,7 @@ export default function EventDetail({ event }: { event: any }) {
                   <div className="space-y-4">
                     {event.agenda.map((item: any, index: number) => (
                       <div key={index} className={`flex items-start space-x-4 ${isTEDxEvent 
-                        ? 'bg-black/40 border border-red-600/20' 
+                        ? 'bg-black/40 border border-red-600/20 rounded-3xl' 
                         : 'glass-card'} p-4 hover-lift`}>
                         <div className={`flex-shrink-0 w-24 ${isTEDxEvent ? 'text-red-500' : 'text-neon-blue'} font-bold`}>
                           {item.time}
@@ -353,9 +395,9 @@ export default function EventDetail({ event }: { event: any }) {
                     {event.speakers.map((speaker: any, index: number) => (
                       <div key={index} className={`${
                         speaker.revealingSoon 
-                          ? 'relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-dashed border-red-600/50' 
+                          ? 'relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-dashed border-red-600/50 rounded-3xl' 
                           : isTEDxEvent
-                            ? 'glass-card bg-black/40 border border-red-600/20'
+                            ? 'glass-card bg-black/40 border border-red-600/20 rounded-3xl'
                             : 'glass-card'
                       } p-6 hover-lift`}>
                         
@@ -486,7 +528,7 @@ export default function EventDetail({ event }: { event: any }) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[...event.partners, ...event.sponsors].map((org: string, index: number) => (
                     <div key={index} className={`${isTEDxEvent 
-                      ? 'bg-black/40 border border-red-600/20' 
+                      ? 'bg-black/40 border border-red-600/20 rounded-3xl' 
                       : 'glass-card'} p-6 text-center hover-lift`}>
                       {org.toLowerCase() === 'matrixo' ? (
                         <>
@@ -539,7 +581,7 @@ export default function EventDetail({ event }: { event: any }) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   className={`${isTEDxEvent 
-                    ? 'bg-black/60 border-2 border-red-600/30 backdrop-blur-lg' 
+                    ? 'bg-black/60 border-2 border-red-600/30 backdrop-blur-lg rounded-3xl' 
                     : 'glass-card'} p-8 space-y-6`}
                   id="tickets-section"
                 >
@@ -549,7 +591,7 @@ export default function EventDetail({ event }: { event: any }) {
 
                   {/* Ticket Stats */}
                   <div className={`${isTEDxEvent 
-                    ? 'bg-gray-900/50 border border-red-600/20' 
+                    ? 'bg-gray-900/50 border border-red-600/20 rounded-3xl' 
                     : 'bg-gray-50 dark:bg-gray-800'} rounded-xl p-4`}>
                     <div className="flex items-center justify-between mb-2">
                       <span className={`text-sm ${isTEDxEvent ? 'text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
@@ -579,7 +621,7 @@ export default function EventDetail({ event }: { event: any }) {
                       <div
                         key={ticket.id}
                         className={`border-2 ${isTEDxEvent 
-                          ? 'border-red-600/30 bg-gray-900/30 hover:border-red-600/60 hover:bg-gray-900/50' 
+                          ? 'border-red-600/30 bg-gray-900/30 hover:border-red-600/60 hover:bg-gray-900/50 rounded-3xl' 
                           : 'border-gray-200 dark:border-gray-700 hover:border-neon-blue'} rounded-xl p-4 
                                  transition-all duration-300`}
                       >
@@ -628,7 +670,7 @@ export default function EventDetail({ event }: { event: any }) {
                         <button
                           onClick={() => handleRegisterNow(ticket)}
                           disabled={isSoldOut || isLoading}
-                          className={`w-full py-4 px-6 text-base font-bold rounded-xl transition-all duration-300 transform ${
+                          className={`w-full py-4 px-6 text-base font-bold rounded-3xl transition-all duration-300 transform ${
                             isSoldOut 
                               ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed' 
                               : isTEDxEvent
