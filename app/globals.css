@@ -83,6 +83,16 @@
       opacity: 0.85;
     }
   }
+
+  /* TED-inspired radial gradient */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  /* TEDx Theme Styles */
+  .tedx-theme {
+    @apply bg-black;
+  }
 }
 
 /* Custom scrollbar */

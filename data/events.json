@@ -52,7 +52,9 @@
         "bio": "I am an academic editor, mentor, and author with nearly a decade of experience helping researchers worldwide navigate the complexities of scholarly publishing. My work has been featured in leading news platforms like The Times of India, Zee Business, Ahmedabad Mirror, and Mid-Day, as well as scholarly forums such as Editage Insights, Scholarly Kitchen, and Rising Scholars.",
         "image": "https://tedxkprit.in/speakers-images/hemathakur.jpg",
         "socialLinks": {
-          "website": "https://www.socialsciencespace.com/author/hemathakur/"
+          "linkedin": "https://www.linkedin.com/in/hema-thakur-7b863a56/",
+          "website": "https://www.socialsciencespace.com/author/hemathakur/",
+          "instagram": "https://www.instagram.com/hema_thakur_author/"
         }
       },
       {
@@ -107,7 +109,8 @@
         "bio": "Responding to the NMC Alert Note, she launched the first Indian-equivalent MBBS program in Uzbekistan's Tashkent region with GSL and Impuls Medical Institute. This program offers an NMC-aligned CBME curriculum, Indian faculty-led teaching, dual clinical exposure, a paid internship, FMGE/NeXT preparation from Year 1, and free PG pathways to the USA, UK, Australia, and Germany.",
         "image": "https://tedxkprit.in/speakers-images/divyaraj.jpg",
         "socialLinks": {
-          "instagram": "https://www.instagram.com/dr.divya_raj?igsh=a2wzdmY4aGM3bGUy"
+          "instagram": "https://www.instagram.com/dr.divya_raj?igsh=a2wzdmY4aGM3bGUy",
+          "linkedin": "https://www.linkedin.com/in/dr-divya-raj/"
         }
       },
       {
@@ -118,7 +121,9 @@
         "bio": "With over two decades of practice, he has established 50+ branches of Dr Care Homeopathy and Dr Positive Dental across South India, offering safe and holistic healthcare. Passionate about autism care, he founded the Dr A M Reddy Autism Center in 2016, becoming the first in India to advance homeopathic immunotherapy for ASD and ADHD. His work has brought relief to hundreds of children and hope to countless families.",
         "image": "https://tedxkprit.in/speakers-images/amreddy.jpeg",
         "socialLinks": {
-          "linkedin": "https://www.linkedin.com/in/dr-a-m-reddy-9b6b6035/?originalSubdomain=in"
+          "linkedin": "https://www.linkedin.com/in/dr-a-m-reddy-9b6b6035/?originalSubdomain=in",
+          "facebook": "https://www.facebook.com/drcare.homeopathy/",
+          "website": "https://www.drcare.com/"
         }
       },
       {
@@ -140,7 +145,10 @@
         "bio": "She is the founder of Music Vruksh, an initiative that explores the healing and mood-elevating powers of classical music through concerts, workshops, and classes. A multiple-time TEDx speaker, including at IIT Jodhpur. Nithya bridges tradition with contemporary relevance. Her work has been featured in Outlook, The Week, CNBC TV18, India Today TV, Thrive Global, and more. She also writes on music and wellness, and has been recognized among \"Women in Music\" achievers by The Score Magazine.",
         "image": "https://tedxkprit.in/speakers-images/Nithya.jpg",
         "socialLinks": {
-          "facebook": "https://www.facebook.com/nithya.rajendran.180/"
+          "facebook": "https://www.facebook.com/nithya.rajendran.180/",
+          "instagram": "https://www.instagram.com/nithyasrajan/",
+          "linkedin": "https://www.linkedin.com/in/nithya-rajendran-singer/",
+          "website": "https://www.nithyarajendran.com/"
         }
       },
       {
@@ -149,7 +157,10 @@
         "designation": "Managing Director, Gluni Healthcare",
         "topic": "Talk 6",
         "bio": "Sreekanth Erepalli, Founder of Giosun Healthcare Pvt. Ltd., is a global advocate for modern Ayurveda. With 30+ years in Ayurveda and herbal wellness, he blends traditional wisdom with science to develop certified formulations for conditions like migraines, arthritis, and thyroid issues. Since 2014, his mission has been to make Ayurveda accessible, evidence-based, and globally respected.",
-        "image": "https://tedxkprit.in/speakers-images/sreekanth.jpg"
+        "image": "https://tedxkprit.in/speakers-images/sreekanth.jpg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/sreekanth-erepalli-62707a20/"
+        }
       },
       {
         "name": "Sagar K Chandra",
@@ -157,7 +168,19 @@
         "designation": "Director",
         "topic": "Talk 8",
         "bio": "Exploring the future of Artificial Intelligence and its societal impact.",
-        "image": ""
+        "image": "https://tedxkprit.in/speakers-images/sagarkchandra.jpg",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/sagarkchandra/"
+        }
+      },
+      {
+        "name": "Revealing Soon",
+        "title": "Speaker Announcement Coming Soon",
+        "designation": "TBA",
+        "topic": "Talk 9",
+        "bio": "We're excited to announce this incredible speaker soon. Stay tuned for an inspiring talk that will challenge your perspectives and ignite new ideas!",
+        "image": "",
+        "revealingSoon": true
       }
     ],
     "agenda": [
@@ -176,7 +199,7 @@
       { "time": "2:00 PM", "title": "Talk 9", "description": "TBA" },
       { "time": "2:20 PM", "title": "Talk 10: Dr. Ravi Dasari", "speaker": "Dr. Ravi Dasari", "designation": "President, Jasper Industries" },
       { "time": "2:40 PM", "title": "Talk 11: Dr. Deepak Mashru", "speaker": "Dr. Deepak J. Mashru", "designation": "Asst. Professor, National Forensic Sciences University" },
-      { "time": "3:00 PM", "title": "Talk 12: Nithya Rajendran", "speaker": "Nithya Rajendran", "designation": "Indian Classical Dancer" },
+      { "time": "3:00 PM", "title": "Talk 12: Nithya Rajendran", "speaker": "Nithya Rajendran", "designation": "Indian Classical Vocalist" },
       { "time": "3:20 PM", "title": "Vote of Thanks" },
       { "time": "3:35 PM", "title": "Felicitation & Closing Ceremony" }
     ],
