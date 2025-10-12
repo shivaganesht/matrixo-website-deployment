@@ -172,7 +172,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         wantCertificate: formData.wantCertificate,
         wantTransport: formData.wantTransport,
         hearAboutEvent: formData.hearAboutEvent,
-        status: 'Pending Verification'
+        status: ''
       }
 
       console.log('✅ Registration data prepared')
