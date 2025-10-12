@@ -28,7 +28,7 @@
     "tickets": [
       {
         "id": "student-pass",
-        "name": "Student Pass",
+        "name": "Regular Pass",
         "price": 499,
         "available": 100,
         "description": "Full day access to TEDxKPRIT 2025 with swag kit",
