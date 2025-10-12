@@ -51,6 +51,12 @@ export default function EventDetail({ event }: { event: any }) {
   }, [event.id])
 
   const handleRegisterNow = (ticket: any) => {
+    // Check if event has external registration link
+    if (event.externalRegistrationLink) {
+      window.open(event.externalRegistrationLink, '_blank')
+      return
+    }
+
     const remainingTickets = event.totalCapacity - ticketsSold
     if (remainingTickets <= 0) {
       alert('Sorry, this event is sold out!')
