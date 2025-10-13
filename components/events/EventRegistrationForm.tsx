@@ -597,7 +597,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
                 <div className="border-t border-orange-300 dark:border-orange-700 pt-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Upload Payment Screenshot *
+                    Upload Payment Screenshot (Transaction Number Should Be  Visible For Verification)*
                   </label>
                   <div className="flex items-center gap-4">
                     <input
