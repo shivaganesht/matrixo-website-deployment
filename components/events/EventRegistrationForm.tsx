@@ -534,22 +534,44 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
             <div className="glass-card p-6 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 border-2 border-orange-200 dark:border-orange-700">
               <div className="space-y-4">
-                {/* Mobile: Show Pay Now Button */}
+                {/* Mobile: Show Both QR Code and Pay Now Button */}
                 {isMobile ? (
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">Ticket Price: ₹{ticket.price}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Pay via UPI</p>
+                  <div className="flex flex-col items-center space-y-4">
+                    <div className="w-full">
+                      <p className="text-lg font-bold text-gray-900 dark:text-white text-center">Ticket Price: ₹{ticket.price}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 text-center">Choose your payment method</p>
                     </div>
+                    
+                    {/* Pay Now Button */}
                     <button
                       type="button"
                       onClick={handlePaymentClick}
-                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 
-                               text-white rounded-lg font-semibold shadow-lg
-                               hover:shadow-xl transform hover:scale-105 transition-all"
+                      className="w-full px-6 py-4 bg-gradient-to-r from-green-500 to-emerald-600 
+                               text-white rounded-lg font-semibold shadow-lg text-lg
+                               hover:shadow-xl transform hover:scale-105 transition-all
+                               flex items-center justify-center gap-2"
                     >
-                      Pay Now ₹{ticket.price}
+                      <span>💳</span> Pay Now ₹{ticket.price}
                     </button>
+
+                    <div className="w-full text-center">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                        OR scan QR code below
+                      </p>
+                    </div>
+
+                    {/* QR Code */}
+                    <div className="bg-white p-4 rounded-lg shadow-lg">
+                      <QRCodeSVG 
+                        value={UPI_PAYMENT_LINK}
+                        size={180}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                      Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.)
+                    </p>
                   </div>
                 ) : (
                   /* Desktop: Show QR Code */
