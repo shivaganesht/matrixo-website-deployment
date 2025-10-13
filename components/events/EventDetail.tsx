@@ -11,44 +11,7 @@ import EventRegistrationForm from './EventRegistrationForm'
 export default function EventDetail({ event }: { event: any }) {
   const [showRegistration, setShowRegistration] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
-  const [ticketsSold, setTicketsSold] = useState(event.ticketsSold || 0)
-  const [isLoading, setIsLoading] = useState(true)
   const ticketSectionRef = useRef<HTMLDivElement>(null)
-
-  // Fetch live ticket count
-  useEffect(() => {
-    const fetchTicketCount = async () => {
-      try {
-        const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-        if (!GOOGLE_SCRIPT_URL) {
-          console.log('Google Script URL not configured')
-          setIsLoading(false)
-          return
-        }
-
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${event.id}`, {
-          method: 'GET',
-          cache: 'no-store',
-        })
-
-        const data = await response.json()
-        if (data.success) {
-          setTicketsSold(data.ticketsSold)
-        }
-      } catch (error) {
-        console.error('Error fetching ticket count:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchTicketCount()
-    
-    // Refresh ticket count every 30 seconds
-    const interval = setInterval(fetchTicketCount, 30000)
-    
-    return () => clearInterval(interval)
-  }, [event.id])
 
   const handleRegisterNow = (ticket: any) => {
     // Check if event has external registration link
@@ -57,11 +20,6 @@ export default function EventDetail({ event }: { event: any }) {
       return
     }
 
-    const remainingTickets = event.totalCapacity - ticketsSold
-    if (remainingTickets <= 0) {
-      alert('Sorry, this event is sold out!')
-      return
-    }
     setSelectedTicket(ticket)
     setShowRegistration(true)
   }
@@ -73,43 +31,10 @@ export default function EventDetail({ event }: { event: any }) {
     })
   }
 
-  const closeRegistration = async (registrationSuccessful: boolean = false) => {
+  const closeRegistration = (registrationSuccessful: boolean = false) => {
     setShowRegistration(false)
     setSelectedTicket(null)
-    
-    // If registration was successful, immediately refresh ticket count
-    if (registrationSuccessful) {
-      console.log('🎉 Registration successful!')
-      setIsLoading(true)
-      
-      // Wait a bit for Google Sheets to update
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      try {
-        const GOOGLE_SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL
-        if (GOOGLE_SCRIPT_URL) {
-          console.log('📊 Fetching updated ticket count...')
-          const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${event.id}`, {
-            method: 'GET',
-            cache: 'no-store',
-          })
-          const data = await response.json()
-          if (data.success) {
-            console.log('✅ New ticket count:', data.ticketsSold)
-            setTicketsSold(data.ticketsSold)
-          }
-        }
-      } catch (error) {
-        console.error('❌ Error refreshing ticket count:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
   }
-
-  const percentSold = ((ticketsSold / event.totalCapacity) * 100).toFixed(0)
-  const remainingTickets = event.totalCapacity - ticketsSold
-  const isSoldOut = remainingTickets <= 0
   
   // Check if this is TEDxKPRIT event
   const isTEDxEvent = event.id === 'tedxkprit-2025'
@@ -595,32 +520,6 @@ export default function EventDetail({ event }: { event: any }) {
                     Get Your Tickets
                   </h2>
 
-                  {/* Ticket Stats */}
-                  <div className={`${isTEDxEvent 
-                    ? 'bg-gray-900/50 border border-red-600/20 rounded-3xl' 
-                    : 'bg-gray-50 dark:bg-gray-800'} rounded-xl p-4`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`text-sm ${isTEDxEvent ? 'text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                        {isLoading ? 'Loading...' : `${ticketsSold} / ${event.totalCapacity} sold`}
-                      </span>
-                      <span className={`text-sm font-bold ${isTEDxEvent ? 'text-red-500' : 'text-neon-blue'}`}>
-                        {percentSold}% sold
-                      </span>
-                    </div>
-                    <div className={`w-full ${isTEDxEvent ? 'bg-gray-800' : 'bg-gray-200 dark:bg-gray-700'} rounded-full h-2 overflow-hidden`}>
-                      <div
-                        style={{ width: `${percentSold}%` }}
-                        className={`h-full ${isTEDxEvent 
-                          ? 'bg-gradient-to-r from-red-600 to-red-800' 
-                          : 'bg-gradient-to-r from-neon-blue to-neon-purple'} transition-all duration-1000`}
-                      />
-                    </div>
-                    <div className={`mt-2 flex items-center text-sm ${isTEDxEvent ? 'text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                      <FaUsers className="mr-2" />
-                      {isLoading ? 'Loading...' : isSoldOut ? 'SOLD OUT!' : `${remainingTickets} tickets remaining`}
-                    </div>
-                  </div>
-
                   {/* Ticket Options */}
                   <div className="space-y-4">
                     {event.tickets.map((ticket: any) => (
@@ -666,39 +565,17 @@ export default function EventDetail({ event }: { event: any }) {
                           </div>
                         )}
 
-                        {/* Availability */}
-                        <div className="mb-3">
-                          <span className={`text-xs ${isTEDxEvent ? 'text-gray-500' : 'text-gray-500 dark:text-gray-400'}`}>
-                            {isLoading ? 'Checking availability...' : isSoldOut ? 'SOLD OUT' : `${remainingTickets} tickets available`}
-                          </span>
-                        </div>
-
                         <button
                           onClick={() => handleRegisterNow(ticket)}
-                          disabled={isSoldOut || isLoading}
                           className={`w-full py-4 px-6 text-base font-bold rounded-3xl transition-all duration-300 transform ${
-                            isSoldOut 
-                              ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed' 
-                              : isTEDxEvent
-                                ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
-                                : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink text-white shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
-                          } disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:animate-none`}
+                            isTEDxEvent
+                              ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
+                              : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink text-white shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
+                          }`}
                         >
-                          {isLoading ? (
-                            <span className="flex items-center justify-center gap-2">
-                              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                              </svg>
-                              Loading...
-                            </span>
-                          ) : isSoldOut ? (
-                            '🎫 Sold Out'
-                          ) : (
-                            <span className="flex items-center justify-center gap-2">
-                              🎟️ Book Now
-                            </span>
-                          )}
+                          <span className="flex items-center justify-center gap-2">
+                            🎟️ Book Now
+                          </span>
                         </button>
                       </div>
                     ))}

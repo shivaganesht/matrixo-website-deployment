@@ -35,7 +35,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
   })
 
   // UPI Payment Link for TEDxKPRIT (₹499)
-  const UPI_PAYMENT_LINK = 'upi://pay?pa=9032203644@ybl&am=499.00&cu=INR&pn=matriXOxTEDxKPRIT'
+  const UPI_PAYMENT_LINK = 'upi://pay?pa=bprakash108@okhdfcbank&pn=Bhanu%20Prakash&am=499.00&cu=INR&aid=uGICAgIDE-Z20Zg'
 
   // Detect mobile device
   useEffect(() => {
@@ -570,7 +570,8 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
                       />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                      Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.)
+                      Scan with any UPI app 
+                      (Google Pay, PhonePe, Paytm, etc.)
                     </p>
                   </div>
                 ) : (
