@@ -24,8 +24,8 @@ function doGet(e) {
         }
       }
       
-      // TEDxKPRIT has 100 total capacity
-      const totalCapacity = eventId.includes('tedxkprit') ? 100 : 2000;
+      // TEDxKPRIT has 90 total capacity (SOLD OUT limit)
+      const totalCapacity = eventId.includes('tedxkprit') ? 90 : 2000;
       
       return ContentService.createTextOutput(JSON.stringify({
         success: true,
@@ -81,7 +81,8 @@ function doPost(e) {
       }
     }
     
-    const totalCapacity = eventId.includes('tedxkprit') ? 100 : 2000;
+    // TEDxKPRIT has 90 total capacity (SOLD OUT limit)
+    const totalCapacity = eventId.includes('tedxkprit') ? 90 : 2000;
     if (ticketsSold >= totalCapacity) {
       throw new Error('Event is sold out');
     }

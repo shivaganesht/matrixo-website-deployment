@@ -93,8 +93,30 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         throw new Error('Google Script URL not configured. Please check .env.local file.')
       }
 
-      console.log('📊 Data to send:', data)
+      // First, check if event is sold out
+      console.log('🔍 Checking ticket availability...')
+      try {
+        const checkResponse = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${data.eventId}`, {
+          method: 'GET',
+          cache: 'no-store',
+        })
+        const checkData = await checkResponse.json()
+        
+        if (checkData.success) {
+          const soldOutLimit = data.eventId.includes('tedxkprit') ? 90 : 2000
+          if (checkData.ticketsSold >= soldOutLimit) {
+            throw new Error('SOLD_OUT')
+          }
+          console.log(`✅ Tickets available: ${checkData.ticketsSold}/${soldOutLimit}`)
+        }
+      } catch (checkError: any) {
+        if (checkError.message === 'SOLD_OUT') {
+          throw checkError
+        }
+        console.warn('⚠️ Could not verify ticket count, proceeding with submission')
+      }
 
+      console.log('📊 Data to send:', data)
       console.log('🚀 Sending request to Google Apps Script...')
 
       // Send to Google Apps Script
@@ -119,6 +141,11 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
       console.error('❌ ERROR in sendToGoogleSheet:', error)
       console.error('❌ Error message:', error.message)
       console.error('❌ Error stack:', error.stack)
+      
+      if (error.message === 'SOLD_OUT') {
+        throw new Error('Event is sold out! All 90 tickets have been registered.')
+      }
+      
       throw new Error(`Failed to submit: ${error.message}`)
     }
   }
@@ -219,7 +246,15 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         stack: error.stack,
         name: error.name
       })
-      toast.error(`Failed to submit: ${error.message || 'Please try again'}`)
+      
+      // Check if it's a sold out error
+      if (error.message && error.message.includes('sold out')) {
+        toast.error('🎫 SOLD OUT! This event has reached its maximum capacity of 90 registrations.', {
+          duration: 5000,
+        })
+      } else {
+        toast.error(`Failed to submit: ${error.message || 'Please try again'}`)
+      }
     } finally {
       setIsSubmitting(false)
       console.log('Form submission process completed')
