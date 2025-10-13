@@ -36,11 +36,6 @@ export default function EventsListing() {
     return filtered
   }, [categoryFilter, sortOption, searchTerm])
 
-  const getAvailableTickets = (event: any) => {
-    const available = event.tickets.reduce((sum: number, ticket: any) => sum + (ticket.available || 0), 0)
-    return available
-  }
-
   return (
     <div className="min-h-screen pt-24 pb-20">
       {/* Header */}
@@ -162,8 +157,6 @@ export default function EventsListing() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredAndSortedEvents.map((event, index) => {
-                const availableTickets = getAvailableTickets(event)
-                const percentSold = ((event.ticketsSold / event.totalCapacity) * 100).toFixed(0)
                 const eventLink = (event as any).externalLink || `/events/${event.slug}`
                 const isExternal = !!(event as any).externalLink
 
@@ -231,26 +224,6 @@ export default function EventsListing() {
                             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                               <FaMapMarkerAlt className="mr-2 text-purple-600 flex-shrink-0" />
                               {event.location}
-                            </div>
-                          </div>
-
-                          {/* Ticket Info */}
-                          <div className="mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">
-                                {event.ticketsSold} / {event.totalCapacity} sold
-                              </span>
-                              <span className="text-sm font-bold text-neon-blue">
-                                {percentSold}% sold
-                              </span>
-                            </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${percentSold}%` }}
-                                transition={{ duration: 1, delay: index * 0.1 }}
-                                className="h-full bg-gradient-to-r from-neon-blue to-neon-purple"
-                              />
                             </div>
                           </div>
 
