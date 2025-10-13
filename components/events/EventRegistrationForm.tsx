@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaUniversity, FaGraduationCap, FaMapMarkerAlt, FaBus, FaInfoCircle, FaTimes, FaUpload } from 'react-icons/fa'
 import { toast } from 'sonner'
-import { QRCodeSVG } from 'qrcode.react'
+import Image from 'next/image'
 
 interface EventRegistrationFormProps {
   event: any
@@ -597,11 +597,13 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
                     {/* QR Code */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
-                      <QRCodeSVG 
-                        value={UPI_PAYMENT_LINK}
-                        size={180}
-                        level="H"
-                        includeMargin={true}
+                      <Image 
+                        src="/payment-qr.jpg"
+                        alt="Payment QR Code"
+                        width={180}
+                        height={180}
+                        className="rounded-lg"
+                        priority
                       />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
@@ -617,11 +619,13 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
                       <p className="text-sm text-gray-600 dark:text-gray-400 text-center">Scan QR code to pay via UPI</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow-lg">
-                      <QRCodeSVG 
-                        value={UPI_PAYMENT_LINK}
-                        size={200}
-                        level="H"
-                        includeMargin={true}
+                      <Image 
+                        src="/payment-qr.jpg"
+                        alt="Payment QR Code"
+                        width={200}
+                        height={200}
+                        className="rounded-lg"
+                        priority
                       />
                     </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
