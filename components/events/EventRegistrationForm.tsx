@@ -35,7 +35,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
   })
 
   // UPI Payment Link for TEDxKPRIT (₹499)
-  const UPI_PAYMENT_LINK = 'upi://pay?pa=vyapar.171588997321@hdfcbank&am=499.00&cu=INR&pn=matriXOxTEDxKPRIT'
+  const UPI_PAYMENT_LINK = 'upi://pay?pa=9032203644@ybl&am=499.00&cu=INR&pn=matriXOxTEDxKPRIT'
 
   // Detect mobile device
   useEffect(() => {
