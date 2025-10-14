@@ -95,6 +95,8 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
 
       // First, check if event is sold out
       console.log('🔍 Checking ticket availability...')
+      console.log('🔍 Event ID:', data.eventId)
+      
       try {
         const checkResponse = await fetch(`${GOOGLE_SCRIPT_URL}?action=getTicketCount&eventId=${data.eventId}`, {
           method: 'GET',
@@ -102,15 +104,23 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         })
         const checkData = await checkResponse.json()
         
+        console.log('📊 Ticket check response:', checkData)
+        
         if (checkData.success) {
-          const soldOutLimit = data.eventId.includes('tedxkprit') ? 90 : 2000
+          const eventIdLower = data.eventId.toLowerCase()
+          const soldOutLimit = eventIdLower.includes('tedxkprit') ? 90 : 2000
+          console.log(`🎫 Event ID check: "${eventIdLower}" includes "tedxkprit"? ${eventIdLower.includes('tedxkprit')}`)
+          console.log(`🎫 Current tickets: ${checkData.ticketsSold}/${soldOutLimit}`)
+          
           if (checkData.ticketsSold >= soldOutLimit) {
-            throw new Error('SOLD_OUT')
+            console.log('🚫 EVENT IS SOLD OUT!')
+            throw new Error('Event is sold out')
           }
           console.log(`✅ Tickets available: ${checkData.ticketsSold}/${soldOutLimit}`)
         }
       } catch (checkError: any) {
-        if (checkError.message === 'SOLD_OUT') {
+        console.error('❌ Ticket check error:', checkError)
+        if (checkError.message && checkError.message.includes('sold out')) {
           throw checkError
         }
         console.warn('⚠️ Could not verify ticket count, proceeding with submission')
@@ -142,11 +152,8 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
       console.error('❌ Error message:', error.message)
       console.error('❌ Error stack:', error.stack)
       
-      if (error.message === 'SOLD_OUT') {
-        throw new Error('Event is sold out! All 90 tickets have been registered.')
-      }
-      
-      throw new Error(`Failed to submit: ${error.message}`)
+      // Re-throw the error as-is so we can handle it properly in handleSubmit
+      throw error
     }
   }
 
@@ -672,7 +679,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
           </div>
 
           {/* Submit Button */}
-          <div className="flex gap-4 pt-4">`
+          <div className="flex gap-4 pt-4">
             <button
               type="button"
               onClick={() => onClose(false)}
