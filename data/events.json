@@ -48,7 +48,7 @@
         "name": "Hema Thakur",
         "title": "Academic Editing | Research Mentorship | Author | Speaker",
         "designation": "Academic Editor, Mentor & Author",
-        "topic": "Talk 3",
+        "topic": "Talk 1",
         "bio": "I am an academic editor, mentor, and author with nearly a decade of experience helping researchers worldwide navigate the complexities of scholarly publishing. My work has been featured in leading news platforms like The Times of India, Zee Business, Ahmedabad Mirror, and Mid-Day, as well as scholarly forums such as Editage Insights, Scholarly Kitchen, and Rising Scholars.",
         "image": "https://tedxkprit.in/speakers-images/hemathakur.jpg",
         "socialLinks": {
@@ -94,7 +94,7 @@
         "name": "Rohit Tiwari",
         "title": "Sr. Director, DEXIAN India",
         "designation": "Sr. Director, Dewan India",
-        "topic": "Talk 1",
+        "topic": "Talk 3",
         "bio": "Rohit Tiwari is the Senior Director of Sales & Marketing at Dexian India, bringing over 17 years of expertise in client engagement, digital transformation, and business growth. At Dexian, he drives client success, managed services, and long-term partnerships, enabling enterprises to accelerate digital initiatives with measurable impact. His career journey spans leading firms like Capco, Quess Corp, Allegis Group, and Collabera, where he has steered portfolio growth.",
         "image": "https://tedxkprit.in/speakers-images/Rohit%20tiwari%20(2).jpeg",
         "socialLinks": {
@@ -185,9 +185,9 @@
     ],
     "agenda": [
       { "time": "9:30 AM", "title": "Opening Ceremony", "description": "Lamp Lighting, Classical Dance, and Address by Organizers" },
-      { "time": "10:00 AM", "title": "Talk 1: Rohit Tiwari", "speaker": "Rohit Tiwari", "designation": "Sr. Director, Dewan India" },
+      { "time": "10:00 AM", "title": "Talk 1: Hema Thakur", "speaker": "Hema Thakur", "designation": "Academic Editor, Mentor & Author" },
       { "time": "10:20 AM", "title": "Talk 2: Dr. A M Reddy", "speaker": "Dr. A M Reddy", "designation": "Founder, Dr. Care Homeopathy" },
-      { "time": "10:40 AM", "title": "Talk 3: Hema Thakur", "speaker": "Hema Thakur", "designation": "Author" },
+      { "time": "10:40 AM", "title": "Talk 3: Rohit Tiwari", "speaker": "Rohit Tiwari", "designation": "Sr. Director, Dewan India" },
       { "time": "11:00 AM", "title": "Short Break", "duration": "10 minutes" },
       { "time": "11:10 AM", "title": "Talk 4: Dr. Sairam Atluri", "speaker": "Dr. SaiRam Atluri", "designation": "Founder & CEO, Tulsi Therapeutics" },
       { "time": "11:30 AM", "title": "Talk 5: Ramya Parashar", "speaker": "Ramya Parashar", "designation": "COO, MiQ's Bangalore Center of Excellence" },
