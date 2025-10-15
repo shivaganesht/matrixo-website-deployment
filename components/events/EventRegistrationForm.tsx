@@ -108,7 +108,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         
         if (checkData.success) {
           const eventIdLower = data.eventId.toLowerCase()
-          const soldOutLimit = eventIdLower.includes('tedxkprit') ? 90 : 2000
+          const soldOutLimit = eventIdLower.includes('tedxkprit') ? 100 : 2000
           console.log(`🎫 Event ID check: "${eventIdLower}" includes "tedxkprit"? ${eventIdLower.includes('tedxkprit')}`)
           console.log(`🎫 Current tickets: ${checkData.ticketsSold}/${soldOutLimit}`)
           
