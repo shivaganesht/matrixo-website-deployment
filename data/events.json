@@ -11,9 +11,9 @@
     "venue": "KPRIT Auditorium",
     "location": "Kommuri Pratap Reddy Institute of Technology, Hyderabad",
     "totalCapacity": 90,
-    "ticketsSold": 11,
+    "ticketsSold": 90,
     "featured": true,
-    "status": "upcoming",
+    "status": "sold-out",
     "category": "TEDx Conference",
     "images": {
       "banner": "/events/tedxkprit-banner.png",
