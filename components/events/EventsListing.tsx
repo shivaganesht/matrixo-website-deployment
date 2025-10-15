@@ -194,10 +194,15 @@ export default function EventsListing() {
                               FEATURED
                             </div>
                           )}
+                          {event.status === 'sold-out' && (
+                            <div className="absolute top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                              🔴 SOLD OUT
+                            </div>
+                          )}
                           <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
                             {event.category.toUpperCase()}
                           </div>
-                          {isFuture(new Date(event.date)) && (
+                          {isFuture(new Date(event.date)) && event.status !== 'sold-out' && (
                             <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold">
                               UPCOMING
                             </div>
@@ -229,29 +234,44 @@ export default function EventsListing() {
 
                           {/* Price & CTA */}
                           <div className="flex items-center justify-between">
-                            <div>
-                              <span className="text-sm text-gray-500 dark:text-gray-400">From</span>
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-2xl font-bold gradient-text">
-                                  ₹{Math.min(...event.tickets.map((t: any) => t.price))}
-                                </span>
-                                {event.tickets.some((t: any) => t.originalPrice) && (
-                                  <span className="text-sm text-gray-400 line-through">
-                                    ₹{(event.tickets.find((t: any) => t.originalPrice) as any)?.originalPrice}
+                            {event.status === 'sold-out' ? (
+                              <div className="w-full">
+                                <div className="bg-red-100 dark:bg-red-900/20 border-2 border-red-500 rounded-xl p-4 text-center">
+                                  <span className="text-2xl font-bold text-red-600 dark:text-red-400">
+                                    SOLD OUT
                                   </span>
-                                )}
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                    All tickets have been claimed
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                            <motion.button
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              className="flex items-center space-x-2 bg-gradient-to-r from-neon-blue to-neon-purple 
-                                       text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg 
-                                       hover:shadow-neon-blue/50 transition-shadow"
-                            >
-                              <FaTicketAlt />
-                              <span>Book</span>
-                            </motion.button>
+                            ) : (
+                              <>
+                                <div>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">From</span>
+                                  <div className="flex items-baseline gap-2">
+                                    <span className="text-2xl font-bold gradient-text">
+                                      ₹{Math.min(...event.tickets.map((t: any) => t.price))}
+                                    </span>
+                                    {event.tickets.some((t: any) => t.originalPrice) && (
+                                      <span className="text-sm text-gray-400 line-through">
+                                        ₹{(event.tickets.find((t: any) => t.originalPrice) as any)?.originalPrice}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="flex items-center space-x-2 bg-gradient-to-r from-neon-blue to-neon-purple 
+                                           text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg 
+                                           hover:shadow-neon-blue/50 transition-shadow"
+                                >
+                                  <FaTicketAlt />
+                                  <span>Book</span>
+                                </motion.button>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>

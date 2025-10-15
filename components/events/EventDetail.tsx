@@ -120,6 +120,11 @@ export default function EventDetail({ event }: { event: any }) {
           >
             {event.featured && (
               <div className="flex flex-wrap items-center gap-3 mb-4">
+                {event.status === 'sold-out' && (
+                  <span className="inline-block bg-red-600 text-white px-6 py-3 rounded-full text-sm font-bold animate-pulse shadow-lg shadow-red-600/50">
+                    🔴 SOLD OUT - ALL TICKETS CLAIMED
+                  </span>
+                )}
                 {isTEDxEvent && (
                   <span className="inline-block bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold">
                     🔴 IDEAS WORTH SPREADING
@@ -166,26 +171,37 @@ export default function EventDetail({ event }: { event: any }) {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex justify-center md:hidden"
               >
-                <button
-                  onClick={scrollToTickets}
-                  className={`px-8 py-4 ${isTEDxEvent 
-                    ? 'bg-red-600 hover:bg-red-700 shadow-red-600/50' 
-                    : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink'} 
-                           text-white text-lg font-bold rounded-3xl shadow-xl
-                           hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
-                           active:scale-95 transition-all duration-300 transform
-                           flex items-center gap-3 group`}
-                >
-                  <span>🎟️ Register Now</span>
-                  <svg 
-                    className="w-5 h-5 group-hover:translate-y-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
+                {event.status === 'sold-out' ? (
+                  <div className="w-full bg-red-100 dark:bg-red-900/20 border-2 border-red-500 rounded-xl p-6 text-center">
+                    <span className="text-3xl font-bold text-red-600 dark:text-red-400 block mb-2">
+                      SOLD OUT
+                    </span>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      All {event.totalCapacity} tickets have been claimed
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={scrollToTickets}
+                    className={`px-8 py-4 ${isTEDxEvent 
+                      ? 'bg-red-600 hover:bg-red-700 shadow-red-600/50' 
+                      : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink'} 
+                             text-white text-lg font-bold rounded-3xl shadow-xl
+                             hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
+                             active:scale-95 transition-all duration-300 transform
+                             flex items-center gap-3 group`}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+                    <span>🎟️ Register Now</span>
+                    <svg 
+                      className="w-5 h-5 group-hover:translate-y-1 transition-transform" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                )}
               </motion.div>
 
               {/* About */}
@@ -520,6 +536,22 @@ export default function EventDetail({ event }: { event: any }) {
                     Get Your Tickets
                   </h2>
 
+                  {/* Sold Out Notice */}
+                  {event.status === 'sold-out' && (
+                    <div className="bg-red-100 dark:bg-red-900/30 border-2 border-red-500 rounded-xl p-6 text-center">
+                      <div className="text-4xl mb-3">🔴</div>
+                      <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">
+                        SOLD OUT
+                      </h3>
+                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+                        All <strong>{event.totalCapacity}</strong> tickets have been claimed
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Thank you for the overwhelming response!
+                      </p>
+                    </div>
+                  )}
+
                   {/* Ticket Options */}
                   <div className="space-y-4">
                     {event.tickets.map((ticket: any) => (
@@ -567,14 +599,17 @@ export default function EventDetail({ event }: { event: any }) {
 
                         <button
                           onClick={() => handleRegisterNow(ticket)}
+                          disabled={event.status === 'sold-out'}
                           className={`w-full py-4 px-6 text-base font-bold rounded-3xl transition-all duration-300 transform ${
-                            isTEDxEvent
+                            event.status === 'sold-out'
+                              ? 'bg-gray-400 dark:bg-gray-600 text-gray-700 dark:text-gray-400 cursor-not-allowed opacity-60'
+                              : isTEDxEvent
                               ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
                               : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink text-white shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
                           }`}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            🎟️ Book Now
+                            {event.status === 'sold-out' ? '🔴 SOLD OUT' : '🎟️ Book Now'}
                           </span>
                         </button>
                       </div>
