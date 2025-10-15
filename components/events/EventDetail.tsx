@@ -7,10 +7,12 @@ import Image from 'next/image'
 import { format } from 'date-fns'
 import { FaCalendar, FaMapMarkerAlt, FaClock, FaUsers, FaTag } from 'react-icons/fa'
 import EventRegistrationForm from './EventRegistrationForm'
+import Confetti from '../Confetti'
 
 export default function EventDetail({ event }: { event: any }) {
   const [showRegistration, setShowRegistration] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
+  const [showConfetti, setShowConfetti] = useState(false)
   const ticketSectionRef = useRef<HTMLDivElement>(null)
 
   const handleRegisterNow = (ticket: any) => {
@@ -39,8 +41,17 @@ export default function EventDetail({ event }: { event: any }) {
   // Check if this is TEDxKPRIT event
   const isTEDxEvent = event.id === 'tedxkprit-2025'
 
+  // Trigger confetti for sold out events
+  useEffect(() => {
+    if (event.status === 'sold-out') {
+      setShowConfetti(true)
+    }
+  }, [event.status])
+
   return (
     <div className={`min-h-screen ${isTEDxEvent ? 'tedx-theme' : 'pt-20'}`}>
+      {/* Confetti for Sold Out Events */}
+      {event.status === 'sold-out' && <Confetti active={showConfetti} duration={6000} />}
       {/* Hero Banner */}
       <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
         {isTEDxEvent ? (
@@ -121,8 +132,8 @@ export default function EventDetail({ event }: { event: any }) {
             {event.featured && (
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 {event.status === 'sold-out' && (
-                  <span className="inline-block bg-red-600 text-white px-6 py-3 rounded-full text-sm font-bold animate-pulse shadow-lg shadow-red-600/50">
-                    🔴 SOLD OUT - ALL TICKETS CLAIMED
+                  <span className="inline-block bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 text-white px-6 py-3 rounded-full text-sm font-bold animate-celebrate animate-shine shadow-lg shadow-red-600/50">
+                    🎉 SOLD OUT - ALL {event.totalCapacity} TICKETS CLAIMED! 🎊
                   </span>
                 )}
                 {isTEDxEvent && (
@@ -538,15 +549,16 @@ export default function EventDetail({ event }: { event: any }) {
 
                   {/* Sold Out Notice */}
                   {event.status === 'sold-out' && (
-                    <div className="bg-red-100 dark:bg-red-900/30 border-2 border-red-500 rounded-xl p-6 text-center">
-                      <div className="text-4xl mb-3">🔴</div>
-                      <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">
-                        SOLD OUT
+                    <div className="bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-900/30 dark:via-orange-900/30 dark:to-yellow-900/30 border-2 border-red-500 rounded-xl p-6 text-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
+                      <div className="text-5xl mb-3 animate-celebrate">🎉</div>
+                      <h3 className="text-3xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent mb-3">
+                        SOLD OUT!
                       </h3>
-                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-                        All <strong>{event.totalCapacity}</strong> tickets have been claimed
+                      <p className="text-base text-gray-700 dark:text-gray-300 mb-2 font-semibold">
+                        All <strong className="text-red-600 dark:text-red-400">{event.totalCapacity}</strong> tickets have been claimed! 🎊
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         Thank you for the overwhelming response!
                       </p>
                     </div>

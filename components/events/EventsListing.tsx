@@ -195,8 +195,8 @@ export default function EventsListing() {
                             </div>
                           )}
                           {event.status === 'sold-out' && (
-                            <div className="absolute top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-pulse">
-                              🔴 SOLD OUT
+                            <div className="absolute top-4 right-4 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-celebrate animate-shine">
+                              🎉 SOLD OUT 🎊
                             </div>
                           )}
                           <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -236,12 +236,13 @@ export default function EventsListing() {
                           <div className="flex items-center justify-between">
                             {event.status === 'sold-out' ? (
                               <div className="w-full">
-                                <div className="bg-red-100 dark:bg-red-900/20 border-2 border-red-500 rounded-xl p-4 text-center">
-                                  <span className="text-2xl font-bold text-red-600 dark:text-red-400">
-                                    SOLD OUT
+                                <div className="bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 dark:from-red-900/20 dark:via-orange-900/20 dark:to-yellow-900/20 border-2 border-red-500 rounded-xl p-4 text-center">
+                                  <span className="text-3xl mb-2 block">🎉</span>
+                                  <span className="text-2xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                                    SOLD OUT!
                                   </span>
                                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                    All tickets have been claimed
+                                    🎊 All tickets claimed! 🎊
                                   </p>
                                 </div>
                               </div>

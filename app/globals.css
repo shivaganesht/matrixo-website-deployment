@@ -155,6 +155,37 @@
     animation: wave-reverse 20s linear infinite;
   }
 
+  /* Celebration animations for sold out events */
+  @keyframes celebrate-bounce {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    25% {
+      transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+      transform: scale(1.1) rotate(5deg);
+    }
+  }
+
+  .animate-celebrate {
+    animation: celebrate-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      background-position: -200%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+
+  .animate-shine {
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+  }
+
   /* TED-inspired radial gradient */
   .bg-gradient-radial {
     background: radial-gradient(circle, var(--tw-gradient-stops));
