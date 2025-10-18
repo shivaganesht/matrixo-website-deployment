@@ -56,57 +56,50 @@ export default function EventsListing() {
         </div>
       </section>
 
-      {/* Filters and Search */}
-      <section className="bg-gray-50 dark:bg-gray-900 py-8 border-b border-gray-200 dark:border-gray-800">
+      {/* Filters and Search - Compact Version */}
+      <section className="bg-gray-50 dark:bg-gray-900 py-4 border-b border-gray-200 dark:border-gray-800">
         <div className="container-custom px-6">
-          {/* Search */}
-          <div className="relative w-full md:w-96 mb-6">
-            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search programs, topics, locations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-200 
-                       dark:border-gray-700 focus:border-blue-500 focus:outline-none transition-colors text-gray-900 dark:text-white"
-            />
-          </div>
-
-          {/* Sort Options */}
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <FaClock className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort By:</span>
+          {/* Compact Filter Row */}
+          <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+            {/* Search - Compact */}
+            <div className="relative w-full lg:w-80">
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+              <input
+                type="text"
+                placeholder="Search programs, topics..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-300 
+                         dark:border-gray-700 focus:border-blue-500 focus:outline-none transition-colors text-sm text-gray-900 dark:text-white"
+              />
             </div>
-            <div className="flex items-center gap-3 flex-wrap">
+
+            {/* Sort Options - Compact */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <FaClock className="text-gray-500 text-sm" />
               {[
                 { value: 'upcoming', label: 'Upcoming', icon: FaClock },
-                { value: 'latest', label: 'Latest Added', icon: FaStar },
-                { value: 'all', label: 'All Events', icon: FaCalendar }
+                { value: 'latest', label: 'Latest', icon: FaStar },
+                { value: 'all', label: 'All', icon: FaCalendar }
               ].map((option) => (
                 <button
                   key={option.value}
                   onClick={() => setSortOption(option.value as SortOption)}
-                  className={`px-5 py-2.5 rounded-full font-medium transition-all duration-200 flex items-center gap-2 ${
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
                     sortOption === option.value
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
-                  <option.icon className="text-sm" />
+                  <option.icon className="text-xs" />
                   {option.label}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Category Filter Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-            <div className="flex items-center gap-2">
-              <FaFilter className="text-gray-500" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter By Type:</span>
-            </div>
-            <div className="flex items-center gap-3 flex-wrap">
+            {/* Category Filter Buttons - Compact */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <FaFilter className="text-gray-500 text-sm" />
               {[
                 { value: 'all', label: 'All Programs' },
                 { value: 'course', label: 'Courses' },
@@ -118,9 +111,9 @@ export default function EventsListing() {
                 <button
                   key={cat.value}
                   onClick={() => setCategoryFilter(cat.value)}
-                  className={`px-5 py-2.5 rounded-full font-medium transition-all duration-200 ${
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                     categoryFilter === cat.value
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg scale-105'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
