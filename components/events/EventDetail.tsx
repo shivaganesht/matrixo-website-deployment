@@ -78,7 +78,7 @@ export default function EventDetail({ event }: { event: any }) {
       {/* Confetti for Sold Out Events */}
       {event.status === 'sold-out' && <Confetti active={showConfetti} duration={6000} />}
       {/* Hero Banner */}
-      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-gradient-to-br from-red-50 to-white dark:bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
+      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-gray-100 dark:bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
         {isTEDxEvent ? (
           <>
             {/* TED-Inspired Red Spotlight Background with Animations */}
