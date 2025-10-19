@@ -13,6 +13,8 @@ export default function EventDetail({ event }: { event: any }) {
   const [showRegistration, setShowRegistration] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState<any>(null)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0)
   const ticketSectionRef = useRef<HTMLDivElement>(null)
 
   const handleRegisterNow = (ticket: any) => {
@@ -36,6 +38,29 @@ export default function EventDetail({ event }: { event: any }) {
   const closeRegistration = (registrationSuccessful: boolean = false) => {
     setShowRegistration(false)
     setSelectedTicket(null)
+  }
+
+  const openImageModal = (image: string, index: number) => {
+    setSelectedImage(image)
+    setSelectedImageIndex(index)
+  }
+
+  const closeImageModal = () => {
+    setSelectedImage(null)
+  }
+
+  const navigateImage = (direction: 'prev' | 'next') => {
+    const galleryLength = event.images?.gallery?.length || 0
+    if (galleryLength === 0) return
+
+    let newIndex = selectedImageIndex
+    if (direction === 'next') {
+      newIndex = (selectedImageIndex + 1) % galleryLength
+    } else {
+      newIndex = (selectedImageIndex - 1 + galleryLength) % galleryLength
+    }
+    setSelectedImageIndex(newIndex)
+    setSelectedImage(event.images.gallery[newIndex])
   }
   
   // Check if this is TEDxKPRIT event
@@ -113,7 +138,7 @@ export default function EventDetail({ event }: { event: any }) {
                 priority
               />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent dark:from-black dark:via-black/60 dark:to-transparent" />
           </>
         ) : (
           <>
@@ -280,6 +305,7 @@ export default function EventDetail({ event }: { event: any }) {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.1 + index * 0.05 }}
+                        onClick={() => openImageModal(image, index)}
                         className={`relative aspect-square overflow-hidden rounded-2xl ${
                           isTEDxEvent 
                             ? 'border-2 border-red-200 dark:border-red-600/20 shadow-md hover:shadow-xl' 
@@ -293,7 +319,9 @@ export default function EventDetail({ event }: { event: any }) {
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3">
+                          <span className="text-white text-sm font-medium">Click to expand</span>
+                        </div>
                       </motion.div>
                     ))}
                   </div>
@@ -686,6 +714,85 @@ export default function EventDetail({ event }: { event: any }) {
           </div>
         </div>
       </section>
+
+      {/* Image Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeImageModal}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-7xl max-h-[90vh] w-full"
+            >
+              {/* Close Button */}
+              <button
+                onClick={closeImageModal}
+                className="absolute -top-12 right-0 text-white hover:text-red-500 transition-colors z-10"
+              >
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {/* Previous Button */}
+              {event.images?.gallery && event.images.gallery.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('prev')
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all z-10"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Image */}
+              <div className="relative w-full h-[80vh] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src={selectedImage}
+                  alt={`TEDxKPRIT Highlight ${selectedImageIndex + 1}`}
+                  fill
+                  className="object-contain"
+                  sizes="90vw"
+                  priority
+                />
+              </div>
+
+              {/* Next Button */}
+              {event.images?.gallery && event.images.gallery.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateImage('next')
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all z-10"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
+
+              {/* Image Counter */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm">
+                {selectedImageIndex + 1} / {event.images?.gallery?.length || 0}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Registration Modal */}
       <AnimatePresence>
