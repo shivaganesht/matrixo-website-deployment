@@ -53,7 +53,7 @@ export default function EventDetail({ event }: { event: any }) {
       {/* Confetti for Sold Out Events */}
       {event.status === 'sold-out' && <Confetti active={showConfetti} duration={6000} />}
       {/* Hero Banner */}
-      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-white dark:bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
+      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-gradient-to-br from-red-50 to-white dark:bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
         {isTEDxEvent ? (
           <>
             {/* TED-Inspired Red Spotlight Background with Animations */}
@@ -146,10 +146,10 @@ export default function EventDetail({ event }: { event: any }) {
                 </span>
               </div>
             )}
-            <h1 className="text-4xl md:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-red-800 dark:text-white mb-4 drop-shadow-lg">
               {event.title}
             </h1>
-            <p className="text-2xl text-gray-700 dark:text-gray-200 font-medium mb-6">
+            <p className="text-2xl text-gray-800 dark:text-gray-200 font-medium mb-6 drop-shadow-md">
               {event.tagline}
             </p>
             <div className="flex flex-wrap gap-4 text-gray-900 dark:text-white">
@@ -171,7 +171,7 @@ export default function EventDetail({ event }: { event: any }) {
       </section>
 
       {/* Main Content */}
-      <section className={`section-padding ${isTEDxEvent ? 'bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-black dark:via-gray-900 dark:to-black' : 'bg-white dark:bg-gray-950'}`}>
+      <section className={`section-padding ${isTEDxEvent ? 'bg-white dark:from-black dark:via-gray-900 dark:to-black dark:bg-gradient-to-b' : 'bg-white dark:bg-gray-950'}`}>
         <div className="container-custom px-6">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Left Column - Event Details */}
@@ -226,12 +226,12 @@ export default function EventDetail({ event }: { event: any }) {
                 
                 {/* Event Title/Theme - Break The Loop */}
                 {isTEDxEvent && event.tagline && (
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                  <h3 className="text-3xl md:text-4xl font-bold text-red-700 dark:text-white mb-6">
                     {event.tagline}
                   </h3>
                 )}
                 
-                <p className={`${isTEDxEvent ? 'text-gray-700 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'} text-lg leading-relaxed mb-6`}>
+                <p className={`${isTEDxEvent ? 'text-gray-800 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'} text-lg leading-relaxed mb-6`}>
                   {event.description}
                 </p>
               </motion.div>
@@ -249,15 +249,52 @@ export default function EventDetail({ event }: { event: any }) {
                   <div className="grid md:grid-cols-3 gap-6">
                     {event.theme.pillars.map((pillar: any, index: number) => (
                       <div key={index} className={`${isTEDxEvent 
-                        ? 'bg-gray-100 dark:bg-black/40 border border-gray-300 dark:border-red-600/20 rounded-3xl' 
+                        ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' 
                         : 'glass-card'} p-6 hover-lift`}>
-                        <h3 className={`text-xl font-bold mb-3 ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-neon-blue'}`}>
+                        <h3 className={`text-xl font-bold mb-3 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'}`}>
                           {pillar.name}
                         </h3>
-                        <p className={`${isTEDxEvent ? 'text-gray-700 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                        <p className={`${isTEDxEvent ? 'text-gray-800 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'}`}>
                           {pillar.description}
                         </p>
                       </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Gallery - Team & Event Photos */}
+              {event.images?.gallery && event.images.gallery.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.08 }}
+                >
+                  <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : 'gradient-text'}`}>
+                    Event Highlights
+                  </h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {event.images.gallery.map((image: string, index: number) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 + index * 0.05 }}
+                        className={`relative aspect-square overflow-hidden rounded-2xl ${
+                          isTEDxEvent 
+                            ? 'border-2 border-red-200 dark:border-red-600/20 shadow-md hover:shadow-xl' 
+                            : 'border border-gray-200 dark:border-gray-700'
+                        } hover:scale-105 transition-all duration-300 cursor-pointer group`}
+                      >
+                        <Image
+                          src={image}
+                          alt={`TEDxKPRIT Event Highlight ${index + 1}`}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </motion.div>
                     ))}
                   </div>
                 </motion.div>
@@ -269,12 +306,12 @@ export default function EventDetail({ event }: { event: any }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600 dark:text-red-600' : ''}`}>
+                <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : ''}`}>
                   Venue
                 </h2>
-                <div className={`${isTEDxEvent ? 'bg-gray-100 dark:bg-black/40 border border-gray-300 dark:border-red-600/20 rounded-3xl' : 'glass-card'} p-6 space-y-4`}>
+                <div className={`${isTEDxEvent ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' : 'glass-card'} p-6 space-y-4`}>
                   <div className="flex items-start gap-3">
-                    <FaMapMarkerAlt className={`${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-neon-blue'} text-2xl mt-1 flex-shrink-0`} />
+                    <FaMapMarkerAlt className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} text-2xl mt-1 flex-shrink-0`} />
                     <div className="flex-1">
                       <h3 className={`text-xl font-bold mb-2 ${isTEDxEvent ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>
                         {event.venue}
@@ -317,15 +354,15 @@ export default function EventDetail({ event }: { event: any }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600 dark:text-red-600' : ''}`}>
+                  <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : ''}`}>
                     Event Agenda
                   </h2>
                   <div className="space-y-4">
                     {event.agenda.map((item: any, index: number) => (
                       <div key={index} className={`flex items-start space-x-4 ${isTEDxEvent 
-                        ? 'bg-gray-100 dark:bg-black/40 border border-gray-300 dark:border-red-600/20 rounded-3xl' 
+                        ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' 
                         : 'glass-card'} p-4 hover-lift`}>
-                        <div className={`flex-shrink-0 w-24 ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-neon-blue'} font-bold`}>
+                        <div className={`flex-shrink-0 w-24 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} font-bold`}>
                           {item.time}
                         </div>
                         <div className="flex-1">
@@ -346,16 +383,16 @@ export default function EventDetail({ event }: { event: any }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600 dark:text-red-600' : ''}`}>
+                  <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : ''}`}>
                     Featured Speakers
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
                     {event.speakers.map((speaker: any, index: number) => (
                       <div key={index} className={`${
                         speaker.revealingSoon 
-                          ? 'relative overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 border-2 border-dashed border-red-600/50 rounded-3xl' 
+                          ? 'relative overflow-hidden bg-gradient-to-br from-red-100 to-red-200 dark:from-gray-800 dark:to-gray-900 border-2 border-dashed border-red-600/50 rounded-3xl shadow-sm' 
                           : isTEDxEvent
-                            ? 'glass-card bg-gray-100 dark:bg-black/40 border border-gray-300 dark:border-red-600/20 rounded-3xl'
+                            ? 'glass-card bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm'
                             : 'glass-card'
                       } p-6 hover-lift`}>
                         
@@ -409,16 +446,16 @@ export default function EventDetail({ event }: { event: any }) {
                             <h3 className={`text-xl font-bold mb-1 ${isTEDxEvent ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>
                               {speaker.name}
                             </h3>
-                            <p className={`text-sm ${isTEDxEvent ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mb-2`}>
+                            <p className={`text-sm ${isTEDxEvent ? 'text-gray-700 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mb-2`}>
                               {speaker.title || speaker.designation}
                             </p>
                             {speaker.bio && (
-                              <p className={`text-sm ${isTEDxEvent ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mb-2 line-clamp-3`}>
+                              <p className={`text-sm ${isTEDxEvent ? 'text-gray-700 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'} mb-2 line-clamp-3`}>
                                 {speaker.bio}
                               </p>
                             )}
                             {speaker.topic && (
-                              <p className={`text-sm ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-neon-blue'} font-medium`}>
+                              <p className={`text-sm ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} font-medium`}>
                                 {speaker.topic}
                               </p>
                             )}
@@ -480,13 +517,13 @@ export default function EventDetail({ event }: { event: any }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-600 dark:text-red-600' : ''}`}>
+                <h2 className={`text-3xl font-bold mb-6 ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : ''}`}>
                   Partners & Sponsors
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[...event.partners, ...event.sponsors].map((org: string, index: number) => (
                     <div key={index} className={`${isTEDxEvent 
-                      ? 'bg-gray-100 dark:bg-black/40 border border-gray-300 dark:border-red-600/20 rounded-3xl' 
+                      ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' 
                       : 'glass-card'} p-6 text-center hover-lift`}>
                       {org.toLowerCase() === 'matrixo' ? (
                         <>
@@ -539,11 +576,11 @@ export default function EventDetail({ event }: { event: any }) {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   className={`${isTEDxEvent 
-                    ? 'bg-gray-50/60 dark:bg-black/60 border-2 border-gray-300 dark:border-red-600/30 backdrop-blur-lg rounded-3xl' 
+                    ? 'bg-white dark:bg-black/60 border-2 border-red-300 dark:border-red-600/30 backdrop-blur-lg rounded-3xl shadow-lg' 
                     : 'glass-card'} p-8 space-y-6`}
                   id="tickets-section"
                 >
-                  <h2 className={`text-2xl font-bold ${isTEDxEvent ? 'text-red-600 dark:text-red-600' : 'gradient-text'}`}>
+                  <h2 className={`text-2xl font-bold ${isTEDxEvent ? 'text-red-700 dark:text-red-600' : 'gradient-text'}`}>
                     Get Your Tickets
                   </h2>
 
@@ -570,7 +607,7 @@ export default function EventDetail({ event }: { event: any }) {
                       <div
                         key={ticket.id}
                         className={`border-2 ${isTEDxEvent 
-                          ? 'border-red-600/30 bg-gray-100/50 dark:bg-gray-900/30 hover:border-red-600/60 hover:bg-gray-100 dark:hover:bg-gray-900/50 rounded-3xl' 
+                          ? 'border-red-300 bg-red-50 dark:bg-gray-900/30 hover:border-red-500 hover:bg-red-100 dark:hover:bg-gray-900/50 rounded-3xl shadow-sm' 
                           : 'border-gray-200 dark:border-gray-700 hover:border-neon-blue'} rounded-xl p-4 
                                  transition-all duration-300`}
                       >
@@ -579,12 +616,12 @@ export default function EventDetail({ event }: { event: any }) {
                             <h3 className={`font-bold text-lg ${isTEDxEvent ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>
                               {ticket.name}
                             </h3>
-                            <p className={`text-sm ${isTEDxEvent ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                            <p className={`text-sm ${isTEDxEvent ? 'text-gray-700 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
                               {ticket.description}
                             </p>
                           </div>
                           <div className="text-right">
-                            <div className={`text-2xl font-bold ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'gradient-text'}`}>
+                            <div className={`text-2xl font-bold ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'gradient-text'}`}>
                               ₹{ticket.price}
                             </div>
                             {ticket.originalPrice && (
@@ -601,8 +638,8 @@ export default function EventDetail({ event }: { event: any }) {
                             {ticket.perks
                               .filter((perk: string) => !perk.toLowerCase().includes('participation certificate'))
                               .map((perk: string, i: number) => (
-                              <div key={i} className={`flex items-center text-sm ${isTEDxEvent ? 'text-gray-600 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                                <span className={`${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-neon-blue'} mr-2`}>✓</span>
+                              <div key={i} className={`flex items-center text-sm ${isTEDxEvent ? 'text-gray-800 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                                <span className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} mr-2`}>✓</span>
                                 {perk}
                               </div>
                             ))}

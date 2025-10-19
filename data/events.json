@@ -19,10 +19,13 @@
       "banner": "/events/tedxkprit-banner.png",
       "thumbnail": "/events/tedxkprit-banner.png",
       "gallery": [
-        "https://tedxkprit.in/speakers-images/hemathakur.jpg",
-        "https://tedxkprit.in/speakers-images/deepakmishra.jpg",
-        "https://tedxkprit.in/speakers-images/ravidasari.jpeg",
-        "https://tedxkprit.in/speakers-images/sairamatluri.jpg"
+        "https://tedxkprit.in/slider/group.jpg",
+        "https://tedxkprit.in/slider/group1.jpg",
+        "https://tedxkprit.in/break%20the%20loop.png",
+        "https://tedxkprit.in/slider/web.jpg",
+        "https://tedxkprit.in/slider/hosp.jpg",
+        "https://tedxkprit.in/slider/marketing.jpg",
+        "https://tedxkprit.in/slider/production.jpg"
       ]
     },
     "tickets": [
@@ -50,7 +53,7 @@
         "designation": "Academic Editor, Mentor & Author",
         "topic": "Talk 1",
         "bio": "I am an academic editor, mentor, and author with nearly a decade of experience helping researchers worldwide navigate the complexities of scholarly publishing. My work has been featured in leading news platforms like The Times of India, Zee Business, Ahmedabad Mirror, and Mid-Day, as well as scholarly forums such as Editage Insights, Scholarly Kitchen, and Rising Scholars.",
-        "image": "https://tedxkprit.in/speakers-images/hemathakur.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/hemathakur.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/hema-thakur-7b863a56/",
           "website": "https://www.socialsciencespace.com/author/hemathakur/",
@@ -61,9 +64,9 @@
         "name": "Dr. Deepak J. Mashru",
         "title": "Visionary educator and pioneer in forensic linguistics",
         "designation": "Asst. Professor, National Forensic Sciences University",
-        "topic": "Talk 11",
+        "topic": "Talk 8",
         "bio": "With over two decades of transformative work, he has redefined how language, law, and technology converge to strengthen justice delivery. Honoured with national awards for teaching and pedagogical innovation, he is known for blending Bharatiya knowledge traditions with cutting-edge forensic applications. A director of a prestigious ICSSR project, he stands at the forefront of designing new educational and investigative frontiers.",
-        "image": "https://tedxkprit.in/speakers-images/deepakmishra.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/deepak.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/drdeepakmashru/?originalSubdomain=in"
         }
@@ -72,9 +75,9 @@
         "name": "Dr. Ravi Dasari",
         "title": "President and Group Head-HR of Jasper Industries Pvt Limited",
         "designation": "President, Jasper Industries",
-        "topic": "Talk 10",
+        "topic": "Talk 12",
         "bio": "Dr. Ravi Dasari, President and Group Head – HR at Jasper Industries, has over 25 years of leadership experience with firms like NCC, IDBI, and Lanco. A PhD holder in HRM and university topper, he serves as Secretary of NHRD Hyderabad and is a certified executive coach. He has authored 30+ research papers, led programs at IIMs and ASCI, and specializes in organizational culture, leadership, and knowledge worker management.",
-        "image": "https://tedxkprit.in/speakers-images/ravidasari.jpeg",
+        "image": "https://tedxkprit.in/website-update-speakers/ravidasari.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/dr-ravi-dasari-7495b213/?originalSubdomain=in"
         }
@@ -85,7 +88,7 @@
         "designation": "Founder & CEO, Tulsi Therapeutics",
         "topic": "Talk 4",
         "bio": "During the COVID-19 pandemic, Dr. Sairam published the first U.S. article (second in the World) on the use of stem cells in patients unresponsive to conventional therapies. His contributions to regenerative medicine have been recognized with multiple prestigious awards, including the Manchikanti Award and the Raj Excellence Award from the American Society of Interventional Pain Physicians. He is also a regular invited speaker at leading international stem cell conferences.",
-        "image": "https://tedxkprit.in/speakers-images/sairamatluri.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/sairam.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/sairam-atluri-md-24369849/"
         }
@@ -93,10 +96,10 @@
       {
         "name": "Rohit Tiwari",
         "title": "Sr. Director, DEXIAN India",
-        "designation": "Sr. Director, Dewan India",
+        "designation": "Sr. Director, Dexian India",
         "topic": "Talk 3",
         "bio": "Rohit Tiwari is the Senior Director of Sales & Marketing at Dexian India, bringing over 17 years of expertise in client engagement, digital transformation, and business growth. At Dexian, he drives client success, managed services, and long-term partnerships, enabling enterprises to accelerate digital initiatives with measurable impact. His career journey spans leading firms like Capco, Quess Corp, Allegis Group, and Collabera, where he has steered portfolio growth.",
-        "image": "https://tedxkprit.in/speakers-images/Rohit%20tiwari%20(2).jpeg",
+        "image": "https://tedxkprit.in/website-update-speakers/rohit.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/rohit-tiwari-a468551a/?originalSubdomain=in"
         }
@@ -107,7 +110,7 @@
         "designation": "MD, Neo Institute of Medical Sciences",
         "topic": "Talk 7",
         "bio": "Responding to the NMC Alert Note, she launched the first Indian-equivalent MBBS program in Uzbekistan's Tashkent region with GSL and Impuls Medical Institute. This program offers an NMC-aligned CBME curriculum, Indian faculty-led teaching, dual clinical exposure, a paid internship, FMGE/NeXT preparation from Year 1, and free PG pathways to the USA, UK, Australia, and Germany.",
-        "image": "https://tedxkprit.in/speakers-images/divyaraj.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/divya.png",
         "socialLinks": {
           "instagram": "https://www.instagram.com/dr.divya_raj?igsh=a2wzdmY4aGM3bGUy",
           "linkedin": "https://www.linkedin.com/in/dr-divya-raj/"
@@ -118,8 +121,8 @@
         "title": "Pioneering homeopathic physician, entrepreneur, and founder of the Positive Group of Clinics",
         "designation": "Founder, Dr. Care Homeopathy",
         "topic": "Talk 2",
-        "bio": "With over two decades of practice, he has established 50+ branches of Dr Care Homeopathy and Dr Positive Dental across South India, offering safe and holistic healthcare. Passionate about autism care, he founded the Dr A M Reddy Autism Center in 2016, becoming the first in India to advance homeopathic immunotherapy for ASD and ADHD. His work has brought relief to hundreds of children and hope to countless families.",
-        "image": "https://tedxkprit.in/speakers-images/amreddy.jpeg",
+        "bio": "Dr. A. M. Reddy is a renowned homeopathic physician and entrepreneur, serving as the Founder and Managing Director of Dr. Positive Health Sciences and Dr. Care Homeopathy Group, which run leading clinic chains across India. He earned his BHMS degree from Gulbarga University in 2002. With over two decades of experience, Dr. Reddy has pioneered specialized homeopathic treatments for Autism Spectrum Disorders (ASD) and holistic healthcare.",
+        "image": "https://tedxkprit.in/website-update-speakers/amreddy.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/dr-a-m-reddy-9b6b6035/?originalSubdomain=in",
           "facebook": "https://www.facebook.com/drcare.homeopathy/",
@@ -132,7 +135,7 @@
         "designation": "COO, MiQ's Bangalore Center of Excellence",
         "topic": "Talk 5",
         "bio": "Coming from a non-technical background, she has redefined leadership in tech-heavy domains by embracing discomfort, risk, and continuous learning. Recognized among Forbes India's W-Power: Self-made Women and AIM's Top 25 GCC Heads for two consecutive years, she is celebrated for blending data-driven systems with people-centric leadership. At MiQ, she champions inclusive workplaces, innovation, and empowerment, inspiring teams to transform challenges into opportunities.",
-        "image": "https://tedxkprit.in/speakers-images/ramya.jpeg",
+        "image": "https://tedxkprit.in/website-update-speakers/ramya.png",
         "socialLinks": {
           "linkedin": "https://www.linkedin.com/in/ramyaparashar/?originalSubdomain=in"
         }
@@ -140,10 +143,10 @@
       {
         "name": "Nithya Rajendran",
         "title": "Indian Classical vocalist, trained in both Hindustani and Carnatic traditions",
-        "designation": "Indian Classical Dancer",
-        "topic": "Talk 12",
+        "designation": "Indian Classical Vocalist",
+        "topic": "Talk 13",
         "bio": "She is the founder of Music Vruksh, an initiative that explores the healing and mood-elevating powers of classical music through concerts, workshops, and classes. A multiple-time TEDx speaker, including at IIT Jodhpur. Nithya bridges tradition with contemporary relevance. Her work has been featured in Outlook, The Week, CNBC TV18, India Today TV, Thrive Global, and more. She also writes on music and wellness, and has been recognized among \"Women in Music\" achievers by The Score Magazine.",
-        "image": "https://tedxkprit.in/speakers-images/Nithya.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/nitya.png",
         "socialLinks": {
           "facebook": "https://www.facebook.com/nithya.rajendran.180/",
           "instagram": "https://www.instagram.com/nithyasrajan/",
@@ -154,54 +157,80 @@
       {
         "name": "Sreekanth Erepalli",
         "title": "Founder and Managing Director",
-        "designation": "Managing Director, Gluni Healthcare",
+        "designation": "Managing Director, Giosun Healthcare",
         "topic": "Talk 6",
         "bio": "Sreekanth Erepalli, Founder of Giosun Healthcare Pvt. Ltd., is a global advocate for modern Ayurveda. With 30+ years in Ayurveda and herbal wellness, he blends traditional wisdom with science to develop certified formulations for conditions like migraines, arthritis, and thyroid issues. Since 2014, his mission has been to make Ayurveda accessible, evidence-based, and globally respected.",
-        "image": "https://tedxkprit.in/speakers-images/sreekanth.jpg",
+        "image": "https://tedxkprit.in/website-update-speakers/sreekanth.png",
         "socialLinks": {
-          "linkedin": "https://www.linkedin.com/in/sreekanth-erepalli-62707a20/"
+          "linkedin": "https://www.linkedin.com/in/mandypattison8256421487?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
         }
       },
       {
-        "name": "Sagar K Chandra",
-        "title": "Director",
-        "designation": "Director",
-        "topic": "Talk 8",
-        "bio": "Exploring the future of Artificial Intelligence and its societal impact.",
-        "image": "https://tedxkprit.in/speakers-images/sagarkchandra.jpg",
+        "name": "Vishal Raj",
+        "title": "Environmental Leader | Entrepreneur | Climate Action Advocate",
+        "designation": "Founder & Chairman, E.C.O",
+        "topic": "Talk 11",
+        "bio": "Founder and Chairman of the Environment Conserving Organisation (E.C.O). Starting his environmental journey at the age of 14, Vishal officially established E.C.O. in 2014, transforming it from a small student eco-club into one of India's most dynamic youth-led environmental NGOs. With a professional background as a SAP FICO Consultant at Accenture for five years, he now leads Mohan Raj Co. as its Managing Director, focusing on building sustainable alternatives and climate-conscious businesses.",
+        "image": "https://tedxkprit.in/website-update-speakers/vishalraj.jpg",
         "socialLinks": {
-          "linkedin": "https://www.linkedin.com/in/sagarkchandra/"
+          "instagram": "https://www.instagram.com/tiruvishalraj?igsh=MWRvbGMyaTF0c3g4aQ=="
         }
       },
       {
-        "name": "Revealing Soon",
-        "title": "Speaker Announcement Coming Soon",
-        "designation": "TBA",
-        "topic": "Talk 9",
-        "bio": "We're excited to announce this incredible speaker soon. Stay tuned for an inspiring talk that will challenge your perspectives and ignite new ideas!",
-        "image": "",
-        "revealingSoon": true
+        "name": "Swetaa Varma",
+        "title": "Tollywood Actress | Rider | Writer",
+        "designation": "Indian Actor & Storyteller",
+        "topic": "Talk 10",
+        "bio": "Swetaa Varma is an Indian actor and storyteller from Hyderabad. Known for her dynamic performances across film and television, her notable works include Pachchis (2021), Raani on Aha, Good Luck Sakhi alongside Keerthy Suresh on Prime Video, Operation Valentine (2024), and S-99 (2024). She has also appeared in Gaali and Three Half Bottles, and gained widespread recognition as a contestant on Bigg Boss Telugu Season 5, where she stayed for six weeks.",
+        "image": "https://tedxkprit.in/website-update-speakers/swetaa.jpg",
+        "socialLinks": {
+          "instagram": "https://www.instagram.com/swetaavarma?igsh=MXR4bnExOXYwZTJ6dA=="
+        }
+      },
+      {
+        "name": "Tajdar Ali",
+        "title": "We Hub",
+        "designation": "Program Manager, WE Hub Foundation",
+        "topic": "Talk 13",
+        "bio": "Mr. Shaik Mohammed Tajdar Ali Taj is a dynamic Program Manager for Social Impact & Entrepreneurship at WE Hub Foundation, Govt. of Telangana. With a strong background in program strategy, partnerships, and ecosystem development, he has impacted over 5000 students and supported 100+ startups. A Mentor of Change (NITI Aayog), he advocates for inclusive policies and cross-border collaborations. His vision focuses on innovation-led growth, public-private partnerships, and empowering underrepresented communities.",
+        "image": "https://tedxkprit.in/website-update-speakers/tajdar.png",
+        "socialLinks": {}
+      },
+      {
+        "name": "Rakesh Kurapati",
+        "title": "Founder, Fast Tracks Car Care",
+        "designation": "Entrepreneur & Visionary",
+        "topic": "Talk 14",
+        "bio": "Meet Rakesh Kurapati, the visionary Founder of Fast Tracks Car Care! With his entrepreneurial spirit, Rakesh is transforming the way we look at car care — bringing together innovation, trust, and customer-first solutions. From building a brand that stands for quality and reliability to inspiring a new wave of service excellence, his journey reflects passion, resilience, and big-picture thinking.",
+        "image": "https://tedxkprit.in/website-update-speakers/71.png",
+        "socialLinks": {
+          "linkedin": "https://www.linkedin.com/in/rakeshkurapati52/"
+        }
       }
     ],
     "agenda": [
-      { "time": "9:30 AM", "title": "Opening Ceremony", "description": "Lamp Lighting, Classical Dance, and Address by Organizers" },
-      { "time": "10:00 AM", "title": "Talk 1: Hema Thakur", "speaker": "Hema Thakur", "designation": "Academic Editor, Mentor & Author" },
-      { "time": "10:20 AM", "title": "Talk 2: Dr. A M Reddy", "speaker": "Dr. A M Reddy", "designation": "Founder, Dr. Care Homeopathy" },
-      { "time": "10:40 AM", "title": "Talk 3: Rohit Tiwari", "speaker": "Rohit Tiwari", "designation": "Sr. Director, Dewan India" },
-      { "time": "11:00 AM", "title": "Short Break", "duration": "10 minutes" },
-      { "time": "11:10 AM", "title": "Talk 4: Dr. Sairam Atluri", "speaker": "Dr. SaiRam Atluri", "designation": "Founder & CEO, Tulsi Therapeutics" },
-      { "time": "11:30 AM", "title": "Talk 5: Ramya Parashar", "speaker": "Ramya Parashar", "designation": "COO, MiQ's Bangalore Center of Excellence" },
-      { "time": "11:50 AM", "title": "Talk 6: Sreekanth Erpelli", "speaker": "Sreekanth Erepalli", "designation": "Managing Director, Gluni Healthcare" },
-      { "time": "12:10 PM", "title": "Talk 7: Dr. Divya Raj", "speaker": "Dr. Divya Raj", "designation": "MD, Neo Institute of Medical Sciences" },
-      { "time": "12:30 PM", "title": "Lunch Break", "duration": "1 hour" },
-      { "time": "1:30 PM", "title": "Western Dance Performance", "description": "Cultural Performance" },
-      { "time": "1:40 PM", "title": "Talk 8", "speaker": "Sagar K Chandra", "designation": "Director" },
-      { "time": "2:00 PM", "title": "Talk 9: Revealing Soon", "description": "Speaker announcement coming soon" },
-      { "time": "2:20 PM", "title": "Talk 10: Dr. Ravi Dasari", "speaker": "Dr. Ravi Dasari", "designation": "President, Jasper Industries" },
-      { "time": "2:40 PM", "title": "Talk 11: Dr. Deepak Mashru", "speaker": "Dr. Deepak J. Mashru", "designation": "Asst. Professor, National Forensic Sciences University" },
-      { "time": "3:00 PM", "title": "Talk 12: Nithya Rajendran", "speaker": "Nithya Rajendran", "designation": "Indian Classical Vocalist" },
-      { "time": "3:20 PM", "title": "Vote of Thanks" },
-      { "time": "3:35 PM", "title": "Felicitation & Closing Ceremony" }
+      { "time": "9:30 AM", "title": "Lamp Lighting, Classical Dance, and Address by Organizers" },
+      { "time": "10:00 AM", "title": "Talk 1: Hema Thakur (Author)", "speaker": "Hema Thakur" },
+      { "time": "10:20 AM", "title": "Talk 2: Dr. A M Reddy (Founder, Dr. Care Homeopathy)", "speaker": "Dr. A M Reddy" },
+      { "time": "10:40 AM", "title": "Talk 3: Rohit Tiwari (Sr. Director, Dexian India)", "speaker": "Rohit Tiwari" },
+      { "time": "11:00 AM", "title": "Talk 4: Dr. Sairam Atluri (Founder & CEO, Tulsi Therapeutics)", "speaker": "Dr. SaiRam Atluri" },
+      { "time": "11:20 AM", "title": "Short Break (20 min)" },
+      { "time": "11:40 AM", "title": "Talk 5: Ramya Parashar (COO, MiQ's Bangalore Center of Excellence)", "speaker": "Ramya Parashar" },
+      { "time": "12:00 PM", "title": "Talk 6: Sreekanth Erepalli (Managing Director, Giosun Healthcare)", "speaker": "Sreekanth Erepalli" },
+      { "time": "12:20 PM", "title": "Talk 7: Dr. Divya Raj (MD, Neo Institute of Medical Sciences)", "speaker": "Dr. Divya Raj" },
+      { "time": "12:40 PM", "title": "Talk 8: Dr. Deepak J. Mashru (Asst. Professor, NFSU)", "speaker": "Dr. Deepak J. Mashru" },
+      { "time": "1:00 PM", "title": "Ravi Prakash (Indian Actor)" },
+      { "time": "1:20 PM", "title": "Lunch Break (1 hr)" },
+      { "time": "2:20 PM", "title": "Western Dance Performance" },
+      { "time": "2:40 PM", "title": "Talk 10: Swetaa Varma (Indian Actor & Storyteller)", "speaker": "Swetaa Varma" },
+      { "time": "3:00 PM", "title": "Talk 11: Vishal Raj (Founder & Chairman, E.C.O)", "speaker": "Vishal Raj" },
+      { "time": "3:20 PM", "title": "Talk 12: Dr. Ravi Dasari (President, Jasper Industries)", "speaker": "Dr. Ravi Dasari" },
+      { "time": "3:40 PM", "title": "Talk 13: Nithya Rajendran (Indian Classical Vocalist)", "speaker": "Nithya Rajendran" },
+      { "time": "4:00 PM", "title": "Talk 14: Rakesh Kurapati (Founder, Fast Tracks Car Care)", "speaker": "Rakesh Kurapati" },
+      { "time": "4:20 PM", "title": "Talk 15: Ravi Prakash (Indian Actor)" },
+      { "time": "4:40 PM", "title": "Address by Mr. Anish Srivastava, Faculty Coordinator, TEDxKPRIT" },
+      { "time": "4:45 PM", "title": "Valedictory Ceremony" },
+      { "time": "4:55 PM", "title": "Closing" }
     ],
     "tags": ["TEDx", "Ideas Worth Spreading", "Innovation", "Leadership", "Inspiration"],
     "organizer": "TEDxKPRIT Team",
@@ -214,7 +243,7 @@
       "linkedin": "https://www.linkedin.com/company/tedxkprit/posts/?feedView=all"
     },
     "highlights": [
-      "12 inspiring speakers from diverse fields",
+      "14 inspiring speakers from diverse fields",
       "Theme: Break The Loop - Disruption, Awareness, Breakthrough",
       "Full day event with lunch and coffee breaks",
       "TEDxKPRIT swag kit included",
