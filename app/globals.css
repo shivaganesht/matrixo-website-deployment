@@ -191,9 +191,9 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
-  /* TEDx Theme Styles */
+  /* TEDx Theme Styles - Responsive to light/dark mode */
   .tedx-theme {
-    @apply bg-black;
+    @apply bg-white dark:bg-black;
   }
 }
 
