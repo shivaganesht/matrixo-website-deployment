@@ -1,6 +1,24 @@
 // Configuration for beta vs production features
-export const isBetaSite = process.env.NEXT_PUBLIC_SITE_MODE === 'beta' || 
-                          (typeof window !== 'undefined' && window.location.hostname === 'beta.matrixo.in');
+const checkIsBeta = () => {
+  // Check environment variable first
+  if (process.env.NEXT_PUBLIC_SITE_MODE === 'beta') {
+    return true;
+  }
+  
+  // Check hostname in browser
+  if (typeof window !== 'undefined') {
+    return window.location.hostname === 'beta.matrixo.in';
+  }
+  
+  // Check Vercel URL during build/server
+  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+    return process.env.NEXT_PUBLIC_VERCEL_URL.includes('beta');
+  }
+  
+  return false;
+};
+
+export const isBetaSite = checkIsBeta();
 
 export const config = {
   isBeta: isBetaSite,

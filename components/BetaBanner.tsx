@@ -1,12 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function BetaBanner() {
   const [isVisible, setIsVisible] = useState(true)
+  const [isBeta, setIsBeta] = useState(false)
 
-  if (!isVisible) return null
+  useEffect(() => {
+    // Check if we're on beta site
+    const checkBeta = window.location.hostname === 'beta.matrixo.in'
+    setIsBeta(checkBeta)
+  }, [])
+
+  if (!isBeta || !isVisible) return null
 
   return (
     <AnimatePresence>

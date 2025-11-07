@@ -122,7 +122,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {config.isBeta && <BetaBanner />}
+        <BetaBanner />
         <Navbar />
         <main className="min-h-screen">
           {children}

@@ -20,9 +20,11 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [isBeta, setIsBeta] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    setIsBeta(window.location.hostname === 'beta.matrixo.in')
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
     }
@@ -54,7 +56,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed ${config.isBeta ? 'top-14' : 'top-0'} w-full z-40 transition-all duration-300 bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
+      className={`fixed ${isBeta ? 'top-14' : 'top-0'} w-full z-40 transition-all duration-300 bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
     >
       <div className="container-custom px-6 py-4">
         <div className="flex items-center justify-between">
