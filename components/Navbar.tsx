@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaBars, FaTimes, FaMoon, FaSun } from 'react-icons/fa'
+import config from '@/lib/config'
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -53,7 +54,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 w-full z-50 transition-all duration-300 bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20"
+      className={`fixed ${config.isBeta ? 'top-14' : 'top-0'} w-full z-40 transition-all duration-300 bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
     >
       <div className="container-custom px-6 py-4">
         <div className="flex items-center justify-between">

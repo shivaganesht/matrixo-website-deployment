@@ -3,8 +3,10 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import BetaBanner from '@/components/BetaBanner'
 import { Toaster } from 'sonner'
 import Script from 'next/script'
+import config from '@/lib/config'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -120,6 +122,7 @@ export default function RootLayout({
           `}
         </Script>
 
+        {config.isBeta && <BetaBanner />}
         <Navbar />
         <main className="min-h-screen">
           {children}
