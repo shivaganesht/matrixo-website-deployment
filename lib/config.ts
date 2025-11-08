@@ -24,7 +24,14 @@ export const config = {
   isBeta: isBetaSite,
   siteName: isBetaSite ? 'matriXO Beta' : 'matriXO',
   features: {
-    // Beta-only features
+    // Beta-only features - matriXO Vision Platform
+    skillDNA: isBetaSite,           // AI-based skill assessment
+    growGrid: isBetaSite,           // Adaptive learning pathways
+    playCred: isBetaSite,           // Blockchain credentials
+    mentorMatrix: isBetaSite,       // AI-matched mentorship
+    impactVault: isBetaSite,        // Analytics dashboard
+    
+    // Legacy features
     advancedAnalytics: isBetaSite,
     enhancedEventManagement: isBetaSite,
     communityFeatures: isBetaSite,
