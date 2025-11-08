@@ -100,13 +100,13 @@ export default function Navbar() {
             >
               {/* Light Mode Logo (Black) */}
               <img 
-                src="/logos/matrixo-logo-black.png" 
+                src="/logos/logo-light.png" 
                 alt="matriXO Logo" 
                 className="h-10 w-auto object-contain dark:hidden"
               />
               {/* Dark Mode Logo (White) */}
               <img 
-                src="/logos/matrixo-logo-white.png" 
+                src="/logos/logo-dark.png" 
                 alt="matriXO Logo" 
                 className="h-10 w-auto object-contain hidden dark:block"
               />
