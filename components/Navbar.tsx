@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaBars, FaTimes, FaMoon, FaSun } from 'react-icons/fa'
+import { FaBars, FaTimes, FaMoon, FaSun, FaChevronDown, FaUser } from 'react-icons/fa'
 import config from '@/lib/config'
 
 const navLinks = [
@@ -15,13 +15,33 @@ const navLinks = [
   { name: 'Contact', href: '/contact' },
 ]
 
-// Beta-only links - matriXO Vision Platform
+// Beta-only links - matriXO Vision Platform with descriptions
 const betaLinks = [
-  { name: 'SkillDNA™', href: '/skilldna' },
-  { name: 'GrowGrid™', href: '/growgrid' },
-  { name: 'PlayCred™', href: '/playcred' },
-  { name: 'MentorMatrix™', href: '/mentormatrix' },
-  { name: 'ImpactVault™', href: '/impactvault' },
+  { 
+    name: 'SkillDNA™', 
+    href: '/skilldna',
+    description: 'AI-powered skill assessment and genome visualization'
+  },
+  { 
+    name: 'GrowGrid™', 
+    href: '/growgrid',
+    description: 'Adaptive learning paths with gamification'
+  },
+  { 
+    name: 'PlayCred™', 
+    href: '/playcred',
+    description: 'Blockchain-verified achievement badges'
+  },
+  { 
+    name: 'MentorMatrix™', 
+    href: '/mentormatrix',
+    description: 'AI-matched mentorship connections'
+  },
+  { 
+    name: 'ImpactVault™', 
+    href: '/impactvault',
+    description: 'Real-time analytics and skill gap insights'
+  },
 ]
 
 export default function Navbar() {
@@ -30,6 +50,8 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isBeta, setIsBeta] = useState(false)
+  const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false)
+  const [showMobileFeaturesDropdown, setShowMobileFeaturesDropdown] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -65,34 +87,45 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed ${isBeta ? 'top-14' : 'top-0'} w-full z-40 transition-all duration-300 bg-white/20 dark:bg-gray-950/20 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
+      className={`fixed top-0 w-full z-40 transition-all duration-300 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
     >
-      <div className="container-custom px-6 py-4">
+      <div className="container-custom px-6 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          {/* Logo with BETA Badge */}
+          <Link href="/" className="flex items-center gap-2 group">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative h-8 md:h-12 w-auto"
+              className="relative h-10 w-auto"
             >
               {/* Light Mode Logo (Black) */}
               <img 
-                src="/logos/logo-light.png" 
-                alt="matriXO" 
-                className="h-8 md:h-12 w-auto block dark:hidden"
+                src="/logos/matrixo-logo-black.png" 
+                alt="matriXO Logo" 
+                className="h-10 w-auto object-contain dark:hidden"
               />
               {/* Dark Mode Logo (White) */}
               <img 
-                src="/logos/logo-dark.png" 
-                alt="matriXO" 
-                className="h-8 md:h-12 w-auto hidden dark:block"
+                src="/logos/matrixo-logo-white.png" 
+                alt="matriXO Logo" 
+                className="h-10 w-auto object-contain hidden dark:block"
               />
             </motion.div>
+            
+            {/* BETA Badge */}
+            {isBeta && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full animate-pulse"
+              >
+                BETA
+              </motion.span>
+            )}
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link, index) => (
               <motion.div
                 key={link.name}
@@ -112,30 +145,53 @@ export default function Navbar() {
               </motion.div>
             ))}
             
-            {/* Beta-only navigation items */}
-            {isBeta && betaLinks.map((link, index) => (
-              <motion.div
-                key={link.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: (navLinks.length + index) * 0.1 }}
+            {/* Beta Features Dropdown */}
+            {isBeta && (
+              <div 
+                className="relative"
+                onMouseEnter={() => setShowFeaturesDropdown(true)}
+                onMouseLeave={() => setShowFeaturesDropdown(false)}
               >
-                <Link
-                  href={link.href}
-                  className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 
-                           font-bold transition-colors duration-200 relative group flex items-center gap-1"
+                <button
+                  className="flex items-center gap-1 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 
+                           font-bold transition-colors duration-200 relative group px-3 py-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20"
                 >
-                  {link.name}
-                  <span className="px-1.5 py-0.5 text-[8px] bg-purple-500 text-white rounded-full font-bold">NEW</span>
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-600 
-                                 group-hover:w-full transition-all duration-200" />
-                </Link>
-              </motion.div>
-            ))}
+                  Features
+                  <FaChevronDown className={`text-xs transition-transform duration-200 ${showFeaturesDropdown ? 'rotate-180' : ''}`} />
+                </button>
+                
+                <AnimatePresence>
+                  {showFeaturesDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
+                      {betaLinks.map((link, index) => (
+                        <Link
+                          key={link.name}
+                          href={link.href}
+                          className="block px-6 py-4 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                        >
+                          <div className="font-bold text-purple-600 dark:text-purple-400 mb-1">
+                            {link.name}
+                          </div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                            {link.description}
+                          </div>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
 
           {/* Dark Mode Toggle & CTA */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center gap-3">
             {mounted && (
               <motion.button
                 whileHover={{ scale: 1.1, rotate: 180 }}
@@ -154,7 +210,7 @@ export default function Navbar() {
                       exit={{ rotate: 90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <FaSun className="text-xl text-yellow-500" />
+                      <FaSun className="w-5 h-5" />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -164,87 +220,160 @@ export default function Navbar() {
                       exit={{ rotate: -90, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <FaMoon className="text-xl text-blue-500" />
+                      <FaMoon className="w-5 h-5" />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.button>
             )}
-
-            <Link href="/events">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary text-sm"
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link
+                href="/auth"
+                className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                         rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
               >
-                Explore Programs
-              </motion.button>
-            </Link>
+                <FaUser className="text-sm" />
+                Login
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link
+                href="/contact"
+                className="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 
+                         text-white rounded-full font-semibold hover:shadow-lg transition-all duration-200
+                         transform hover:scale-105"
+              >
+                Get Started
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-3">
             {mounted && (
-              <motion.button
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
                 aria-label="Toggle dark mode"
               >
-                {darkMode ? <FaSun className="text-lg text-yellow-500" /> : <FaMoon className="text-lg text-blue-500" />}
-              </motion.button>
+                {darkMode ? <FaSun className="w-5 h-5" /> : <FaMoon className="w-5 h-5" />}
+              </button>
             )}
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-800 dark:text-gray-200 text-2xl z-50"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle menu"
             >
-              {isOpen ? <FaTimes /> : <FaBars />}
+              {isOpen ? (
+                <FaTimes className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+              ) : (
+                <FaBars className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+              )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 pb-4"
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden"
             >
-              <div className="flex flex-col space-y-4">
+              <div className="py-4 space-y-3">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-gray-700 dark:text-gray-300 hover:text-neon-blue dark:hover:text-neon-blue 
-                             font-medium transition-colors duration-300 py-2"
+                    className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 
+                             rounded-lg transition-colors"
                   >
                     {link.name}
                   </Link>
                 ))}
-                
-                {/* Beta-only mobile links */}
-                {isBeta && betaLinks.map((link) => (
+
+                {/* Mobile Beta Features Accordion */}
+                {isBeta && (
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
+                    <button
+                      onClick={() => setShowMobileFeaturesDropdown(!showMobileFeaturesDropdown)}
+                      className="w-full flex items-center justify-between px-4 py-2 text-purple-600 dark:text-purple-400 
+                               font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors"
+                    >
+                      <span>Features</span>
+                      <FaChevronDown className={`text-xs transition-transform duration-200 ${showMobileFeaturesDropdown ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {showMobileFeaturesDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-2 space-y-2 pl-4">
+                            {betaLinks.map((link) => (
+                              <Link
+                                key={link.name}
+                                href={link.href}
+                                onClick={() => {
+                                  setIsOpen(false)
+                                  setShowMobileFeaturesDropdown(false)
+                                }}
+                                className="block px-4 py-3 bg-purple-50 dark:bg-purple-900/10 hover:bg-purple-100 dark:hover:bg-purple-900/20 
+                                         rounded-lg transition-colors"
+                              >
+                                <div className="font-bold text-purple-600 dark:text-purple-400 text-sm mb-1">
+                                  {link.name}
+                                </div>
+                                <div className="text-xs text-gray-600 dark:text-gray-400">
+                                  {link.description}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {/* Mobile CTA Buttons */}
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3 space-y-2">
                   <Link
-                    key={link.name}
-                    href={link.href}
+                    href="/auth"
                     onClick={() => setIsOpen(false)}
-                    className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 
-                             font-bold transition-colors duration-300 py-2 flex items-center gap-2"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                             rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
                   >
-                    {link.name}
-                    <span className="px-2 py-0.5 text-[10px] bg-purple-500 text-white rounded-full font-bold">NEW</span>
+                    <FaUser className="text-sm" />
+                    Login
                   </Link>
-                ))}
-                
-                <Link href="/events" onClick={() => setIsOpen(false)}>
-                  <button className="btn-primary w-full text-sm">
-                    Get Tickets
-                  </button>
-                </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center w-full px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 
+                             text-white rounded-full font-semibold hover:shadow-lg transition-all duration-200"
+                  >
+                    Get Started
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
