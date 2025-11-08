@@ -19,6 +19,7 @@ const navLinks = [
 const betaLinks = [
   { name: 'SkillDNA™', href: '/skilldna' },
   { name: 'GrowGrid™', href: '/growgrid' },
+  { name: 'PlayCred™', href: '/playcred' },
 ]
 
 export default function Navbar() {
