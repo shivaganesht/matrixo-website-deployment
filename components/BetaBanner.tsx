@@ -18,6 +18,7 @@ export default function BetaBanner() {
   return (
     <AnimatePresence>
       <motion.div
+        data-beta-banner="true"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -100, opacity: 0 }}
