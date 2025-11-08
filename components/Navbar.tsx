@@ -20,6 +20,8 @@ const betaLinks = [
   { name: 'SkillDNA™', href: '/skilldna' },
   { name: 'GrowGrid™', href: '/growgrid' },
   { name: 'PlayCred™', href: '/playcred' },
+  { name: 'MentorMatrix™', href: '/mentormatrix' },
+  { name: 'ImpactVault™', href: '/impactvault' },
 ]
 
 export default function Navbar() {
