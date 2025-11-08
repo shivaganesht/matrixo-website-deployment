@@ -18,6 +18,7 @@ const navLinks = [
 // Beta-only links - matriXO Vision Platform
 const betaLinks = [
   { name: 'SkillDNA™', href: '/skilldna' },
+  { name: 'GrowGrid™', href: '/growgrid' },
 ]
 
 export default function Navbar() {
