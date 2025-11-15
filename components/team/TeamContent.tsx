@@ -8,7 +8,7 @@ const team = [
     name: 'Shiva Ganesh Talikota',
     role: 'Founder',
     bio: 'Visionary leader driving matriXO\'s mission to empower students through technical education and hands-on workshops.',
-    image: 'https://media.licdn.com/dms/image/v2/D5603AQFTVSaOE75yMg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1722352150087?e=1762992000&v=beta&t=idxQdU1Hm7lL2MJgZvLp5i85YUAdJh1QoDjOT860d6E',
+    image: '/team/IMG_0652.JPG',
     social: {
       linkedin: 'https://linkedin.com/in/shivaganesht',
       email: 'off.matrixo@gmail.com',
