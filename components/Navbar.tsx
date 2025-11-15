@@ -114,16 +114,24 @@ export default function Navbar() {
               className="relative h-10 w-auto"
             >
               {/* Light Mode Logo (Black) */}
-              <img 
+              <motion.img 
+                key="light-logo"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: darkMode ? 0 : 1, scale: darkMode ? 0.8 : 1 }}
+                transition={{ duration: 0.3 }}
                 src="/logos/logo-light.png" 
                 alt="matriXO Logo" 
-                className="h-10 w-auto object-contain dark:hidden"
+                className="h-10 w-auto object-contain absolute inset-0"
               />
               {/* Dark Mode Logo (White) */}
-              <img 
+              <motion.img 
+                key="dark-logo"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: darkMode ? 1 : 0, scale: darkMode ? 1 : 0.8 }}
+                transition={{ duration: 0.3 }}
                 src="/logos/logo-dark.png" 
                 alt="matriXO Logo" 
-                className="h-10 w-auto object-contain hidden dark:block"
+                className="h-10 w-auto object-contain"
               />
             </motion.div>
             
