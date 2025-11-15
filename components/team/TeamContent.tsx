@@ -8,7 +8,7 @@ const team = [
     name: 'Shiva Ganesh Talikota',
     role: 'Founder',
     bio: 'Visionary leader driving matriXO\'s mission to empower students through technical education and hands-on workshops.',
-    image: '/team/IMG_0652.JPG',
+    image: '/team/shiva.webp',
     social: {
       linkedin: 'https://linkedin.com/in/shivaganesht',
       email: 'off.matrixo@gmail.com',
@@ -18,19 +18,9 @@ const team = [
     name: 'Kishan Sai Vutukuri',
     role: 'Co-Founder',
     bio: 'Tech innovator focused on building scalable platforms and creating impactful learning experiences for students.',
-    image: 'https://media.licdn.com/dms/image/v2/D5603AQGKleEXV-3SOQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1686423933308?e=1762992000&v=beta&t=zOejuSeH7MPOmEOu_GpAbLelclEOjU4fyyxf1kLR3pQ',
+    image: '/team/kishan.webp',
     social: {
       linkedin: 'https://www.linkedin.com/in/kishan-sai-vutukuri/',
-      email: 'off.matrixo@gmail.com',
-    },
-  },
-  {
-    name: 'Jatin Jangir',
-    role: 'CFO',
-    bio: 'Strategic financial leader ensuring sustainable growth and efficient operations for matriXO\'s expanding programs.',
-    image: 'https://media.licdn.com/dms/image/v2/D5603AQGz0UU_SYDg5w/profile-displayphoto-scale_400_400/B56ZmgmSWhJoAg-/0/1759336016876?e=1762992000&v=beta&t=YmRTYmr9y03ltIjVVwJv9Iju9vDhnMxxdca3Ot7zAek',
-    social: {
-      linkedin: 'https://www.linkedin.com/in/astro-jatin-jangir-0287a6228',
       email: 'off.matrixo@gmail.com',
     },
   },
