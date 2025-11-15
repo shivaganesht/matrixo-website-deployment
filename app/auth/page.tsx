@@ -137,21 +137,15 @@ export default function AuthPage() {
             className="text-left space-y-6 hidden lg:block"
           >
             <div className="space-y-4">
-              <div className="relative h-16">
-                {/* Light Mode Logo (Black) */}
-                <img 
-                  src="/logos/logo-light.png" 
-                  alt="matriXO Logo" 
-                  className="h-16 w-auto object-contain dark:hidden"
-                />
-                {/* Dark Mode Logo (White) */}
-                <img 
-                  src="/logos/logo-dark.png" 
-                  alt="matriXO Logo" 
-                  className="h-16 w-auto object-contain hidden dark:block"
-                />
+              <div>
+                <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-2">
+                  Welcome to
+                </h1>
+                <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 bg-clip-text text-transparent">
+                  matriXO
+                </h2>
               </div>
-              <p className="text-2xl font-light text-gray-300 dark:text-gray-300">
+              <p className="text-2xl font-light text-gray-600 dark:text-gray-300">
                 Vision Platform for Next-Gen Education
               </p>
             </div>
@@ -162,8 +156,8 @@ export default function AuthPage() {
                   <FaShieldAlt className="text-2xl text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">Enterprise Security</h3>
-                  <p className="text-gray-400">Bank-level encryption & data protection</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Enterprise Security</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Bank-level encryption & data protection</p>
                 </div>
               </div>
 
@@ -172,8 +166,8 @@ export default function AuthPage() {
                   <FaBolt className="text-2xl text-cyan-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">Lightning Fast</h3>
-                  <p className="text-gray-400">Instant access to all platform features</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Lightning Fast</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Instant access to all platform features</p>
                 </div>
               </div>
 
@@ -182,13 +176,13 @@ export default function AuthPage() {
                   <FaLock className="text-2xl text-pink-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">Privacy First</h3>
-                  <p className="text-gray-400">Your data, your control, always</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Privacy First</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Your data, your control, always</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-8 flex items-center gap-4 text-sm text-gray-500">
+            <div className="pt-8 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-500">
               <span>Trusted by 10,000+ students</span>
               <span>•</span>
               <span>500+ institutions</span>
