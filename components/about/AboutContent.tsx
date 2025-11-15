@@ -5,7 +5,7 @@ import { FaGraduationCap, FaLightbulb, FaRocket, FaUsers, FaHeart, FaAward } fro
 
 export default function AboutContent() {
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-8">
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white section-padding">
         <div className="container-custom px-6">
