@@ -137,9 +137,11 @@ export default function AuthPage() {
             className="text-left space-y-6 hidden lg:block"
           >
             <div className="space-y-4">
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-                MatriXO
-              </h1>
+              <img 
+                src="/logos/logo-dark.png" 
+                alt="matriXO Logo" 
+                className="h-16 w-auto object-contain"
+              />
               <p className="text-2xl font-light text-gray-300">
                 Vision Platform for Next-Gen Education
               </p>
@@ -193,10 +195,12 @@ export default function AuthPage() {
           >
             <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
               {/* Mobile Logo */}
-              <div className="lg:hidden mb-8 text-center">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-                  MatriXO
-                </h1>
+              <div className="lg:hidden mb-8 text-center flex justify-center">
+                <img 
+                  src="/logos/logo-dark.png" 
+                  alt="matriXO Logo" 
+                  className="h-12 w-auto object-contain"
+                />
               </div>
 
               {/* Tab Switcher */}

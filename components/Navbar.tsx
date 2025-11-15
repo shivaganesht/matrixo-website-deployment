@@ -102,7 +102,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-40 transition-all duration-300 bg-white/40 dark:bg-gray-950/40 backdrop-blur-2xl shadow-lg border-b border-gray-200/30 dark:border-gray-700/30`}
+      className={`fixed top-0 w-full z-40 transition-all duration-300 bg-white/95 dark:bg-gray-950/95 backdrop-blur-2xl shadow-lg border-b border-gray-200/20 dark:border-gray-700/20`}
     >
       <div className="container-custom px-6 py-3">
         <div className="flex items-center justify-between">
@@ -114,24 +114,16 @@ export default function Navbar() {
               className="relative h-10 w-auto"
             >
               {/* Light Mode Logo (Black) */}
-              <motion.img 
-                key="light-logo"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: darkMode ? 0 : 1, scale: darkMode ? 0.8 : 1 }}
-                transition={{ duration: 0.3 }}
+              <img 
                 src="/logos/logo-light.png" 
                 alt="matriXO Logo" 
-                className="h-10 w-auto object-contain absolute inset-0"
+                className="h-10 w-auto object-contain dark:hidden"
               />
               {/* Dark Mode Logo (White) */}
-              <motion.img 
-                key="dark-logo"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: darkMode ? 1 : 0, scale: darkMode ? 1 : 0.8 }}
-                transition={{ duration: 0.3 }}
+              <img 
                 src="/logos/logo-dark.png" 
                 alt="matriXO Logo" 
-                className="h-10 w-auto object-contain"
+                className="h-10 w-auto object-contain hidden dark:block"
               />
             </motion.div>
             
@@ -312,7 +304,6 @@ export default function Navbar() {
                 </Link>
               </motion.div>
             )}
-
           </div>
 
           {/* Mobile Menu Button */}
@@ -446,6 +437,14 @@ export default function Navbar() {
                       Login
                     </Link>
                   )}
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center w-full px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 
+                             text-white rounded-full font-semibold hover:shadow-lg transition-all duration-200"
+                  >
+                    Get Started
+                  </Link>
                 </div>
               </div>
             </motion.div>
