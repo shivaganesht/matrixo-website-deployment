@@ -78,23 +78,47 @@ export default function AuthPage() {
 
   const handleGoogleSignIn = async () => {
     try {
+      setLoading(true)
       await signInWithGoogle()
       toast.success('Signed in with Google!')
       router.push('/')
     } catch (error: any) {
       console.error('Google sign-in error:', error)
-      toast.error('Google sign-in failed')
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Popup blocked! Please allow popups for this site.')
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign-in cancelled')
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error('This domain is not authorized. Please add it in Firebase Console.')
+      } else {
+        toast.error('Google sign-in failed. Please try again.')
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleGithubSignIn = async () => {
     try {
+      setLoading(true)
       await signInWithGithub()
       toast.success('Signed in with GitHub!')
       router.push('/')
     } catch (error: any) {
       console.error('GitHub sign-in error:', error)
-      toast.error('GitHub sign-in failed')
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Popup blocked! Please allow popups for this site.')
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign-in cancelled')
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error('This domain is not authorized. Please add it in Firebase Console.')
+      } else if (error.code === 'auth/operation-not-allowed') {
+        toast.error('GitHub sign-in not enabled. Please enable it in Firebase Console.')
+      } else {
+        toast.error('GitHub sign-in not configured yet. Use email/password instead.')
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
