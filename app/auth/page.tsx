@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { FaUser, FaEnvelope, FaLock, FaGoogle, FaGithub } from 'react-icons/fa'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { FaGoogle, FaGithub, FaArrowRight, FaShieldAlt, FaBolt, FaLock } from 'react-icons/fa'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/AuthContext'
@@ -17,27 +17,9 @@ export default function AuthPage() {
     confirmPassword: ''
   })
   const [loading, setLoading] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const containerRef = useRef<HTMLDivElement>(null)
   
   const router = useRouter()
   const { signIn, signUp, signInWithGoogle, signInWithGithub } = useAuth()
-
-  // Mouse tracking effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect()
-        setMousePosition({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
-        })
-      }
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -77,455 +59,333 @@ export default function AuthPage() {
   }
 
   const handleGoogleSignIn = async () => {
+    setLoading(true)
     try {
-      setLoading(true)
       await signInWithGoogle()
-      toast.success('Signed in with Google!')
+      toast.success('Signed in successfully!')
       router.push('/')
     } catch (error: any) {
       console.error('Google sign-in error:', error)
-      if (error.code === 'auth/popup-blocked') {
-        toast.error('Popup blocked! Please allow popups for this site.')
-      } else if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('Sign-in cancelled')
-      } else if (error.code === 'auth/unauthorized-domain') {
-        toast.error('This domain is not authorized. Please add it in Firebase Console.')
-      } else {
-        toast.error('Google sign-in failed. Please try again.')
-      }
-    } finally {
       setLoading(false)
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.info('Sign-in cancelled')
+        return
+      }
+      
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Popup blocked! Please allow popups.')
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error('Domain not authorized in Firebase Console.')
+      } else {
+        toast.error('Google sign-in failed.')
+      }
+      return
     }
+    setLoading(false)
   }
 
   const handleGithubSignIn = async () => {
+    setLoading(true)
     try {
-      setLoading(true)
       await signInWithGithub()
-      toast.success('Signed in with GitHub!')
+      toast.success('Signed in successfully!')
       router.push('/')
     } catch (error: any) {
       console.error('GitHub sign-in error:', error)
-      if (error.code === 'auth/popup-blocked') {
-        toast.error('Popup blocked! Please allow popups for this site.')
-      } else if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('Sign-in cancelled')
-      } else if (error.code === 'auth/unauthorized-domain') {
-        toast.error('This domain is not authorized. Please add it in Firebase Console.')
-      } else if (error.code === 'auth/operation-not-allowed') {
-        toast.error('GitHub sign-in not enabled. Please enable it in Firebase Console.')
-      } else {
-        toast.error('GitHub sign-in not configured yet. Use email/password instead.')
-      }
-    } finally {
       setLoading(false)
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.info('Sign-in cancelled')
+        return
+      }
+      
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Popup blocked! Please allow popups.')
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error('Domain not authorized in Firebase Console.')
+      } else {
+        toast.error('GitHub sign-in failed.')
+      }
+      return
     }
+    setLoading(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   return (
-    <div 
-      ref={containerRef}
-      className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-900 py-20 relative overflow-hidden"
-    >
-      {/* Cursor Follower Effect */}
-      <motion.div
-        className="fixed pointer-events-none z-50 mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 10,
-          y: mousePosition.y - 10,
-        }}
-        transition={{
-          type: "spring",
-          damping: 30,
-          stiffness: 200,
-          mass: 0.5
-        }}
-      >
-        <div className="w-5 h-5 bg-white rounded-full opacity-50" />
-      </motion.div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white relative overflow-hidden">
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
       
-      <motion.div
-        className="fixed pointer-events-none z-40"
-        animate={{
-          x: mousePosition.x - 20,
-          y: mousePosition.y - 20,
-        }}
-        transition={{
-          type: "spring",
-          damping: 20,
-          stiffness: 100,
-          mass: 0.8
-        }}
-      >
-        <div className="w-10 h-10 border-2 border-purple-400 rounded-full opacity-30" />
-      </motion.div>
+      {/* Gradient Orbs */}
+      <div className="absolute top-0 -left-4 w-96 h-96 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+      <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
 
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-blue-400/30 to-purple-600/30 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-          className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-to-br from-purple-400/30 to-pink-600/30 rounded-full blur-3xl"
-        />
-      </div>
-
-      <div className="max-w-md mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/20"
-        >
-          {/* Animated Header */}
-          <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 p-8 text-center overflow-hidden">
-            {/* Floating particles */}
-            <motion.div
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute top-4 left-4 w-2 h-2 bg-white rounded-full"
-            />
-            <motion.div
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-              className="absolute top-8 right-8 w-3 h-3 bg-white rounded-full"
-            />
-            <motion.div
-              animate={{
-                y: [0, -25, 0],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{ duration: 3.5, repeat: Infinity, delay: 0.5 }}
-              className="absolute bottom-4 right-12 w-2 h-2 bg-white rounded-full"
-            />
-
-            <motion.div
-              initial={{ scale: 0.5, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', duration: 0.8 }}
-              className="relative"
-            >
-              <motion.div
-                animate={{
-                  boxShadow: [
-                    '0 0 20px rgba(255,255,255,0.3)',
-                    '0 0 40px rgba(255,255,255,0.5)',
-                    '0 0 20px rgba(255,255,255,0.3)'
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="inline-block p-4 bg-white/20 rounded-full mb-4"
-              >
-                <FaUser className="w-12 h-12 text-white" />
-              </motion.div>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-3xl font-bold text-white mb-2"
-            >
-              {isLogin ? 'Welcome Back! 👋' : 'Join matriXO 🚀'}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-blue-100"
-            >
-              {isLogin ? 'Access your Vision Platform features' : 'Start your learning journey today'}
-            </motion.p>
-          </div>
-
-          {/* Form */}
-          <div className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Full Name
-                  </label>
-                  <div className="relative group">
-                    <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-purple-500 transition-colors" />
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl 
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                               focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                               transition-all duration-200 hover:border-purple-300"
-                      placeholder="John Doe"
-                      required={!isLogin}
-                    />
-                  </div>
-                </motion.div>
-              )}
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Email Address
-                </label>
-                <div className="relative group">
-                  <FaEnvelope className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-purple-500 transition-colors" />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl 
-                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                             focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                             transition-all duration-200 hover:border-purple-300"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Password
-                </label>
-                <div className="relative group">
-                  <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-purple-500 transition-colors" />
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl 
-                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                             focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                             transition-all duration-200 hover:border-purple-300"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-              </motion.div>
-
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    Confirm Password
-                  </label>
-                  <div className="relative group">
-                    <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-purple-500 transition-colors" />
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl 
-                               bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                               focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                               transition-all duration-200 hover:border-purple-300"
-                      placeholder="••••••••"
-                      required={!isLogin}
-                    />
-                  </div>
-                </motion.div>
-              )}
-
-              {isLogin && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="flex items-center justify-between"
-                >
-                  <label className="flex items-center cursor-pointer group">
-                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer" />
-                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                      Remember me
-                    </span>
-                  </label>
-                  <Link href="#" className="text-sm font-medium text-purple-600 hover:text-purple-700 dark:hover:text-purple-400 transition-colors">
-                    Forgot password?
-                  </Link>
-                </motion.div>
-              )}
-
-              <motion.button
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                whileHover={{ scale: 1.02, boxShadow: '0 10px 40px rgba(147, 51, 234, 0.3)' }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-xl
-                         hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
-                         relative overflow-hidden group"
-              >
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  {loading ? (
-                    <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                      />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      {isLogin ? '🔓 Login Now' : '🚀 Create Account'}
-                    </>
-                  )}
-                </span>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                />
-              </motion.button>
-            </form>
-
-            {/* Social Login */}
-            <div className="mt-8">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t-2 border-gray-200 dark:border-gray-600" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="mt-6 grid grid-cols-2 gap-4"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  disabled={loading}
-                  className="flex items-center justify-center gap-3 px-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl
-                           hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all duration-200
-                           disabled:opacity-50 disabled:cursor-not-allowed group"
-                >
-                  <FaGoogle className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Google</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handleGithubSignIn}
-                  disabled={loading}
-                  className="flex items-center justify-center gap-3 px-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl
-                           hover:border-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200
-                           disabled:opacity-50 disabled:cursor-not-allowed group"
-                >
-                  <FaGithub className="w-5 h-5 text-gray-900 dark:text-white group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">GitHub</span>
-                </motion.button>
-              </motion.div>
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-12">
+        <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          
+          {/* Left Side - Branding */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-left space-y-6 hidden lg:block"
+          >
+            <div className="space-y-4">
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                MatriXO
+              </h1>
+              <p className="text-2xl font-light text-gray-300">
+                Vision Platform for Next-Gen Education
+              </p>
             </div>
 
-            {/* Toggle Login/Signup */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="mt-8 text-center"
-            >
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {isLogin ? "Don't have an account?" : 'Already have an account?'}
-                {' '}
-                <button
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 
-                           hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-                >
-                  {isLogin ? 'Sign up free →' : '← Login here'}
-                </button>
-              </p>
-            </motion.div>
-          </div>
+            <div className="space-y-4 pt-8">
+              <div className="flex items-start gap-4 group">
+                <div className="p-3 bg-purple-500/10 rounded-xl group-hover:bg-purple-500/20 transition-colors">
+                  <FaShieldAlt className="text-2xl text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Enterprise Security</h3>
+                  <p className="text-gray-400">Bank-level encryption & data protection</p>
+                </div>
+              </div>
 
-          {/* Success Indicators */}
+              <div className="flex items-start gap-4 group">
+                <div className="p-3 bg-cyan-500/10 rounded-xl group-hover:bg-cyan-500/20 transition-colors">
+                  <FaBolt className="text-2xl text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Lightning Fast</h3>
+                  <p className="text-gray-400">Instant access to all platform features</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 group">
+                <div className="p-3 bg-pink-500/10 rounded-xl group-hover:bg-pink-500/20 transition-colors">
+                  <FaLock className="text-2xl text-pink-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Privacy First</h3>
+                  <p className="text-gray-400">Your data, your control, always</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-8 flex items-center gap-4 text-sm text-gray-500">
+              <span>Trusted by 10,000+ students</span>
+              <span>•</span>
+              <span>500+ institutions</span>
+            </div>
+          </motion.div>
+
+          {/* Right Side - Auth Form */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="px-8 pb-6"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full"
           >
-            <div className="flex items-center justify-center gap-6 text-xs text-gray-500 dark:text-gray-400">
-              <div className="flex items-center gap-1">
-                <span className="text-green-500">✓</span>
-                Secure
+            <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
+              {/* Mobile Logo */}
+              <div className="lg:hidden mb-8 text-center">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                  MatriXO
+                </h1>
               </div>
-              <div className="flex items-center gap-1">
-                <span className="text-green-500">✓</span>
-                Encrypted
+
+              {/* Tab Switcher */}
+              <div className="flex gap-2 mb-8 p-1 bg-gray-800/50 rounded-xl">
+                <button
+                  onClick={() => setIsLogin(true)}
+                  className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+                    isLogin
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => setIsLogin(false)}
+                  className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+                    !isLogin
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  Sign Up
+                </button>
               </div>
-              <div className="flex items-center gap-1">
-                <span className="text-green-500">✓</span>
-                Fast Login
+
+              {/* OAuth Buttons */}
+              <div className="space-y-3 mb-8">
+                <button
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                >
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-gray-400 border-t-gray-900 rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <FaGoogle className="text-xl" />
+                      <span>Continue with Google</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={handleGithubSignIn}
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-gray-700"
+                >
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <FaGithub className="text-xl" />
+                      <span>Continue with GitHub</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="relative mb-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-800" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-gray-900/50 text-gray-500">Or continue with email</span>
+                </div>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <AnimatePresence mode="wait">
+                  {!isLogin && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Full Name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required={!isLogin}
+                        className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                />
+
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                />
+
+                <AnimatePresence mode="wait">
+                  {!isLogin && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required={!isLogin}
+                        className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {isLogin && (
+                  <div className="flex justify-end">
+                    <Link href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300 transition-colors">
+                      Forgot password?
+                    </Link>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                >
+                  {loading ? (
+                    <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>{isLogin ? 'Sign In' : 'Create Account'}</span>
+                      <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-8 text-center text-sm text-gray-400">
+                By continuing, you agree to our{' '}
+                <Link href="/terms" className="text-purple-400 hover:text-purple-300">
+                  Terms
+                </Link>{' '}
+                and{' '}
+                <Link href="/privacy" className="text-purple-400 hover:text-purple-300">
+                  Privacy Policy
+                </Link>
               </div>
             </div>
           </motion.div>
-        </motion.div>
 
-        {/* Back to Home */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-8"
-        >
-          <Link href="/" className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 font-medium">
-            ← Back to Home
-          </Link>
-        </motion.div>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   )
 }
