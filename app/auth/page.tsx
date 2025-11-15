@@ -126,7 +126,7 @@ export default function AuthPage() {
       <div className="absolute top-0 -right-4 w-96 h-96 bg-cyan-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
       <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
 
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-8 py-24">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
           {/* Left Side - Branding */}
@@ -196,7 +196,7 @@ export default function AuthPage() {
             transition={{ duration: 0.6 }}
             className="w-full"
           >
-            <div className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-gray-300 dark:border-gray-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
+            <div className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-gray-300 dark:border-gray-800 rounded-3xl p-6 lg:p-8 shadow-2xl">
               {/* Mobile Logo */}
               <div className="lg:hidden mb-8 flex justify-center relative h-12">
                 {/* Light Mode Logo (Black) */}
@@ -214,10 +214,10 @@ export default function AuthPage() {
               </div>
 
               {/* Tab Switcher */}
-              <div className="flex gap-2 mb-8 p-1 bg-gray-200 dark:bg-gray-800/50 rounded-xl">
+              <div className="flex gap-2 mb-6 p-1 bg-gray-200 dark:bg-gray-800/50 rounded-xl">
                 <button
                   onClick={() => setIsLogin(true)}
-                  className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+                  className={`flex-1 py-2.5 px-5 rounded-lg font-medium transition-all ${
                     isLogin
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -227,7 +227,7 @@ export default function AuthPage() {
                 </button>
                 <button
                   onClick={() => setIsLogin(false)}
-                  className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
+                  className={`flex-1 py-2.5 px-5 rounded-lg font-medium transition-all ${
                     !isLogin
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -238,11 +238,11 @@ export default function AuthPage() {
               </div>
 
               {/* OAuth Buttons */}
-              <div className="space-y-3 mb-8">
+              <div className="space-y-2.5 mb-6">
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  className="w-full flex items-center justify-center gap-3 py-3 px-5 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-gray-400 border-t-gray-900 rounded-full animate-spin" />
@@ -257,7 +257,7 @@ export default function AuthPage() {
                 <button
                   onClick={handleGithubSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-gray-800 dark:bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 dark:hover:bg-gray-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-gray-700 dark:border-gray-700"
+                  className="w-full flex items-center justify-center gap-3 py-3 px-5 bg-gray-800 dark:bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 dark:hover:bg-gray-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-gray-700 dark:border-gray-700"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
@@ -270,7 +270,7 @@ export default function AuthPage() {
                 </button>
               </div>
 
-              <div className="relative mb-8">
+              <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300 dark:border-gray-800" />
                 </div>
@@ -280,7 +280,7 @@ export default function AuthPage() {
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <AnimatePresence mode="wait">
                   {!isLogin && (
                     <motion.div
@@ -296,7 +296,7 @@ export default function AuthPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required={!isLogin}
-                        className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
+                        className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                       />
                     </motion.div>
                   )}
@@ -309,7 +309,7 @@ export default function AuthPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
+                  className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                 />
 
                 <input
@@ -319,7 +319,7 @@ export default function AuthPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
+                  className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                 />
 
                 <AnimatePresence mode="wait">
@@ -337,7 +337,7 @@ export default function AuthPage() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required={!isLogin}
-                        className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
+                        className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                       />
                     </motion.div>
                   )}
@@ -354,7 +354,7 @@ export default function AuthPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                  className="w-full py-3 px-5 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                 >
                   {loading ? (
                     <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
