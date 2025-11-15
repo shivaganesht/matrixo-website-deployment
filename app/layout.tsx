@@ -122,13 +122,13 @@ export default function RootLayout({
           `}
         </Script>
 
-        <Navbar />
         <AuthProvider>
+          <Navbar />
           <main className="min-h-screen pt-20">
             {children}
           </main>
+          <Footer />
         </AuthProvider>
-        <Footer />
         <Toaster position="top-right" richColors />
       </body>
     </html>
