@@ -4,10 +4,10 @@ import { motion } from 'framer-motion'
 import { FaUsers, FaGraduationCap, FaCalendarCheck, FaChartLine } from 'react-icons/fa'
 
 const stats = [
-  { icon: FaUsers, value: '1,000+', label: 'Students Trained' },
-  { icon: FaCalendarCheck, value: '20+', label: 'Events Conducted' },
-  { icon: FaGraduationCap, value: '15+', label: 'Workshops Conducted' },
-  { icon: FaChartLine, value: '5+', label: 'Partner Institutions' },
+  { icon: FaUsers, value: 'Growing', label: 'Community of Learners' },
+  { icon: FaCalendarCheck, value: 'Regular', label: 'Events & Workshops' },
+  { icon: FaGraduationCap, value: 'Quality', label: 'Technical Training' },
+  { icon: FaChartLine, value: 'Expanding', label: 'Partner Network' },
 ]
 
 export default function Stats() {

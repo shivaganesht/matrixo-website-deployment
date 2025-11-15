@@ -59,23 +59,20 @@ export default function Partners() {
           viewport={{ once: true }}
           className="mt-16 text-center glass-card p-8"
         >
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
-            Join our growing network of partners
+          <h3 className="text-2xl font-bold mb-4 gradient-text">
+            Interested in Partnering with Us?
+          </h3>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+            Join our growing network of educational institutions and event organizers
           </p>
-          <div className="flex flex-wrap justify-center gap-8 text-center">
-            <div>
-              <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">5+</h3>
-              <p className="text-gray-600 dark:text-gray-400">Partner Institutions</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">1,000+</h3>
-              <p className="text-gray-600 dark:text-gray-400">Students Reached</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">20+</h3>
-              <p className="text-gray-600 dark:text-gray-400">Events Organized</p>
-            </div>
-          </div>
+          <a
+            href="/contact"
+            className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 
+                     text-white rounded-full font-semibold hover:shadow-lg transition-all duration-200
+                     transform hover:scale-105"
+          >
+            Contact Us
+          </a>
         </motion.div>
       </div>
     </section>

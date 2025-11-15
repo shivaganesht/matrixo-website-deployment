@@ -4,6 +4,9 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaUser, FaEnvelope, FaLock, FaGoogle, FaGithub } from 'react-icons/fa'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/AuthContext'
+import { toast } from 'sonner'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -13,11 +16,68 @@ export default function AuthPage() {
     password: '',
     confirmPassword: ''
   })
+  const [loading, setLoading] = useState(false)
+  
+  const router = useRouter()
+  const { signIn, signUp, signInWithGoogle, signInWithGithub } = useAuth()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement authentication logic
-    console.log('Form submitted:', formData)
+    setLoading(true)
+
+    try {
+      if (isLogin) {
+        await signIn(formData.email, formData.password)
+        toast.success('Welcome back!')
+        router.push('/')
+      } else {
+        if (formData.password !== formData.confirmPassword) {
+          toast.error('Passwords do not match')
+          setLoading(false)
+          return
+        }
+        await signUp(formData.email, formData.password, formData.name)
+        toast.success('Account created successfully!')
+        router.push('/')
+      }
+    } catch (error: any) {
+      console.error('Auth error:', error)
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Email already in use')
+      } else if (error.code === 'auth/weak-password') {
+        toast.error('Password should be at least 6 characters')
+      } else if (error.code === 'auth/invalid-email') {
+        toast.error('Invalid email address')
+      } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        toast.error('Invalid email or password')
+      } else {
+        toast.error(error.message || 'Authentication failed')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle()
+      toast.success('Signed in with Google!')
+      router.push('/')
+    } catch (error: any) {
+      console.error('Google sign-in error:', error)
+      toast.error('Google sign-in failed')
+    }
+  }
+
+  const handleGithubSignIn = async () => {
+    try {
+      await signInWithGithub()
+      toast.success('Signed in with GitHub!')
+      router.push('/')
+    } catch (error: any) {
+      console.error('GitHub sign-in error:', error)
+      toast.error('GitHub sign-in failed')
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,10 +219,11 @@ export default function AuthPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
+                disabled={loading}
                 className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg
-                         hover:shadow-lg transition-all duration-200"
+                         hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLogin ? 'Login' : 'Create Account'}
+                {loading ? 'Processing...' : (isLogin ? 'Login' : 'Create Account')}
               </motion.button>
             </form>
 
@@ -178,13 +239,21 @@ export default function AuthPage() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <button 
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                   <FaGoogle className="w-5 h-5 text-red-500" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Google</span>
                 </button>
-                <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
-                                 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <button 
+                  type="button"
+                  onClick={handleGithubSignIn}
+                  disabled={loading}
+                  className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                                 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                   <FaGithub className="w-5 h-5 text-gray-900 dark:text-white" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">GitHub</span>
                 </button>
@@ -206,12 +275,8 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {/* Coming Soon Badge */}
-          <div className="bg-gradient-to-r from-amber-400 to-orange-500 py-3 text-center">
-            <p className="text-sm font-bold text-white">
-              🚀 Authentication Coming Soon - Full Integration in Progress
-            </p>
-          </div>
+          {/* Coming Soon Badge - REMOVED, Now fully functional */}
+          
         </motion.div>
 
         {/* Back to Home */}

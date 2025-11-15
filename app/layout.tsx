@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { AuthProvider } from '@/lib/AuthContext'
 import { Toaster } from 'sonner'
 import Script from 'next/script'
 import config from '@/lib/config'
@@ -122,9 +123,11 @@ export default function RootLayout({
         </Script>
 
         <Navbar />
-        <main className="min-h-screen pt-20">
-          {children}
-        </main>
+        <AuthProvider>
+          <main className="min-h-screen pt-20">
+            {children}
+          </main>
+        </AuthProvider>
         <Footer />
         <Toaster position="top-right" richColors />
       </body>

@@ -60,16 +60,29 @@ export default function AboutContent() {
             >
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-6xl font-bold gradient-text mb-2">5,000+</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-lg">Students Trained</p>
-                </div>
-                <div>
-                  <h3 className="text-6xl font-bold gradient-text mb-2">100+</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-lg">Programs Conducted</p>
-                </div>
-                <div>
-                  <h3 className="text-6xl font-bold gradient-text mb-2">20+</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-lg">Partner Colleges</p>
+                  <h3 className="text-4xl font-bold gradient-text mb-4">Why Choose matriXO?</h3>
+                  <ul className="space-y-4 text-gray-600 dark:text-gray-400 text-lg">
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span>Hands-on technical training programs</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span>Industry-relevant curriculum</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span>Expert mentorship and guidance</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span>Growing partner network</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span>Career-focused approach</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </motion.div>

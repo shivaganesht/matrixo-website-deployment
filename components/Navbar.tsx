@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaBars, FaTimes, FaMoon, FaSun, FaChevronDown, FaUser } from 'react-icons/fa'
+import { FaBars, FaTimes, FaMoon, FaSun, FaChevronDown, FaUser, FaSignOutAlt } from 'react-icons/fa'
+import { useAuth } from '@/lib/AuthContext'
+import { toast } from 'sonner'
 import config from '@/lib/config'
 
 const navLinks = [
@@ -52,6 +54,9 @@ export default function Navbar() {
   const [isBeta, setIsBeta] = useState(false)
   const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false)
   const [showMobileFeaturesDropdown, setShowMobileFeaturesDropdown] = useState(false)
+  const [showUserDropdown, setShowUserDropdown] = useState(false)
+  
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     setMounted(true)
@@ -83,6 +88,16 @@ export default function Navbar() {
     }
     
     setDarkMode(newDarkMode)
+  }
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      toast.success('Logged out successfully')
+      setShowUserDropdown(false)
+    } catch (error) {
+      toast.error('Failed to logout')
+    }
   }
 
   return (
@@ -227,20 +242,68 @@ export default function Navbar() {
               </motion.button>
             )}
             
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Link
-                href="/auth"
-                className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                         rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+            {/* User Profile or Login Button */}
+            {user ? (
+              <div 
+                className="relative"
+                onMouseEnter={() => setShowUserDropdown(true)}
+                onMouseLeave={() => setShowUserDropdown(false)}
               >
-                <FaUser className="text-sm" />
-                Login
-              </Link>
-            </motion.div>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                           rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                >
+                  <FaUser className="text-sm" />
+                  {user.displayName || user.email?.split('@')[0]}
+                </motion.button>
+                
+                <AnimatePresence>
+                  {showUserDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                          {user.displayName || 'User'}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          {user.email}
+                        </p>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full px-4 py-3 text-left flex items-center gap-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      >
+                        <FaSignOutAlt />
+                        <span>Logout</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link
+                  href="/auth"
+                  className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                           rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                >
+                  <FaUser className="text-sm" />
+                  Login
+                </Link>
+              </motion.div>
+            )}
 
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -356,15 +419,39 @@ export default function Navbar() {
 
                 {/* Mobile CTA Buttons */}
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3 space-y-2">
-                  <Link
-                    href="/auth"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                             rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
-                  >
-                    <FaUser className="text-sm" />
-                    Login
-                  </Link>
+                  {user ? (
+                    <>
+                      <div className="px-4 py-3 bg-purple-50 dark:bg-purple-900/10 rounded-lg">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                          {user.displayName || 'User'}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          {user.email}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          handleLogout()
+                          setIsOpen(false)
+                        }}
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-red-500 text-red-600 dark:text-red-400 
+                                 rounded-full font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                      >
+                        <FaSignOutAlt className="text-sm" />
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/auth"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                               rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                    >
+                      <FaUser className="text-sm" />
+                      Login
+                    </Link>
+                  )}
                   <Link
                     href="/contact"
                     onClick={() => setIsOpen(false)}
