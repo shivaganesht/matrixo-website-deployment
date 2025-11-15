@@ -117,7 +117,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-950 dark:via-gray-900 dark:to-black text-gray-900 dark:text-white relative overflow-hidden">
       {/* Animated Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
       
@@ -137,12 +137,21 @@ export default function AuthPage() {
             className="text-left space-y-6 hidden lg:block"
           >
             <div className="space-y-4">
-              <img 
-                src="/logos/logo-dark.png" 
-                alt="matriXO Logo" 
-                className="h-16 w-auto object-contain"
-              />
-              <p className="text-2xl font-light text-gray-300">
+              <div className="relative h-16">
+                {/* Light Mode Logo (Black) */}
+                <img 
+                  src="/logos/logo-light.png" 
+                  alt="matriXO Logo" 
+                  className="h-16 w-auto object-contain dark:hidden"
+                />
+                {/* Dark Mode Logo (White) */}
+                <img 
+                  src="/logos/logo-dark.png" 
+                  alt="matriXO Logo" 
+                  className="h-16 w-auto object-contain hidden dark:block"
+                />
+              </div>
+              <p className="text-2xl font-light text-gray-300 dark:text-gray-300">
                 Vision Platform for Next-Gen Education
               </p>
             </div>
@@ -193,24 +202,31 @@ export default function AuthPage() {
             transition={{ duration: 0.6 }}
             className="w-full"
           >
-            <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
+            <div className="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-gray-300 dark:border-gray-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
               {/* Mobile Logo */}
-              <div className="lg:hidden mb-8 text-center flex justify-center">
+              <div className="lg:hidden mb-8 flex justify-center relative h-12">
+                {/* Light Mode Logo (Black) */}
+                <img 
+                  src="/logos/logo-light.png" 
+                  alt="matriXO Logo" 
+                  className="h-12 w-auto object-contain dark:hidden"
+                />
+                {/* Dark Mode Logo (White) */}
                 <img 
                   src="/logos/logo-dark.png" 
                   alt="matriXO Logo" 
-                  className="h-12 w-auto object-contain"
+                  className="h-12 w-auto object-contain hidden dark:block"
                 />
               </div>
 
               {/* Tab Switcher */}
-              <div className="flex gap-2 mb-8 p-1 bg-gray-800/50 rounded-xl">
+              <div className="flex gap-2 mb-8 p-1 bg-gray-200 dark:bg-gray-800/50 rounded-xl">
                 <button
                   onClick={() => setIsLogin(true)}
                   className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
                     isLogin
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   Sign In
@@ -220,7 +236,7 @@ export default function AuthPage() {
                   className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all ${
                     !isLogin
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                      : 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   Sign Up
@@ -247,7 +263,7 @@ export default function AuthPage() {
                 <button
                   onClick={handleGithubSignIn}
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-gray-700"
+                  className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-gray-800 dark:bg-gray-800 text-white rounded-xl font-semibold hover:bg-gray-700 dark:hover:bg-gray-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-gray-700 dark:border-gray-700"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
@@ -262,10 +278,10 @@ export default function AuthPage() {
 
               <div className="relative mb-8">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-800" />
+                  <div className="w-full border-t border-gray-300 dark:border-gray-800" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-gray-900/50 text-gray-500">Or continue with email</span>
+                  <span className="px-4 bg-white/50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-500">Or continue with email</span>
                 </div>
               </div>
 
@@ -286,7 +302,7 @@ export default function AuthPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required={!isLogin}
-                        className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                        className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                       />
                     </motion.div>
                   )}
@@ -299,7 +315,7 @@ export default function AuthPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                  className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                 />
 
                 <input
@@ -309,7 +325,7 @@ export default function AuthPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                  className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                 />
 
                 <AnimatePresence mode="wait">
@@ -327,7 +343,7 @@ export default function AuthPage() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required={!isLogin}
-                        className="w-full py-4 px-6 bg-gray-800/50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
+                        className="w-full py-4 px-6 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
                       />
                     </motion.div>
                   )}
@@ -357,13 +373,13 @@ export default function AuthPage() {
                 </button>
               </form>
 
-              <div className="mt-8 text-center text-sm text-gray-400">
+              <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
                 By continuing, you agree to our{' '}
-                <Link href="/terms" className="text-purple-400 hover:text-purple-300">
+                <Link href="/terms" className="text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300">
                   Terms
                 </Link>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-purple-400 hover:text-purple-300">
+                <Link href="/privacy" className="text-purple-500 dark:text-purple-400 hover:text-purple-600 dark:hover:text-purple-300">
                   Privacy Policy
                 </Link>
               </div>
