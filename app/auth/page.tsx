@@ -141,7 +141,7 @@ export default function AuthPage() {
                 <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-2">
                   Experience
                 </h1>
-                <h2 className="text-6xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 bg-clip-text text-transparent">
+                <h2 className="text-5xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 bg-clip-text text-transparent pb-1 leading-tight">
                   Personalized Learning
                 </h2>
               </div>
@@ -157,7 +157,7 @@ export default function AuthPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Enterprise Security</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Bank-level encryption & data protection</p>
+                  <p className="text-gray-600 dark:text-gray-400">End-to-end encryption & data protection</p>
                 </div>
               </div>
 
