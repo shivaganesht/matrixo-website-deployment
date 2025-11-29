@@ -1,6 +1,6 @@
 # matriXO Website
 
-A modern, responsive event ticketing platform for matriXO - an EdTech startup incubated at KPRIT IIC.
+A modern, responsive event ticketing platform for matriXO - an EdTech startup supported by KPRISE (KPR Foundation for Innovation and Social Empowerment).
 
 ## Features
 
@@ -245,6 +245,6 @@ For support, email hello@matrixo.in or visit our contact page.
 
 ## Acknowledgments
 
-- Incubated at KPRIT IIC
+- Supported by KPRISE (KPR Foundation for Innovation and Social Empowerment)
 - Partners: TEDxIARE, TEDxCMRIT, Smartzy Edu, TEDxSreyas Institute
 - Built with modern web technologies

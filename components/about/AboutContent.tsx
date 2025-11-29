@@ -214,16 +214,23 @@ export default function AboutContent() {
             className="text-center max-w-4xl mx-auto glass-card p-12"
           >
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
-              Proudly Incubated at <span className="gradient-text">KPRIT IIC</span>
+              Supported by <span className="gradient-text">KPRISE</span>
             </h2>
+            <div className="flex justify-center mb-6">
+              <img 
+                src="/logos/kprise-logo.png" 
+                alt="KPRISE Logo" 
+                className="h-16 w-auto object-contain"
+              />
+            </div>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-              We&apos;re honored to be part of the KPRIT Industrial Incubation Center, which has provided us with 
-              mentorship, resources, and a collaborative environment to grow. This partnership has been instrumental 
-              in our journey from an idea to a thriving platform serving thousands of students.
+              We&apos;re proud to be supported by <strong>KPR Foundation for Innovation and Social Empowerment (KPRISE)</strong>, 
+              which has provided us with mentorship, resources, and a collaborative environment to grow. This partnership 
+              has been instrumental in our journey from an idea to a thriving platform serving thousands of students.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-400">
               <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">EdTech Startup</span>
-              <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">Incubated 2023</span>
+              <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">Supported 2023</span>
               <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">Hyderabad, India</span>
             </div>
           </motion.div>
