@@ -217,11 +217,11 @@ export default function AboutContent() {
               Supported by <span className="gradient-text">KPRISE</span>
             </h2>
             <div className="flex justify-center mb-6">
-              <div className="bg-white dark:bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+              <div className="dark:bg-white p-4 rounded-xl">
                 <img 
                   src="/logos/kprise-logo.png" 
                   alt="KPRISE Logo" 
-                  className="h-16 w-auto object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
+                  className="h-16 w-auto object-contain"
                 />
               </div>
             </div>
