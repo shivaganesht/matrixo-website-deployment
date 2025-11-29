@@ -217,11 +217,13 @@ export default function AboutContent() {
               Supported by <span className="gradient-text">KPRISE</span>
             </h2>
             <div className="flex justify-center mb-6">
-              <img 
-                src="/logos/kprise-logo.png" 
-                alt="KPRISE Logo" 
-                className="h-16 w-auto object-contain"
-              />
+              <div className="bg-white dark:bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                <img 
+                  src="/logos/kprise-logo.png" 
+                  alt="KPRISE Logo" 
+                  className="h-16 w-auto object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]"
+                />
+              </div>
             </div>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
               We&apos;re proud to be supported by <strong>KPR Foundation for Innovation and Social Empowerment (KPRISE)</strong>, 
