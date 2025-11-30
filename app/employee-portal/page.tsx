@@ -118,9 +118,9 @@ function LoginForm() {
                 <input
                   type="text"
                   value={employeeId}
-                  onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
-                  placeholder="Enter your Employee ID"
-                  className="w-full py-3 px-4 bg-gray-800/50 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500 uppercase"
+                  onChange={(e) => setEmployeeId(e.target.value)}
+                  placeholder="e.g., M-01 or M-A001"
+                  className="w-full py-3 px-4 bg-gray-800/50 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500"
                 />
               </div>
             </div>
