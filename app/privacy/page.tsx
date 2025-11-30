@@ -122,7 +122,7 @@ export default function PrivacyPage() {
               <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
               <li><strong>Withdraw Consent:</strong> Revoke permission for data processing</li>
             </ul>
-            <p className="mb-4">To exercise these rights, contact us at <strong>off.matrixo@gmail.com</strong></p>
+            <p className="mb-4">To exercise these rights, contact us at <strong>hello@matrixo.in</strong></p>
           </section>
 
           <section className="mb-8">
@@ -172,7 +172,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">13. Contact Us</h2>
             <p className="mb-4">For privacy-related questions or concerns:</p>
             <ul className="list-none mb-4">
-              <li><strong>Email:</strong> off.matrixo@gmail.com</li>
+              <li><strong>Email:</strong> hello@matrixo.in</li>
               <li><strong>Subject Line:</strong> "Privacy Inquiry"</li>
               <li><strong>Response Time:</strong> Within 48 hours</li>
             </ul>

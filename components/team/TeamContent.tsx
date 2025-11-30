@@ -11,7 +11,7 @@ const team = [
     image: '/team/shiva.webp',
     social: {
       linkedin: 'https://linkedin.com/in/shivaganesht',
-      email: 'off.matrixo@gmail.com',
+      email: 'hello@matrixo.in',
     },
   },
   {
@@ -21,7 +21,7 @@ const team = [
     image: '/team/kishan.webp',
     social: {
       linkedin: 'https://www.linkedin.com/in/kishan-sai-vutukuri/',
-      email: 'off.matrixo@gmail.com',
+      email: 'hello@matrixo.in',
     },
   },
 ]
@@ -138,7 +138,7 @@ export default function TeamContent() {
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
               We&apos;re always looking for talented individuals who share our passion for education and technology.
             </p>
-            <a href="mailto:off.matrixo@gmail.com?subject=Open%20Position%20Inquiry">
+            <a href="mailto:hello@matrixo.in?subject=Open%20Position%20Inquiry">
               <button className="btn-primary">
                 View Open Positions
               </button>

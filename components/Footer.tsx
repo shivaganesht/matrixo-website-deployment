@@ -72,8 +72,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-2">
                 <FaEnvelope className="flex-shrink-0 text-blue-500 dark:text-blue-400" />
-                <a href="mailto:off.matrixo@gmail.com" className="hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
-                  off.matrixo@gmail.com
+                <a href="mailto:hello@matrixo.in" className="hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  hello@matrixo.in
                 </a>
               </li>
             </ul>

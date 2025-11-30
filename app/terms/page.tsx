@@ -199,7 +199,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">15. Contact Information</h2>
             <p className="mb-4">For questions or concerns about these Terms and Conditions:</p>
             <ul className="list-none mb-4">
-              <li><strong>Email:</strong> off.matrixo@gmail.com</li>
+              <li><strong>Email:</strong> hello@matrixo.in</li>
               <li><strong>Website:</strong> matrixo.in</li>
               <li><strong>Response Time:</strong> Within 24-48 hours</li>
             </ul>

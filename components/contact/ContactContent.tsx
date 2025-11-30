@@ -192,8 +192,8 @@ export default function ContactContent() {
                     <FaEnvelope className="text-2xl text-neon-blue flex-shrink-0 mt-1" />
                     <div>
                       <h3 className="font-bold mb-1 text-gray-900 dark:text-white">Email</h3>
-                      <a href="mailto:off.matrixo@gmail.com" className="text-gray-600 dark:text-gray-400 hover:text-neon-blue">
-                        off.matrixo@gmail.com
+                      <a href="mailto:hello@matrixo.in" className="text-gray-600 dark:text-gray-400 hover:text-neon-blue">
+                        hello@matrixo.in
                       </a>
                     </div>
                   </div>

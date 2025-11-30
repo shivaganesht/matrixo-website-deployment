@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
-        { error: 'Email service not configured. Please contact us directly at off.matrixo@gmail.com' },
+        { error: 'Email service not configured. Please contact us directly at hello@matrixo.in' },
         { status: 503 }
       )
     }
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     // Send email using Resend
     const data = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'matriXO Contact Form <onboarding@resend.dev>',
-      to: ['off.matrixo@gmail.com'],
+      to: ['hello@matrixo.in'],
       subject: `New Contact Form: ${subject || 'No Subject'}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

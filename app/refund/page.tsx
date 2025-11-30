@@ -54,7 +54,7 @@ export default function RefundPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">4. How to Request a Refund</h2>
             <p className="mb-4">To request a refund, follow these steps:</p>
             <ol className="list-decimal pl-6 mb-4">
-              <li>Email us at <strong>off.matrixo@gmail.com</strong> with subject "Refund Request"</li>
+              <li>Email us at <strong>hello@matrixo.in</strong> with subject "Refund Request"</li>
               <li>Include your booking ID/transaction ID</li>
               <li>Provide your registered email and phone number</li>
               <li>State the reason for cancellation</li>
@@ -92,7 +92,7 @@ export default function RefundPage() {
             <ul className="list-disc pl-6 mb-4">
               <li>Transfer to another person (same event) - Free, up to 3 days before event</li>
               <li>Transfer to future event (same price range) - ₹100 processing fee</li>
-              <li>Transfer requests must be made via email to off.matrixo@gmail.com</li>
+              <li>Transfer requests must be made via email to hello@matrixo.in</li>
             </ul>
           </section>
 
@@ -100,7 +100,7 @@ export default function RefundPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">8. Contact Us</h2>
             <p className="mb-4">For any questions or concerns regarding cancellations and refunds:</p>
             <ul className="list-none mb-4">
-              <li><strong>Email:</strong> off.matrixo@gmail.com</li>
+              <li><strong>Email:</strong> hello@matrixo.in</li>
               <li><strong>Phone:</strong> Available on our contact page</li>
               <li><strong>Response Time:</strong> Within 24-48 hours</li>
             </ul>

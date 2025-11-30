@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
-        { error: 'Registration service not configured. Please contact us at off.matrixo@gmail.com' },
+        { error: 'Registration service not configured. Please contact us at hello@matrixo.in' },
         { status: 503 }
       )
     }
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
             </div>
 
             <p style="color: #374151; line-height: 1.6;">
-              If you have any questions, feel free to reach out to us at <a href="mailto:off.matrixo@gmail.com" style="color: #3b82f6;">off.matrixo@gmail.com</a>
+              If you have any questions, feel free to reach out to us at <a href="mailto:hello@matrixo.in" style="color: #3b82f6;">hello@matrixo.in</a>
             </p>
 
             <p style="color: #6b7280; font-size: 14px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
     // Send notification email to organizers
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'matriXO Events <onboarding@resend.dev>',
-      to: ['off.matrixo@gmail.com'],
+      to: ['hello@matrixo.in'],
       subject: `New Registration: ${eventTitle}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

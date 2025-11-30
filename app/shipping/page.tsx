@@ -71,9 +71,9 @@ export default function ShippingPage() {
             <ol className="list-decimal pl-6 mb-4">
               <li><strong>Check your spam/junk folder</strong> - emails may be filtered</li>
               <li><strong>Verify the email address</strong> - ensure you entered it correctly during registration</li>
-              <li><strong>Add off.matrixo@gmail.com to your contacts</strong> - to prevent future filtering</li>
+              <li><strong>Add hello@matrixo.in to your contacts</strong> - to prevent future filtering</li>
               <li><strong>Check your payment status</strong> - payment may have failed</li>
-              <li><strong>Contact us</strong> - email off.matrixo@gmail.com with:
+              <li><strong>Contact us</strong> - email hello@matrixo.in with:
                 <ul className="list-circle pl-6 mt-2">
                   <li>Your name and phone number</li>
                   <li>Event name and date</li>
@@ -153,7 +153,7 @@ export default function ShippingPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">9. Technical Support</h2>
             <p className="mb-4">For issues with accessing digital content:</p>
             <ul className="list-disc pl-6 mb-4">
-              <li><strong>Email:</strong> off.matrixo@gmail.com</li>
+              <li><strong>Email:</strong> hello@matrixo.in</li>
               <li><strong>Response Time:</strong> Within 24 hours</li>
               <li><strong>Live Support:</strong> Available during event hours</li>
             </ul>
@@ -176,7 +176,7 @@ export default function ShippingPage() {
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Contact Us</h2>
             <p className="mb-4">For delivery-related queries:</p>
             <ul className="list-none mb-4">
-              <li><strong>Email:</strong> off.matrixo@gmail.com</li>
+              <li><strong>Email:</strong> hello@matrixo.in</li>
               <li><strong>Subject Line:</strong> "Delivery Issue - [Event Name]"</li>
               <li><strong>Include:</strong> Booking ID, registered email, and issue description</li>
             </ul>
