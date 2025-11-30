@@ -46,6 +46,11 @@ export interface AttendanceRecord {
   checkInTime?: string
   checkOutTime?: string
   notes?: string
+  leaveStartDate?: string
+  leaveEndDate?: string
+  onDutyLocation?: string
+  deviceInfo?: string
+  ipAddress?: string
 }
 
 interface EmployeeAuthContextType {
@@ -55,7 +60,9 @@ interface EmployeeAuthContextType {
   db: ReturnType<typeof getFirestore>
   signIn: (employeeId: string, password: string) => Promise<void>
   logout: () => Promise<void>
-  markAttendance: (status: AttendanceRecord['status'], notes?: string) => Promise<void>
+  markAttendance: (status: AttendanceRecord['status'], notes?: string, extraData?: Partial<AttendanceRecord>) => Promise<void>
+  updateAttendanceNotes: (notes: string) => Promise<void>
+  markLeaveRange: (startDate: string, endDate: string, notes?: string) => Promise<void>
   getAttendanceRecords: (startDate?: Date, endDate?: Date) => Promise<AttendanceRecord[]>
   getTodayAttendance: () => Promise<AttendanceRecord | null>
   calculateAttendancePercentage: (records: AttendanceRecord[]) => number
@@ -114,7 +121,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     setEmployee(null)
   }
 
-  const markAttendance = async (status: AttendanceRecord['status'], notes?: string) => {
+  const markAttendance = async (status: AttendanceRecord['status'], notes?: string, extraData?: Partial<AttendanceRecord>) => {
     if (!user || !employee) throw new Error('Not authenticated')
 
     const today = new Date()
@@ -123,16 +130,60 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     
     const attendanceId = `${employee.employeeId}_${dateString}`
     
+    // Get device info for anti-fraud
+    const deviceInfo = `${navigator.userAgent.substring(0, 100)}`
+    
     const attendanceData: AttendanceRecord = {
       employeeId: employee.employeeId,
       date: dateString,
       timestamp: Timestamp.now(),
       status,
       checkInTime: now.toLocaleTimeString('en-US', { hour12: true }),
-      notes: notes || ''
+      notes: notes || '',
+      deviceInfo,
+      ...extraData
     }
 
     await setDoc(doc(db, 'attendance', attendanceId), attendanceData)
+  }
+
+  const updateAttendanceNotes = async (notes: string) => {
+    if (!user || !employee) throw new Error('Not authenticated')
+    
+    const today = new Date().toISOString().split('T')[0]
+    const attendanceId = `${employee.employeeId}_${today}`
+    
+    await updateDoc(doc(db, 'attendance', attendanceId), {
+      notes,
+      lastUpdated: Timestamp.now()
+    })
+  }
+
+  const markLeaveRange = async (startDate: string, endDate: string, notes?: string) => {
+    if (!user || !employee) throw new Error('Not authenticated')
+    
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const deviceInfo = `${navigator.userAgent.substring(0, 100)}`
+    
+    // Mark leave for each day in the range
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dateString = d.toISOString().split('T')[0]
+      const attendanceId = `${employee.employeeId}_${dateString}`
+      
+      const attendanceData: AttendanceRecord = {
+        employeeId: employee.employeeId,
+        date: dateString,
+        timestamp: Timestamp.now(),
+        status: 'L',
+        notes: notes || '',
+        leaveStartDate: startDate,
+        leaveEndDate: endDate,
+        deviceInfo
+      }
+      
+      await setDoc(doc(db, 'attendance', attendanceId), attendanceData)
+    }
   }
 
   const getTodayAttendance = async (): Promise<AttendanceRecord | null> => {
@@ -193,6 +244,8 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       signIn,
       logout,
       markAttendance,
+      updateAttendanceNotes,
+      markLeaveRange,
       getAttendanceRecords,
       getTodayAttendance,
       calculateAttendancePercentage

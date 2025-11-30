@@ -401,13 +401,28 @@ function DashboardHeader({ activeTab, setActiveTab }: { activeTab: string, setAc
 
 // Attendance Marker Component
 function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => void }) {
-  const { markAttendance, getTodayAttendance } = useEmployeeAuth()
+  const { markAttendance, getTodayAttendance, updateAttendanceNotes, markLeaveRange } = useEmployeeAuth()
   const [todayAttendance, setTodayAttendance] = useState<AttendanceRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [marking, setMarking] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState<AttendanceRecord['status'] | null>(null)
+  const [selectedStatus, setSelectedStatus] = useState<'P' | 'L' | 'O' | 'H' | null>(null)
   const [notes, setNotes] = useState('')
   const [currentTime, setCurrentTime] = useState(new Date())
+  
+  // Leave date range
+  const [leaveStartDate, setLeaveStartDate] = useState('')
+  const [leaveEndDate, setLeaveEndDate] = useState('')
+  
+  // On Duty location
+  const [onDutyLocation, setOnDutyLocation] = useState('')
+  
+  // Edit notes mode
+  const [editingNotes, setEditingNotes] = useState(false)
+  const [updatedNotes, setUpdatedNotes] = useState('')
+  const [savingNotes, setSavingNotes] = useState(false)
+
+  // Get today's date for min date validation
+  const todayString = new Date().toISOString().split('T')[0]
 
   // Update time every second
   useEffect(() => {
@@ -435,6 +450,9 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
     try {
       const attendance = await getTodayAttendance()
       setTodayAttendance(attendance)
+      if (attendance?.notes) {
+        setUpdatedNotes(attendance.notes)
+      }
     } catch (error) {
       console.error('Error fetching today attendance:', error)
     } finally {
@@ -448,22 +466,77 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
 
   const handleMarkAttendance = async () => {
     if (!selectedStatus) {
-      toast.error('Please select your attendance status first')
+      toast.error('Please select your attendance status')
       return
     }
+    
+    // Validate leave dates
+    if (selectedStatus === 'L') {
+      if (!leaveStartDate || !leaveEndDate) {
+        toast.error('Please select leave start and end dates')
+        return
+      }
+      if (leaveStartDate > leaveEndDate) {
+        toast.error('End date must be after start date')
+        return
+      }
+    }
+    
+    // Validate On Duty location
+    if (selectedStatus === 'O' && !onDutyLocation.trim()) {
+      toast.error('Please enter your work location/client site')
+      return
+    }
+    
     setMarking(true)
     try {
-      await markAttendance(selectedStatus, notes)
+      if (selectedStatus === 'L') {
+        await markLeaveRange(leaveStartDate, leaveEndDate, notes)
+        toast.success(`Leave marked from ${leaveStartDate} to ${leaveEndDate}`)
+      } else {
+        const extraData: Partial<AttendanceRecord> = {}
+        if (selectedStatus === 'O') {
+          extraData.onDutyLocation = onDutyLocation
+        }
+        await markAttendance(selectedStatus, notes, extraData)
+        toast.success(`Attendance marked as ${statusConfig[selectedStatus].label}!`)
+      }
       await fetchTodayAttendance()
       onAttendanceMarked()
-      toast.success(`Attendance marked successfully!`)
       setNotes('')
+      setOnDutyLocation('')
+      setLeaveStartDate('')
+      setLeaveEndDate('')
+      setSelectedStatus(null)
     } catch (error) {
       console.error('Error marking attendance:', error)
       toast.error('Failed to mark attendance. Please try again.')
     } finally {
       setMarking(false)
     }
+  }
+
+  const handleUpdateNotes = async () => {
+    setSavingNotes(true)
+    try {
+      await updateAttendanceNotes(updatedNotes)
+      await fetchTodayAttendance()
+      setEditingNotes(false)
+      toast.success('Notes updated successfully!')
+    } catch (error) {
+      console.error('Error updating notes:', error)
+      toast.error('Failed to update notes')
+    } finally {
+      setSavingNotes(false)
+    }
+  }
+
+  // Available status options (no Absent - it's auto-marked)
+  const availableStatuses = {
+    P: statusConfig.P,
+    L: statusConfig.L,
+    O: statusConfig.O,
+    H: statusConfig.H
   }
 
   if (loading) {
@@ -496,55 +569,196 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
       </div>
 
       {todayAttendance ? (
-        <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700">
-          <div className="flex items-center gap-4">
-            <div className={`w-16 h-16 rounded-2xl ${statusConfig[todayAttendance.status].color} flex items-center justify-center`}>
-              {(() => {
-                const Icon = statusConfig[todayAttendance.status].icon
-                return <Icon className="text-3xl text-white" />
-              })()}
-            </div>
-            <div>
-              <p className="text-gray-400 text-sm">Today's Status</p>
-              <p className="text-2xl font-bold text-white">
-                {statusConfig[todayAttendance.status].label}
-              </p>
-              {todayAttendance.checkInTime && (
-                <p className="text-gray-400 text-sm mt-1">
-                  Checked in at {todayAttendance.checkInTime}
+        <div className="space-y-4">
+          {/* Attendance Status Card */}
+          <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700">
+            <div className="flex items-center gap-4">
+              <div className={`w-16 h-16 rounded-2xl ${statusConfig[todayAttendance.status].color} flex items-center justify-center`}>
+                {(() => {
+                  const Icon = statusConfig[todayAttendance.status].icon
+                  return <Icon className="text-3xl text-white" />
+                })()}
+              </div>
+              <div className="flex-1">
+                <p className="text-gray-400 text-sm">Today's Status</p>
+                <p className="text-2xl font-bold text-white">
+                  {statusConfig[todayAttendance.status].label}
                 </p>
-              )}
+                {todayAttendance.checkInTime && (
+                  <p className="text-gray-400 text-sm mt-1">
+                    Checked in at {todayAttendance.checkInTime}
+                  </p>
+                )}
+                {todayAttendance.onDutyLocation && (
+                  <p className="text-blue-400 text-sm mt-1">
+                    📍 {todayAttendance.onDutyLocation}
+                  </p>
+                )}
+              </div>
+              <div className="text-xs text-gray-500 text-right">
+                <p>✓ Verified</p>
+                <p className="mt-1">Cannot re-mark</p>
+              </div>
             </div>
           </div>
-          {todayAttendance.notes && (
-            <div className="mt-4 p-3 bg-gray-800 rounded-xl">
-              <p className="text-gray-400 text-sm">Notes: {todayAttendance.notes}</p>
+
+          {/* Notes Section - Editable */}
+          <div className="bg-gray-900/50 rounded-2xl p-4 border border-gray-700">
+            <div className="flex items-center justify-between mb-3">
+              <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
+                <FaHistory className="text-purple-400" />
+                Today's Work Notes
+              </label>
+              {!editingNotes && (
+                <button
+                  onClick={() => setEditingNotes(true)}
+                  className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  {todayAttendance.notes ? 'Edit Notes' : '+ Add Notes'}
+                </button>
+              )}
             </div>
-          )}
+            
+            {editingNotes ? (
+              <div className="space-y-3">
+                <textarea
+                  value={updatedNotes}
+                  onChange={(e) => setUpdatedNotes(e.target.value)}
+                  placeholder="Describe what you worked on today, tasks completed, meetings attended, etc."
+                  rows={4}
+                  className="w-full py-3 px-4 bg-gray-800/50 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white placeholder-gray-500 resize-none"
+                />
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() => {
+                      setEditingNotes(false)
+                      setUpdatedNotes(todayAttendance.notes || '')
+                    }}
+                    className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdateNotes}
+                    disabled={savingNotes}
+                    className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {savingNotes ? <FaSpinner className="animate-spin" /> : <FaCheckCircle />}
+                    Save Notes
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-400 text-sm">
+                {todayAttendance.notes || 'No notes added yet. Click "Add Notes" to describe your work today.'}
+              </p>
+            )}
+          </div>
+
+          {/* Anti-fraud Notice */}
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-3 text-sm text-yellow-400 flex items-start gap-2">
+            <FaExclamationTriangle className="mt-0.5 flex-shrink-0" />
+            <p>Attendance can only be marked once per day. If you need to make corrections, please contact the administrator.</p>
+          </div>
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {(Object.entries(statusConfig) as [AttendanceRecord['status'], typeof statusConfig['P']][]).map(([status, config]) => (
-              <motion.button
-                key={status}
-                onClick={() => setSelectedStatus(status)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`p-4 rounded-2xl border-2 transition-all ${
-                  selectedStatus === status
-                    ? `${config.color} border-white/50 shadow-lg`
-                    : 'bg-gray-900/50 border-gray-700 hover:border-gray-600'
-                }`}
-              >
-                <config.icon className={`text-2xl mx-auto mb-2 ${selectedStatus === status ? 'text-white' : config.textColor}`} />
-                <p className={`text-sm font-medium ${selectedStatus === status ? 'text-white' : 'text-gray-300'}`}>
-                  {config.label}
-                </p>
-              </motion.button>
-            ))}
+          {/* Info Banner */}
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-3 text-sm text-blue-400 flex items-start gap-2">
+            <FaExclamationTriangle className="mt-0.5 flex-shrink-0" />
+            <p>Please mark your attendance for today. If not marked by end of day, it will be automatically recorded as <span className="font-bold text-red-400">Absent</span>.</p>
           </div>
 
+          {/* Status Options */}
+          <div>
+            <label className="text-sm font-medium text-gray-300 mb-3 block">Select Status</label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {(Object.entries(availableStatuses) as ['P' | 'L' | 'O' | 'H', typeof statusConfig['P']][]).map(([status, config]) => (
+                <motion.button
+                  key={status}
+                  onClick={() => setSelectedStatus(status)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`p-4 rounded-2xl border-2 transition-all ${
+                    selectedStatus === status
+                      ? `${config.color} border-white/50 shadow-lg`
+                      : 'bg-gray-900/50 border-gray-700 hover:border-gray-600'
+                  }`}
+                >
+                  <config.icon className={`text-2xl mx-auto mb-2 ${selectedStatus === status ? 'text-white' : config.textColor}`} />
+                  <p className={`text-sm font-medium ${selectedStatus === status ? 'text-white' : 'text-gray-300'}`}>
+                    {config.label}
+                  </p>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Leave Date Range - Only shown when Leave is selected */}
+          <AnimatePresence>
+            {selectedStatus === 'L' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 space-y-4"
+              >
+                <p className="text-sm text-yellow-400 font-medium flex items-center gap-2">
+                  <FaUmbrellaBeach />
+                  Leave Period
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs text-gray-400 mb-1 block">From Date</label>
+                    <input
+                      type="date"
+                      value={leaveStartDate}
+                      onChange={(e) => setLeaveStartDate(e.target.value)}
+                      min={todayString}
+                      className="w-full py-2 px-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-400 mb-1 block">To Date</label>
+                    <input
+                      type="date"
+                      value={leaveEndDate}
+                      onChange={(e) => setLeaveEndDate(e.target.value)}
+                      min={leaveStartDate || todayString}
+                      className="w-full py-2 px-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500">Leave will be marked for all days in this range.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* On Duty Location - Only shown when On Duty is selected */}
+          <AnimatePresence>
+            {selectedStatus === 'O' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 space-y-3"
+              >
+                <p className="text-sm text-blue-400 font-medium flex items-center gap-2">
+                  <FaBriefcase />
+                  On Duty Details
+                </p>
+                <input
+                  type="text"
+                  value={onDutyLocation}
+                  onChange={(e) => setOnDutyLocation(e.target.value)}
+                  placeholder="Enter location/client site (e.g., Client Office - TechCorp, Work from Home)"
+                  className="w-full py-3 px-4 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Notes */}
           <div>
             <label className="text-sm font-medium text-gray-300 mb-2 block">
               Notes (Optional)
@@ -558,6 +772,7 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
             />
           </div>
 
+          {/* Submit Button */}
           <motion.button
             onClick={handleMarkAttendance}
             disabled={marking || !selectedStatus}
@@ -577,7 +792,7 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
             ) : selectedStatus ? (
               <>
                 <FaCheckCircle />
-                Mark Attendance for Today
+                Mark {selectedStatus === 'L' ? 'Leave' : 'Attendance'} for Today
               </>
             ) : (
               <>
