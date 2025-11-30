@@ -88,14 +88,21 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (employeeId: string, password: string) => {
     // First, find the employee by employeeId to get their email
     const employeesRef = collection(db, 'employees')
-    const q = query(employeesRef, where('employeeId', '==', employeeId))
+    const q = query(employeesRef, where('employeeId', '==', employeeId.trim()))
+    
+    console.log('Looking for employee with ID:', employeeId.trim())
+    
     const querySnapshot = await getDocs(q)
     
+    console.log('Query results:', querySnapshot.size, 'documents found')
+    
     if (querySnapshot.empty) {
+      console.error('No employee found with ID:', employeeId)
       throw new Error('Employee ID not found')
     }
 
     const employeeData = querySnapshot.docs[0].data() as EmployeeProfile
+    console.log('Found employee:', employeeData.name, 'with email:', employeeData.email)
     
     // Sign in with email and password
     await signInWithEmailAndPassword(auth, employeeData.email, password)
