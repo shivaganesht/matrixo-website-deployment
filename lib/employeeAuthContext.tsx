@@ -72,7 +72,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       setUser(user)
       if (user) {
         // Fetch employee profile from Firestore
-        const employeeDoc = await getDoc(doc(db, 'employees', user.uid))
+        const employeeDoc = await getDoc(doc(db, 'Employees', user.uid))
         if (employeeDoc.exists()) {
           setEmployee(employeeDoc.data() as EmployeeProfile)
         }
@@ -87,7 +87,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (employeeId: string, password: string) => {
     // First, find the employee by employeeId to get their email
-    const employeesRef = collection(db, 'employees')
+    const employeesRef = collection(db, 'Employees')
     const q = query(employeesRef, where('employeeId', '==', employeeId.trim()))
     
     console.log('Looking for employee with ID:', employeeId.trim())
