@@ -33,7 +33,7 @@ import {
 import { EmployeeAuthProvider, useEmployeeAuth, AttendanceRecord, EmployeeProfile } from '@/lib/employeeAuthContext'
 import { toast, Toaster } from 'sonner'
 import Link from 'next/link'
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 
 // Status Colors and Icons
 const statusConfig = {
@@ -828,14 +828,15 @@ function AdminPanel() {
         const startDate = `${year}-${month}-01`
         const endDate = `${year}-${month}-31`
         
-        const attendanceQuery = query(
-          collection(db, 'attendance'),
-          where('date', '>=', startDate),
-          where('date', '<=', endDate),
-          orderBy('date', 'desc')
-        )
-        const attendanceSnapshot = await getDocs(attendanceQuery)
-        const attendanceData = attendanceSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AttendanceRecord[]
+        // Fetch all attendance and filter client-side to avoid composite index requirement
+        const attendanceSnapshot = await getDocs(collection(db, 'attendance'))
+        const allData = attendanceSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AttendanceRecord[]
+        
+        // Filter by date range and sort
+        const attendanceData = allData
+          .filter(r => r.date >= startDate && r.date <= endDate)
+          .sort((a, b) => b.date.localeCompare(a.date))
+        
         setAllAttendance(attendanceData)
       } catch (error) {
         console.error('Error fetching admin data:', error)

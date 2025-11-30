@@ -153,10 +153,10 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     if (!employee) return []
 
     const attendanceRef = collection(db, 'attendance')
-    let q = query(
+    // Query only by employeeId to avoid needing composite index
+    const q = query(
       attendanceRef, 
-      where('employeeId', '==', employee.employeeId),
-      orderBy('date', 'desc')
+      where('employeeId', '==', employee.employeeId)
     )
 
     const querySnapshot = await getDocs(q)
@@ -164,6 +164,9 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       id: doc.id,
       ...doc.data()
     })) as AttendanceRecord[]
+
+    // Sort by date descending (client-side)
+    records.sort((a, b) => b.date.localeCompare(a.date))
 
     // Filter by date range if provided
     if (startDate && endDate) {
