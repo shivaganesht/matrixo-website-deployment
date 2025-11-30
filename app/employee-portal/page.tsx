@@ -405,7 +405,7 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
   const [todayAttendance, setTodayAttendance] = useState<AttendanceRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [marking, setMarking] = useState(false)
-  const [selectedStatus, setSelectedStatus] = useState<AttendanceRecord['status']>('P')
+  const [selectedStatus, setSelectedStatus] = useState<AttendanceRecord['status'] | null>(null)
   const [notes, setNotes] = useState('')
   const [currentTime, setCurrentTime] = useState(new Date())
 
@@ -447,6 +447,10 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
   }, [fetchTodayAttendance])
 
   const handleMarkAttendance = async () => {
+    if (!selectedStatus) {
+      toast.error('Please select your attendance status first')
+      return
+    }
     setMarking(true)
     try {
       await markAttendance(selectedStatus, notes)
@@ -556,20 +560,28 @@ function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => vo
 
           <motion.button
             onClick={handleMarkAttendance}
-            disabled={marking}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            disabled={marking || !selectedStatus}
+            whileHover={{ scale: selectedStatus ? 1.02 : 1 }}
+            whileTap={{ scale: selectedStatus ? 0.98 : 1 }}
+            className={`w-full py-4 text-white rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${
+              selectedStatus 
+                ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:shadow-2xl hover:shadow-purple-500/30' 
+                : 'bg-gray-700 cursor-not-allowed'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {marking ? (
               <>
                 <FaSpinner className="animate-spin" />
                 Marking Attendance...
               </>
-            ) : (
+            ) : selectedStatus ? (
               <>
                 <FaCheckCircle />
                 Mark Attendance for Today
+              </>
+            ) : (
+              <>
+                Select a status above to mark attendance
               </>
             )}
           </motion.button>
