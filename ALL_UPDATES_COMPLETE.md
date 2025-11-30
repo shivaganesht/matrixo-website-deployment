@@ -18,7 +18,7 @@
 
 ### 2. Updated Form Fields### 1. ✅ Email Changed
 
-- ❌ **REMOVED**: Address (textarea)- All pages now use: **off.matrixo@gmail.com**
+- ❌ **REMOVED**: Address (textarea)- All pages now use: **hello@matrixo.in**
 
 - ✅ **ADDED**: City and State (separate fields)- Updated: Contact, Footer, Terms, Privacy, Refund, Shipping, Team
 
@@ -164,7 +164,7 @@ Hyderabad, Telangana - 501302
 
 - ✅ Form closes automatically### 11. ✅ Team Button
 
-- ✅ Success confirmation displayed- "View Open Positions" → mailto:off.matrixo@gmail.com
+- ✅ Success confirmation displayed- "View Open Positions" → mailto:hello@matrixo.in
 
 
 
@@ -292,7 +292,7 @@ Before deploying, test:
 - [ ] Dark mode toggle works
 - [ ] Event filters work (Upcoming shows only future events)
 - [ ] Services "Become a Partner" links to /contact
-- [ ] All emails show off.matrixo@gmail.com
+- [ ] All emails show hello@matrixo.in
 - [ ] All social links work
 - [ ] Team LinkedIn links work
 - [ ] Gradients look smooth

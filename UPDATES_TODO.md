@@ -11,7 +11,7 @@
 ## 📋 TASKS
 
 ### 1. Email Update ⏳
-**Change all emails to:** `off.matrixo@gmail.com`
+**Change all emails to:** `hello@matrixo.in`
 
 **Files to update:**
 - [ ] All policy pages (terms, privacy, refund, shipping, contact)
@@ -145,7 +145,7 @@ Hyderabad, Telangana - 501302
 
 ### 11. Team Page - View Positions Button ⏳
 **Functionality:**
-- [ ] Button should open email to: off.matrixo@gmail.com
+- [ ] Button should open email to: hello@matrixo.in
 - [ ] Subject: "Open Position Inquiry"
 
 **Files to update:**

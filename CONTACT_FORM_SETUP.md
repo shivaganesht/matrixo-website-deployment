@@ -1,6 +1,6 @@
 # Contact Form Setup Guide
 
-Your contact form is now configured to send emails to **off.matrixo@gmail.com** whenever someone submits the form.
+Your contact form is now configured to send emails to **hello@matrixo.in** whenever someone submits the form.
 
 ## Setup Steps
 
@@ -44,7 +44,7 @@ With the free plan, emails will come from `onboarding@resend.dev`. To use your o
 1. Add the `RESEND_API_KEY` to `.env.local`
 2. Restart your dev server: `npm run dev`
 3. Go to the contact page and submit the form
-4. Check your email at **off.matrixo@gmail.com**
+4. Check your email at **hello@matrixo.in**
 
 ## For Vercel Deployment
 
@@ -63,7 +63,7 @@ When someone fills out the contact form:
 
 1. Form data is sent to `/api/contact` endpoint
 2. The API validates the data
-3. Resend sends a formatted email to `off.matrixo@gmail.com`
+3. Resend sends a formatted email to `hello@matrixo.in`
 4. The email includes:
    - Name, email, phone (if provided), subject
    - Full message content
