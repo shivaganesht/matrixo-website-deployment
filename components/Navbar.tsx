@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaBars, FaTimes, FaMoon, FaSun, FaChevronDown, FaUser, FaSignOutAlt } from 'react-icons/fa'
+import { FaBars, FaTimes, FaMoon, FaSun, FaChevronDown, FaUser, FaSignOutAlt, FaIdBadge } from 'react-icons/fa'
 import { useAuth } from '@/lib/AuthContext'
 import { toast } from 'sonner'
 import config from '@/lib/config'
@@ -16,6 +16,9 @@ const navLinks = [
   { name: 'Team', href: '/team' },
   { name: 'Contact', href: '/contact' },
 ]
+
+// Employee Portal URL - external domain
+const EMPLOYEE_PORTAL_URL = 'https://team-auth.matrixo.in/employee-portal'
 
 // Beta-only links - matriXO Vision Platform with descriptions
 const betaLinks = [
@@ -267,7 +270,7 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
                     >
                       <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                         <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
@@ -277,6 +280,15 @@ export default function Navbar() {
                           {user.email}
                         </p>
                       </div>
+                      <a
+                        href={EMPLOYEE_PORTAL_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full px-4 py-3 text-left flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors border-b border-gray-200 dark:border-gray-700"
+                      >
+                        <FaIdBadge />
+                        <span>Employee Portal</span>
+                      </a>
                       <button
                         onClick={handleLogout}
                         className="w-full px-4 py-3 text-left flex items-center gap-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
@@ -414,6 +426,17 @@ export default function Navbar() {
                           {user.email}
                         </p>
                       </div>
+                      <a
+                        href={EMPLOYEE_PORTAL_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
+                                 rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                      >
+                        <FaIdBadge className="text-sm" />
+                        Employee Portal
+                      </a>
                       <button
                         onClick={() => {
                           handleLogout()
