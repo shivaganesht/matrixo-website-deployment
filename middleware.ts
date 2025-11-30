@@ -5,6 +5,10 @@ export function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const pathname = request.nextUrl.pathname
 
+  // Create response with pathname header for layout detection
+  const response = NextResponse.next()
+  response.headers.set('x-pathname', pathname)
+
   // Handle team-auth.matrixo.in subdomain
   // Only allow /employee-portal routes on this subdomain
   if (hostname === 'team-auth.matrixo.in' || hostname === 'www.team-auth.matrixo.in') {
@@ -24,13 +28,7 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Block employee-portal access from main domain (optional - uncomment if needed)
-  // if ((hostname === 'matrixo.in' || hostname === 'www.matrixo.in') && 
-  //     pathname.startsWith('/employee-portal')) {
-  //   return NextResponse.redirect(new URL('https://team-auth.matrixo.in/employee-portal', request.url))
-  // }
-
-  return NextResponse.next()
+  return response
 }
 
 export const config = {

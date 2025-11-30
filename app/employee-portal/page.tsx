@@ -177,7 +177,7 @@ function LoginForm() {
 
           {/* Footer */}
           <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-gray-400 hover:text-purple-400 transition-colors">
+            <Link href="https://matrixo.in" className="text-sm text-gray-400 hover:text-purple-400 transition-colors">
               ← Back to matriXO Website
             </Link>
           </div>

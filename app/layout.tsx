@@ -7,6 +7,7 @@ import { AuthProvider } from '@/lib/AuthContext'
 import { Toaster } from 'sonner'
 import Script from 'next/script'
 import config from '@/lib/config'
+import { headers } from 'next/headers'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -84,11 +85,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Check if we're on employee portal route
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || ''
+  const host = headersList.get('host') || ''
+  const isEmployeePortal = host.includes('team-auth') || pathname.includes('/employee-portal')
+
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <head>
@@ -123,11 +130,11 @@ export default function RootLayout({
         </Script>
 
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen pt-0">
+          {!isEmployeePortal && <Navbar />}
+          <main className={isEmployeePortal ? "min-h-screen" : "min-h-screen pt-0"}>
             {children}
           </main>
-          <Footer />
+          {!isEmployeePortal && <Footer />}
         </AuthProvider>
         <Toaster position="top-right" richColors />
       </body>
