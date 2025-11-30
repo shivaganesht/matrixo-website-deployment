@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   FaUser, 
@@ -23,14 +23,17 @@ import {
   FaCalendarAlt,
   FaBars,
   FaTimes,
-  FaMoon,
-  FaSun,
   FaChevronDown,
-  FaExclamationTriangle
+  FaExclamationTriangle,
+  FaDownload,
+  FaUsers,
+  FaUserShield,
+  FaSearch
 } from 'react-icons/fa'
-import { EmployeeAuthProvider, useEmployeeAuth, AttendanceRecord } from '@/lib/employeeAuthContext'
+import { EmployeeAuthProvider, useEmployeeAuth, AttendanceRecord, EmployeeProfile } from '@/lib/employeeAuthContext'
 import { toast, Toaster } from 'sonner'
 import Link from 'next/link'
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
 
 // Status Colors and Icons
 const statusConfig = {
@@ -177,7 +180,7 @@ function LoginForm() {
 
           {/* Footer */}
           <div className="mt-6 text-center">
-            <Link href="https://matrixo.in" className="text-sm text-gray-400 hover:text-purple-400 transition-colors">
+            <Link href="/" className="text-sm text-gray-400 hover:text-purple-400 transition-colors">
               ← Back to matriXO Website
             </Link>
           </div>
@@ -197,10 +200,9 @@ function LoginForm() {
 }
 
 // Dashboard Header Component
-function DashboardHeader() {
+function DashboardHeader({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (tab: string) => void }) {
   const { employee, logout } = useEmployeeAuth()
   const [showProfile, setShowProfile] = useState(false)
-  const [darkMode, setDarkMode] = useState(true)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleLogout = async () => {
@@ -211,6 +213,8 @@ function DashboardHeader() {
       toast.error('Failed to logout')
     }
   }
+
+  const isAdmin = employee?.role === 'admin'
 
   return (
     <header className="bg-gray-900/80 backdrop-blur-xl border-b border-gray-700/50 sticky top-0 z-50">
@@ -227,28 +231,37 @@ function DashboardHeader() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-6">
             <nav className="flex items-center gap-4">
-              <a href="#attendance" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2">
+              <button 
+                onClick={() => setActiveTab('attendance')}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${activeTab === 'attendance' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white'}`}
+              >
                 <FaCalendarCheck /> Attendance
-              </a>
-              <a href="#dashboard" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2">
+              </button>
+              <button 
+                onClick={() => setActiveTab('dashboard')}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white'}`}
+              >
                 <FaChartLine /> Dashboard
-              </a>
-              <a href="#history" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2">
+              </button>
+              <button 
+                onClick={() => setActiveTab('history')}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${activeTab === 'history' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white'}`}
+              >
                 <FaHistory /> History
-              </a>
+              </button>
+              {isAdmin && (
+                <button 
+                  onClick={() => setActiveTab('admin')}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${activeTab === 'admin' ? 'bg-red-500/20 text-red-400' : 'text-yellow-400 hover:text-yellow-300'}`}
+                >
+                  <FaUserShield /> Admin Panel
+                </button>
+              )}
             </nav>
           </div>
 
           {/* Profile Section */}
           <div className="flex items-center gap-4">
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:text-white transition-colors"
-            >
-              {darkMode ? <FaSun /> : <FaMoon />}
-            </button>
-
             {/* Profile Dropdown */}
             <div className="relative">
               <button
@@ -285,6 +298,11 @@ function DashboardHeader() {
                         <div>
                           <p className="text-white font-semibold">{employee?.name}</p>
                           <p className="text-purple-400 text-sm">{employee?.employeeId}</p>
+                          {isAdmin && (
+                            <span className="inline-flex items-center gap-1 text-xs text-yellow-400 mt-1">
+                              <FaUserShield /> Admin
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -346,15 +364,32 @@ function DashboardHeader() {
               className="md:hidden border-t border-gray-700 py-4"
             >
               <nav className="flex flex-col gap-2">
-                <a href="#attendance" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+                <button 
+                  onClick={() => { setActiveTab('attendance'); setMobileMenuOpen(false) }}
+                  className={`flex items-center gap-2 p-2 rounded-lg ${activeTab === 'attendance' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}
+                >
                   <FaCalendarCheck /> Attendance
-                </a>
-                <a href="#dashboard" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+                </button>
+                <button 
+                  onClick={() => { setActiveTab('dashboard'); setMobileMenuOpen(false) }}
+                  className={`flex items-center gap-2 p-2 rounded-lg ${activeTab === 'dashboard' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}
+                >
                   <FaChartLine /> Dashboard
-                </a>
-                <a href="#history" className="text-gray-300 hover:text-white transition-colors flex items-center gap-2 p-2 rounded-lg hover:bg-gray-800">
+                </button>
+                <button 
+                  onClick={() => { setActiveTab('history'); setMobileMenuOpen(false) }}
+                  className={`flex items-center gap-2 p-2 rounded-lg ${activeTab === 'history' ? 'bg-purple-500/20 text-purple-400' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}
+                >
                   <FaHistory /> History
-                </a>
+                </button>
+                {isAdmin && (
+                  <button 
+                    onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false) }}
+                    className={`flex items-center gap-2 p-2 rounded-lg ${activeTab === 'admin' ? 'bg-red-500/20 text-red-400' : 'text-yellow-400 hover:text-yellow-300 hover:bg-gray-800'}`}
+                  >
+                    <FaUserShield /> Admin Panel
+                  </button>
+                )}
               </nav>
             </motion.div>
           )}
@@ -365,49 +400,59 @@ function DashboardHeader() {
 }
 
 // Attendance Marker Component
-function AttendanceMarker() {
-  const { employee, markAttendance, getTodayAttendance } = useEmployeeAuth()
+function AttendanceMarker({ onAttendanceMarked }: { onAttendanceMarked: () => void }) {
+  const { markAttendance, getTodayAttendance } = useEmployeeAuth()
   const [todayAttendance, setTodayAttendance] = useState<AttendanceRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [marking, setMarking] = useState(false)
   const [selectedStatus, setSelectedStatus] = useState<AttendanceRecord['status']>('P')
   const [notes, setNotes] = useState('')
-  const [showStatusDropdown, setShowStatusDropdown] = useState(false)
+  const [currentTime, setCurrentTime] = useState(new Date())
 
-  const today = new Date()
-  const formattedDate = today.toLocaleDateString('en-US', { 
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const formattedDate = currentTime.toLocaleDateString('en-US', { 
     weekday: 'long', 
     year: 'numeric', 
     month: 'long', 
     day: 'numeric' 
   })
-  const currentTime = today.toLocaleTimeString('en-US', { 
+  
+  const formattedTime = currentTime.toLocaleTimeString('en-US', { 
     hour: '2-digit', 
     minute: '2-digit',
+    second: '2-digit',
     hour12: true 
   })
 
-  useEffect(() => {
-    const fetchTodayAttendance = async () => {
-      try {
-        const attendance = await getTodayAttendance()
-        setTodayAttendance(attendance)
-      } catch (error) {
-        console.error('Error fetching today attendance:', error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchTodayAttendance = useCallback(async () => {
+    try {
+      const attendance = await getTodayAttendance()
+      setTodayAttendance(attendance)
+    } catch (error) {
+      console.error('Error fetching today attendance:', error)
+    } finally {
+      setLoading(false)
     }
-    fetchTodayAttendance()
   }, [getTodayAttendance])
+
+  useEffect(() => {
+    fetchTodayAttendance()
+  }, [fetchTodayAttendance])
 
   const handleMarkAttendance = async () => {
     setMarking(true)
     try {
       await markAttendance(selectedStatus, notes)
-      const attendance = await getTodayAttendance()
-      setTodayAttendance(attendance)
-      toast.success(`Attendance for ${formattedDate} marked successfully!`)
+      await fetchTodayAttendance()
+      onAttendanceMarked()
+      toast.success(`Attendance marked successfully!`)
       setNotes('')
     } catch (error) {
       console.error('Error marking attendance:', error)
@@ -429,7 +474,6 @@ function AttendanceMarker() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      id="attendance"
       className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-6 md:p-8"
     >
       {/* Header */}
@@ -443,12 +487,11 @@ function AttendanceMarker() {
         </div>
         <div className="flex items-center gap-2 text-gray-400">
           <FaClock className="text-cyan-400" />
-          <span className="text-xl font-mono">{currentTime}</span>
+          <span className="text-xl font-mono tabular-nums">{formattedTime}</span>
         </div>
       </div>
 
       {todayAttendance ? (
-        /* Already Marked */
         <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700">
           <div className="flex items-center gap-4">
             <div className={`w-16 h-16 rounded-2xl ${statusConfig[todayAttendance.status].color} flex items-center justify-center`}>
@@ -476,9 +519,7 @@ function AttendanceMarker() {
           )}
         </div>
       ) : (
-        /* Mark Attendance Form */
         <div className="space-y-6">
-          {/* Status Selection */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {(Object.entries(statusConfig) as [AttendanceRecord['status'], typeof statusConfig['P']][]).map(([status, config]) => (
               <motion.button
@@ -500,7 +541,6 @@ function AttendanceMarker() {
             ))}
           </div>
 
-          {/* Notes Input */}
           <div>
             <label className="text-sm font-medium text-gray-300 mb-2 block">
               Notes (Optional)
@@ -514,7 +554,6 @@ function AttendanceMarker() {
             />
           </div>
 
-          {/* Submit Button */}
           <motion.button
             onClick={handleMarkAttendance}
             disabled={marking}
@@ -568,7 +607,7 @@ function StatCard({ title, value, icon: Icon, color, subtext }: {
 }
 
 // Attendance Dashboard Component
-function AttendanceDashboard() {
+function AttendanceDashboard({ refreshKey }: { refreshKey: number }) {
   const { getAttendanceRecords, calculateAttendancePercentage } = useEmployeeAuth()
   const [records, setRecords] = useState<AttendanceRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -586,7 +625,7 @@ function AttendanceDashboard() {
           startDate.setDate(startDate.getDate() - 7)
         } else if (timeRange === 'month') {
           startDate = new Date()
-          startDate.setMonth(startDate.getMonth() - 1)
+          startDate.setDate(1)
         }
 
         const data = await getAttendanceRecords(startDate, endDate)
@@ -598,7 +637,7 @@ function AttendanceDashboard() {
       }
     }
     fetchRecords()
-  }, [timeRange, getAttendanceRecords])
+  }, [timeRange, getAttendanceRecords, refreshKey])
 
   const presentDays = records.filter(r => r.status === 'P').length
   const absentDays = records.filter(r => r.status === 'A').length
@@ -611,10 +650,8 @@ function AttendanceDashboard() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      id="dashboard"
       className="space-y-6"
     >
-      {/* Header with Time Range Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <FaChartLine className="text-cyan-500" />
@@ -631,7 +668,7 @@ function AttendanceDashboard() {
                   : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
             >
-              {range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'All Time'}
+              {range === 'week' ? 'Week' : range === 'month' ? 'This Month' : 'All Time'}
             </button>
           ))}
         </div>
@@ -643,64 +680,39 @@ function AttendanceDashboard() {
         </div>
       ) : (
         <>
-          {/* Stats Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <StatCard
-              title="Attendance Rate"
-              value={`${percentage}%`}
-              icon={FaChartLine}
-              color="bg-gradient-to-r from-purple-500 to-pink-500"
-              subtext={`${records.length} total days`}
-            />
-            <StatCard
-              title="Present"
-              value={presentDays}
-              icon={FaCheckCircle}
-              color="bg-green-500"
-            />
-            <StatCard
-              title="Absent"
-              value={absentDays}
-              icon={FaTimesCircle}
-              color="bg-red-500"
-            />
-            <StatCard
-              title="Leave"
-              value={leaveDays}
-              icon={FaUmbrellaBeach}
-              color="bg-yellow-500"
-            />
-            <StatCard
-              title="On Duty"
-              value={onDutyDays}
-              icon={FaBriefcase}
-              color="bg-blue-500"
-            />
+            <StatCard title="Attendance Rate" value={`${percentage}%`} icon={FaChartLine} color="bg-gradient-to-r from-purple-500 to-pink-500" subtext={`${records.length} total days`} />
+            <StatCard title="Present" value={presentDays} icon={FaCheckCircle} color="bg-green-500" />
+            <StatCard title="Absent" value={absentDays} icon={FaTimesCircle} color="bg-red-500" />
+            <StatCard title="Leave" value={leaveDays} icon={FaUmbrellaBeach} color="bg-yellow-500" />
+            <StatCard title="On Duty" value={onDutyDays} icon={FaBriefcase} color="bg-blue-500" />
           </div>
 
-          {/* Attendance Progress Bar */}
           <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
               <span className="text-gray-300">Overall Attendance</span>
-              <span className="text-2xl font-bold text-white">{percentage}%</span>
+              <span className={`text-2xl font-bold ${percentage >= 80 ? 'text-green-400' : percentage >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>{percentage}%</span>
             </div>
-            <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-4 bg-gray-700 rounded-full overflow-hidden relative">
+              <div className="absolute left-[80%] top-0 bottom-0 w-0.5 bg-white/50 z-10" />
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${percentage}%` }}
                 transition={{ duration: 1, ease: 'easeOut' }}
-                className={`h-full rounded-full ${
-                  percentage >= 90 ? 'bg-gradient-to-r from-green-500 to-emerald-500' :
-                  percentage >= 75 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' :
-                  'bg-gradient-to-r from-red-500 to-pink-500'
-                }`}
+                className={`h-full rounded-full ${percentage >= 80 ? 'bg-gradient-to-r from-green-500 to-emerald-500' : percentage >= 60 ? 'bg-gradient-to-r from-yellow-500 to-orange-500' : 'bg-gradient-to-r from-red-500 to-pink-500'}`}
               />
             </div>
             <div className="flex justify-between mt-2 text-xs text-gray-500">
               <span>0%</span>
-              <span>Target: 90%</span>
+              <span className="text-yellow-400 font-medium">Target: 80% (Minimum)</span>
               <span>100%</span>
             </div>
+            {percentage < 80 && (
+              <p className="mt-3 text-sm text-red-400 flex items-center gap-2">
+                <FaExclamationTriangle />
+                Your attendance is below the minimum required 80%. Please improve.
+              </p>
+            )}
           </div>
         </>
       )}
@@ -709,16 +721,17 @@ function AttendanceDashboard() {
 }
 
 // Attendance History Component
-function AttendanceHistory() {
+function AttendanceHistory({ refreshKey }: { refreshKey: number }) {
   const { getAttendanceRecords } = useEmployeeAuth()
   const [records, setRecords] = useState<AttendanceRecord[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchRecords = async () => {
+      setLoading(true)
       try {
         const data = await getAttendanceRecords()
-        setRecords(data.slice(0, 30)) // Last 30 records
+        setRecords(data.slice(0, 30))
       } catch (error) {
         console.error('Error fetching records:', error)
       } finally {
@@ -726,14 +739,13 @@ function AttendanceHistory() {
       }
     }
     fetchRecords()
-  }, [getAttendanceRecords])
+  }, [getAttendanceRecords, refreshKey])
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      id="history"
       className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-6 md:p-8"
     >
       <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
@@ -766,18 +778,10 @@ function AttendanceHistory() {
                 const config = statusConfig[record.status]
                 const date = new Date(record.date)
                 return (
-                  <motion.tr
-                    key={record.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="border-b border-gray-700/50 hover:bg-gray-700/20 transition-colors"
-                  >
+                  <motion.tr key={record.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }} className="border-b border-gray-700/50 hover:bg-gray-700/20 transition-colors">
                     <td className="py-4 pr-4">
                       <div>
-                        <p className="text-white font-medium">
-                          {date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                        </p>
+                        <p className="text-white font-medium">{date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
                         <p className="text-gray-500 text-xs">{date.getFullYear()}</p>
                       </div>
                     </td>
@@ -787,12 +791,8 @@ function AttendanceHistory() {
                         {config.label}
                       </span>
                     </td>
-                    <td className="py-4 pr-4 text-gray-300">
-                      {record.checkInTime || '-'}
-                    </td>
-                    <td className="py-4 text-gray-400 text-sm max-w-xs truncate">
-                      {record.notes || '-'}
-                    </td>
+                    <td className="py-4 pr-4 text-gray-300">{record.checkInTime || '-'}</td>
+                    <td className="py-4 text-gray-400 text-sm max-w-xs truncate">{record.notes || '-'}</td>
                   </motion.tr>
                 )
               })}
@@ -804,19 +804,214 @@ function AttendanceHistory() {
   )
 }
 
+// Admin Panel Component
+function AdminPanel() {
+  const { db } = useEmployeeAuth()
+  const [employees, setEmployees] = useState<EmployeeProfile[]>([])
+  const [allAttendance, setAllAttendance] = useState<AttendanceRecord[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date()
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  })
+  const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const employeesSnapshot = await getDocs(collection(db, 'Employees'))
+        const employeesData = employeesSnapshot.docs.map(doc => doc.data() as EmployeeProfile)
+        setEmployees(employeesData)
+
+        const [year, month] = selectedMonth.split('-')
+        const startDate = `${year}-${month}-01`
+        const endDate = `${year}-${month}-31`
+        
+        const attendanceQuery = query(
+          collection(db, 'attendance'),
+          where('date', '>=', startDate),
+          where('date', '<=', endDate),
+          orderBy('date', 'desc')
+        )
+        const attendanceSnapshot = await getDocs(attendanceQuery)
+        const attendanceData = attendanceSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AttendanceRecord[]
+        setAllAttendance(attendanceData)
+      } catch (error) {
+        console.error('Error fetching admin data:', error)
+        toast.error('Failed to load admin data')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [db, selectedMonth])
+
+  const calculateEmployeeAttendance = (employeeId: string) => {
+    const employeeRecords = allAttendance.filter(r => r.employeeId === employeeId)
+    const present = employeeRecords.filter(r => r.status === 'P' || r.status === 'O').length
+    const total = employeeRecords.filter(r => r.status !== 'H' && r.status !== 'L').length
+    return total > 0 ? Math.round((present / total) * 100) : 0
+  }
+
+  const exportToCSV = () => {
+    const headers = ['Employee ID', 'Name', 'Department', 'Designation', 'Present', 'Absent', 'Leave', 'On Duty', 'Attendance %']
+    const rows = employees.map(emp => {
+      const records = allAttendance.filter(r => r.employeeId === emp.employeeId)
+      const present = records.filter(r => r.status === 'P').length
+      const absent = records.filter(r => r.status === 'A').length
+      const leave = records.filter(r => r.status === 'L').length
+      const onDuty = records.filter(r => r.status === 'O').length
+      const percentage = calculateEmployeeAttendance(emp.employeeId)
+      return [emp.employeeId, emp.name, emp.department, emp.designation, present, absent, leave, onDuty, `${percentage}%`]
+    })
+
+    const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `attendance_report_${selectedMonth}.csv`
+    a.click()
+    window.URL.revokeObjectURL(url)
+    toast.success('Report downloaded successfully!')
+  }
+
+  const filteredEmployees = employees.filter(emp => 
+    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emp.employeeId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emp.department.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+      <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <FaUserShield className="text-yellow-500" />
+              Admin Panel
+            </h2>
+            <p className="text-gray-400 mt-1">View and manage all employee attendance</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="px-4 py-2 bg-gray-700 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500" />
+            <button onClick={exportToCSV} className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-medium transition-colors">
+              <FaDownload />
+              Export CSV
+            </button>
+          </div>
+        </div>
+        <div className="mt-4 relative">
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search by name, ID, or department..." className="w-full py-3 pl-12 pr-4 bg-gray-700/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard title="Total Employees" value={employees.length} icon={FaUsers} color="bg-purple-500" />
+        <StatCard title="Avg Attendance" value={`${employees.length > 0 ? Math.round(employees.reduce((acc, emp) => acc + calculateEmployeeAttendance(emp.employeeId), 0) / employees.length) : 0}%`} icon={FaChartLine} color="bg-cyan-500" />
+        <StatCard title="Below 80%" value={employees.filter(emp => calculateEmployeeAttendance(emp.employeeId) < 80).length} icon={FaExclamationTriangle} color="bg-red-500" />
+        <StatCard title="Perfect (100%)" value={employees.filter(emp => calculateEmployeeAttendance(emp.employeeId) === 100).length} icon={FaCheckCircle} color="bg-green-500" />
+      </div>
+
+      <div className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-6 overflow-hidden">
+        <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <FaUsers className="text-purple-400" />
+          Employee Attendance Report - {new Date(selectedMonth + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+        </h3>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <FaSpinner className="animate-spin text-4xl text-purple-500" />
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-left text-gray-400 text-sm border-b border-gray-700">
+                  <th className="pb-4 pr-4">Employee</th>
+                  <th className="pb-4 pr-4">Department</th>
+                  <th className="pb-4 pr-4 text-center">P</th>
+                  <th className="pb-4 pr-4 text-center">A</th>
+                  <th className="pb-4 pr-4 text-center">L</th>
+                  <th className="pb-4 pr-4 text-center">O</th>
+                  <th className="pb-4 pr-4 text-center">H</th>
+                  <th className="pb-4 text-right">Attendance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredEmployees.map((emp, index) => {
+                  const records = allAttendance.filter(r => r.employeeId === emp.employeeId)
+                  const present = records.filter(r => r.status === 'P').length
+                  const absent = records.filter(r => r.status === 'A').length
+                  const leave = records.filter(r => r.status === 'L').length
+                  const onDuty = records.filter(r => r.status === 'O').length
+                  const holiday = records.filter(r => r.status === 'H').length
+                  const percentage = calculateEmployeeAttendance(emp.employeeId)
+                  
+                  return (
+                    <motion.tr key={emp.employeeId} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }} className="border-b border-gray-700/50 hover:bg-gray-700/20 transition-colors">
+                      <td className="py-4 pr-4">
+                        <div className="flex items-center gap-3">
+                          <img src={emp.profileImage || '/team/default-avatar.png'} alt={emp.name} className="w-10 h-10 rounded-full object-cover border-2 border-gray-600" />
+                          <div>
+                            <p className="text-white font-medium">{emp.name}</p>
+                            <p className="text-gray-500 text-xs">{emp.employeeId}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 pr-4">
+                        <div>
+                          <p className="text-gray-300">{emp.department}</p>
+                          <p className="text-gray-500 text-xs">{emp.designation}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 pr-4 text-center"><span className="text-green-400 font-medium">{present}</span></td>
+                      <td className="py-4 pr-4 text-center"><span className="text-red-400 font-medium">{absent}</span></td>
+                      <td className="py-4 pr-4 text-center"><span className="text-yellow-400 font-medium">{leave}</span></td>
+                      <td className="py-4 pr-4 text-center"><span className="text-blue-400 font-medium">{onDuty}</span></td>
+                      <td className="py-4 pr-4 text-center"><span className="text-purple-400 font-medium">{holiday}</span></td>
+                      <td className="py-4 text-right">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold ${percentage >= 80 ? 'bg-green-500/20 text-green-400' : percentage >= 60 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
+                          {percentage}%
+                        </span>
+                      </td>
+                    </motion.tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
 // Main Dashboard Component
 function Dashboard() {
+  const { employee } = useEmployeeAuth()
+  const [activeTab, setActiveTab] = useState('attendance')
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  const handleAttendanceMarked = () => {
+    setRefreshKey(prev => prev + 1)
+  }
+
+  const isAdmin = employee?.role === 'admin'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <DashboardHeader />
+      <DashboardHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <AttendanceMarker />
-        <AttendanceDashboard />
-        <AttendanceHistory />
+        {activeTab === 'attendance' && <AttendanceMarker onAttendanceMarked={handleAttendanceMarked} />}
+        {activeTab === 'dashboard' && <AttendanceDashboard refreshKey={refreshKey} />}
+        {activeTab === 'history' && <AttendanceHistory refreshKey={refreshKey} />}
+        {activeTab === 'admin' && isAdmin && <AdminPanel />}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-gray-800 py-6 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
           <p>© {new Date().getFullYear()} matriXO Employee Portal. All rights reserved.</p>

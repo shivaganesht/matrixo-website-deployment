@@ -52,6 +52,7 @@ interface EmployeeAuthContextType {
   user: User | null
   employee: EmployeeProfile | null
   loading: boolean
+  db: ReturnType<typeof getFirestore>
   signIn: (employeeId: string, password: string) => Promise<void>
   logout: () => Promise<void>
   markAttendance: (status: AttendanceRecord['status'], notes?: string) => Promise<void>
@@ -185,6 +186,7 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
       user,
       employee,
       loading,
+      db,
       signIn,
       logout,
       markAttendance,
