@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     default: 'matriXO - Technical Workshops, Events & Bootcamps for Students',
     template: '%s | matriXO'
   },
-  description: 'matriXO — Your gateway to technical excellence. Workshops, hackathons, bootcamps, and career-focused events designed for students. MSME Registered.',
+  description: 'matriXO — Your gateway to technical excellence. Workshops, hackathons, bootcamps, and career-focused events designed for students. An Ed-Tech Startup.',
   keywords: 'matriXO, technical workshops, hackathons, bootcamps, student events, career development, tech events, coding workshops, student training',
   authors: [{ name: 'matriXO Team' }],
   creator: 'matriXO',

@@ -108,7 +108,7 @@ export default function RefundPage() {
 
           <section className="mb-8">
             <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-              matriXO is an MSME Registered organization committed to providing quality technical education and transparent business practices. This policy is subject to change, and any updates will be communicated via email to registered users.
+              matriXO is an An Ed-Tech Startup committed to providing quality technical education and transparent business practices. This policy is subject to change, and any updates will be communicated via email to registered users.
             </p>
           </section>
         </div>

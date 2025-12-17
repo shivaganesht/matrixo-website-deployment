@@ -180,7 +180,7 @@ export default function PrivacyPage() {
 
           <section className="mb-8">
             <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-              matriXO is an MSME Registered organization operating under Indian data protection laws. We are committed 
+              matriXO is an An Ed-Tech Startup operating under Indian data protection laws. We are committed 
               to maintaining the highest standards of privacy and data security.
             </p>
           </section>

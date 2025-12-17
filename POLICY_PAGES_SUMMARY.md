@@ -35,7 +35,7 @@ All required Razorpay policy pages have been created with comprehensive, profess
 - Contact information
 
 **Highlights:**
-- MSME Registered mentioned
+- An Ed-Tech Startup mentioned
 - Razorpay payment gateway highlighted
 - Workshop/Hackathon/Bootcamp specific terms
 - Student-focused policies
@@ -113,7 +113,7 @@ All required Razorpay policy pages have been created with comprehensive, profess
 
 ### Updated Copyright:
 ```
-© 2025 matriXO - MSME Registered. All rights reserved.
+© 2025 matriXO - An Ed-Tech Startup. All rights reserved.
 ```
 
 ---
@@ -229,7 +229,7 @@ matriXO Website/
 
 ### Your Business Profile:
 - **Name:** matriXO
-- **Type:** MSME Registered
+- **Type:** An Ed-Tech Startup
 - **Industry:** Educational Services / Technical Workshops
 - **Services:** Workshops (₹499-₹9,999), Hackathons (₹2,000), Bootcamps (₹5,999-₹9,999)
 - **Email:** hello@matrixo.in
@@ -243,7 +243,7 @@ matriXO Website/
 5. ✅ **Shipping:** Digital delivery explained
 
 **All pages mention:**
-- MSME Registered status
+- An Ed-Tech Startup status
 - Razorpay as payment partner
 - hello@matrixo.in for support
 - Professional, compliant content

@@ -30,7 +30,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">2. About matriXO</h2>
             <p className="mb-4">
-              matriXO is an <strong>MSME Registered</strong> organization dedicated to providing high-quality technical 
+              matriXO is an <strong>An Ed-Tech Startup</strong> dedicated to providing high-quality technical 
               education through workshops, hackathons, and bootcamps. We focus on empowering students and professionals 
               with industry-relevant skills.
             </p>
@@ -216,7 +216,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <p className="text-sm text-gray-500 dark:text-gray-400 italic">
               By registering for our events or using our services, you acknowledge that you have read, understood, 
-              and agree to be bound by these Terms and Conditions. matriXO is an MSME Registered organization committed 
+              and agree to be bound by these Terms and Conditions. matriXO is an An Ed-Tech Startup committed 
               to providing quality technical education and maintaining transparent business practices.
             </p>
           </section>

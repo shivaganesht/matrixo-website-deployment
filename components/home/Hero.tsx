@@ -31,7 +31,7 @@ export default function Hero() {
             className="inline-block mb-6 px-6 py-2 bg-blue-50 dark:bg-white/5 backdrop-blur-sm border border-blue-200 dark:border-blue-500/30 rounded-full"
           >
             <span className="text-blue-600 dark:text-blue-400 font-medium text-sm md:text-base">
-              MSME Registered 🚀
+              An Ed-Tech Startup 🚀
             </span>
           </motion.div>
         <br/>
