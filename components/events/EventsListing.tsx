@@ -39,17 +39,17 @@ export default function EventsListing() {
   return (
     <div className="min-h-screen pt-5 pb-20">
       {/* Header */}
-      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white py-20">
+      <section className="bg-gray-950 text-white py-16">
         <div className="container-custom px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-4xl mx-auto"
+            className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
-              Explore <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">Programs</span>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              Explore <span className="text-blue-500">Programs</span>
             </h1>
-            <p className="text-xl text-gray-300">
+            <p className="text-lg text-gray-400">
               Workshops, hackathons, bootcamps, and technical events designed to accelerate your tech career
             </p>
           </motion.div>
@@ -69,8 +69,8 @@ export default function EventsListing() {
                 placeholder="Search programs, topics..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-300 
-                         dark:border-gray-700 focus:border-blue-500 focus:outline-none transition-colors text-sm text-gray-900 dark:text-white"
+                className="w-full pl-9 pr-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 
+                         dark:border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors text-sm text-gray-900 dark:text-white"
               />
             </div>
 
@@ -85,9 +85,9 @@ export default function EventsListing() {
                 <button
                   key={option.value}
                   onClick={() => setSortOption(option.value as SortOption)}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
                     sortOption === option.value
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
+                      ? 'bg-blue-600 text-white'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
@@ -111,9 +111,9 @@ export default function EventsListing() {
                 <button
                   key={cat.value}
                   onClick={() => setCategoryFilter(cat.value)}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     categoryFilter === cat.value
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
+                      ? 'bg-blue-600 text-white'
                       : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                   }`}
                 >
@@ -142,13 +142,13 @@ export default function EventsListing() {
                   setSortOption('all')
                   setSearchTerm('')
                 }}
-                className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full hover:shadow-lg transition-all duration-200"
+                className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200"
               >
                 Clear All Filters
               </button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAndSortedEvents.map((event, index) => {
                 const eventLink = (event as any).externalLink || `/events/${event.slug}`
                 const isExternal = !!(event as any).externalLink
@@ -156,71 +156,69 @@ export default function EventsListing() {
                 return (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <Link 
                       href={eventLink}
                       target={isExternal ? "_blank" : undefined}
                       rel={isExternal ? "noopener noreferrer" : undefined}
                     >
-                      <div className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
-                                    transition-all duration-200 hover:-translate-y-2 border-2 border-transparent 
-                                    hover:border-blue-500/30 h-full flex flex-col">
+                      <div className="group bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800
+                                    hover:border-blue-300 dark:hover:border-blue-600/50 transition-all duration-300 h-full flex flex-col">
                         {/* Image */}
-                        <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-purple-600/20 overflow-hidden">
+                        <div className="relative h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden">
                           {event.images?.thumbnail ? (
                             <Image
                               src={event.images.thumbnail}
                               alt={event.title}
                               fill
-                              className="object-cover"
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (
-                            <div className="absolute inset-0 flex items-center justify-center text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+                            <div className="absolute inset-0 flex items-center justify-center text-5xl font-bold text-blue-600 dark:text-blue-500">
                               {event.title.charAt(0)}
                             </div>
                           )}
                           {event.featured && (
-                            <div className="absolute top-4 right-4 bg-gradient-to-r from-pink-500 to-rose-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                            <div className="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded-md text-xs font-semibold">
                               FEATURED
                             </div>
                           )}
                           {event.status === 'sold-out' && (
-                            <div className="absolute top-4 right-4 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-celebrate animate-shine">
-                              🎉 SOLD OUT 🎊
+                            <div className="absolute top-3 right-3 bg-red-600 text-white px-3 py-1 rounded-md text-xs font-bold">
+                              🎉 SOLD OUT
                             </div>
                           )}
-                          <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
+                          <div className="absolute bottom-3 left-3 bg-gray-900/80 backdrop-blur-sm text-white px-2 py-1 rounded-md text-xs font-medium">
                             {event.category.toUpperCase()}
                           </div>
                           {isFuture(new Date(event.date)) && event.status !== 'sold-out' && (
-                            <div className="absolute top-4 left-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                            <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-md text-xs font-semibold">
                               UPCOMING
                             </div>
                           )}
                         </div>
 
                         {/* Content */}
-                        <div className="p-6 flex-1 flex flex-col">
-                          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white group-hover:bg-clip-text 
-                                       group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-500 
-                                       group-hover:to-purple-600 transition-all duration-200 line-clamp-2">
+                        <div className="p-5 flex-1 flex flex-col">
+                          <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 
+                                       dark:group-hover:text-blue-500 transition-colors duration-200 line-clamp-2">
                             {event.title}
                           </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm line-clamp-2">
                             {event.tagline}
                           </p>
 
                           {/* Details */}
                           <div className="space-y-2 mb-4 flex-1">
                             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                              <FaCalendar className="mr-2 text-blue-500 flex-shrink-0" />
+                              <FaCalendar className="mr-2 text-blue-600 dark:text-blue-500 flex-shrink-0" />
                               {format(new Date(event.date), 'MMM dd, yyyy • hh:mm a')}
                             </div>
                             <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                              <FaMapMarkerAlt className="mr-2 text-purple-600 flex-shrink-0" />
+                              <FaMapMarkerAlt className="mr-2 text-blue-600 dark:text-blue-500 flex-shrink-0" />
                               {event.location}
                             </div>
                           </div>
@@ -229,37 +227,37 @@ export default function EventsListing() {
                           <div className="flex items-center justify-between">
                             {event.status === 'sold-out' ? (
                               <div className="w-full">
-                                <div className="bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 dark:from-red-900/20 dark:via-orange-900/20 dark:to-yellow-900/20 border-2 border-red-500 rounded-xl p-4 text-center">
-                                  <span className="text-3xl mb-2 block">🎉</span>
-                                  <span className="text-2xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 text-center">
+                                  <span className="text-2xl mb-1 block">🎉</span>
+                                  <span className="text-lg font-bold text-red-600 dark:text-red-400">
                                     SOLD OUT!
                                   </span>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                    🎊 All tickets claimed! 🎊
+                                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                    All tickets claimed
                                   </p>
                                 </div>
                               </div>
                             ) : (
                               <>
                                 <div>
-                                  <span className="text-sm text-gray-500 dark:text-gray-400">From</span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">From</span>
                                   <div className="flex items-baseline gap-2">
-                                    <span className="text-2xl font-bold gradient-text">
+                                    <span className="text-xl font-bold text-blue-600 dark:text-blue-500">
                                       ₹{Math.min(...event.tickets.map((t: any) => t.price))}
                                     </span>
                                     {event.tickets.some((t: any) => t.originalPrice) && (
-                                      <span className="text-sm text-gray-400 line-through">
+                                      <span className="text-xs text-gray-400 line-through">
                                         ₹{(event.tickets.find((t: any) => t.originalPrice) as any)?.originalPrice}
                                       </span>
                                     )}
                                   </div>
                                 </div>
                                 <motion.button
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className="flex items-center space-x-2 bg-gradient-to-r from-neon-blue to-neon-purple 
-                                           text-white px-4 py-2 rounded-full font-semibold text-sm shadow-lg 
-                                           hover:shadow-neon-blue/50 transition-shadow"
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700
+                                           text-white px-4 py-2 rounded-xl font-medium text-sm 
+                                           transition-colors"
                                 >
                                   <FaTicketAlt />
                                   <span>Book</span>

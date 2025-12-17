@@ -331,7 +331,7 @@ Before submitting to Razorpay:
 
 ✅ **All policy pages created and updated**  
 ✅ **Professional, Razorpay-compliant content**  
-✅ **MSME status mentioned throughout**  
+✅ **An Ed-Tech Startup status mentioned throughout**  
 ✅ **Footer updated with all links**  
 ✅ **Complete documentation provided**  
 ⚠️ **Payment needs real Razorpay keys to work**  

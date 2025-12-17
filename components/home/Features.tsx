@@ -38,45 +38,40 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="section-padding bg-white dark:bg-gray-900">
+    <section className="section-padding bg-gray-50 dark:bg-gray-900">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-            Why Choose <span className="gradient-text">matriXO</span>
+          <h2 className="section-title mb-4">
+            Why Choose <span className="text-blue-600 dark:text-blue-500">matriXO</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="section-subtitle">
             Empowering students with technical skills and real-world experience through 
             comprehensive training programs and industry-focused events.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -10 }}
-              className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border-2 border-transparent hover:border-neon-blue/30 transition-all duration-300"
+              transition={{ delay: index * 0.08, duration: 0.4 }}
+              className="group bg-white dark:bg-gray-800/50 p-7 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-blue-300 dark:hover:border-blue-600/50 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300"
             >
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 text-white"
-              >
-                <feature.icon size={24} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white dark:group-hover:bg-blue-600 transition-colors duration-300">
+                <feature.icon size={22} />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

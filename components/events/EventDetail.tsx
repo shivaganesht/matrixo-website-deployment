@@ -78,7 +78,7 @@ export default function EventDetail({ event }: { event: any }) {
       {/* Confetti for Sold Out Events */}
       {event.status === 'sold-out' && <Confetti active={showConfetti} duration={6000} />}
       {/* Hero Banner */}
-      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-gray-100 dark:bg-black' : 'bg-gradient-to-br from-neon-blue/20 via-neon-purple/20 to-neon-pink/20'}`}>
+      <section className={`relative ${isTEDxEvent ? 'h-screen' : 'h-[60vh] pt-20'} ${isTEDxEvent ? 'bg-gray-100 dark:bg-black' : 'bg-gray-100 dark:bg-gray-900'}`}>
         {isTEDxEvent ? (
           <>
             {/* TED-Inspired Red Spotlight Background with Animations */}
@@ -166,7 +166,7 @@ export default function EventDetail({ event }: { event: any }) {
                     🔴 IDEAS WORTH SPREADING
                   </span>
                 )}
-                <span className={`inline-block ${isTEDxEvent ? 'bg-gray-800 border-2 border-red-600' : 'bg-neon-pink'} text-white px-4 py-2 rounded-full text-sm font-bold`}>
+                <span className={`inline-block ${isTEDxEvent ? 'bg-gray-800 border-2 border-red-600' : 'bg-blue-600'} text-white px-4 py-2 rounded-full text-sm font-bold`}>
                   ⭐ FEATURED EVENT
                 </span>
               </div>
@@ -179,15 +179,15 @@ export default function EventDetail({ event }: { event: any }) {
             </p>
             <div className="flex flex-wrap gap-4 text-gray-900 dark:text-white">
               <div className={`flex items-center space-x-2 ${isTEDxEvent ? 'bg-red-600/30 border border-red-600/50' : 'bg-white/20'} backdrop-blur-sm px-4 py-2 rounded-full`}>
-                <FaCalendar className={isTEDxEvent ? 'text-red-400' : 'text-neon-blue'} />
+                <FaCalendar className={isTEDxEvent ? 'text-red-400' : 'text-blue-600'} />
                 <span>{format(new Date(event.date), 'MMMM dd, yyyy')}</span>
               </div>
               <div className={`flex items-center space-x-2 ${isTEDxEvent ? 'bg-red-600/30 border border-red-600/50' : 'bg-white/20'} backdrop-blur-sm px-4 py-2 rounded-full`}>
-                <FaClock className={isTEDxEvent ? 'text-red-400' : 'text-neon-purple'} />
+                <FaClock className={isTEDxEvent ? 'text-red-400' : 'text-blue-600'} />
                 <span>{format(new Date(event.date), 'hh:mm a')}</span>
               </div>
               <div className={`flex items-center space-x-2 ${isTEDxEvent ? 'bg-red-600/30 border border-red-600/50' : 'bg-white/20'} backdrop-blur-sm px-4 py-2 rounded-full`}>
-                <FaMapMarkerAlt className={isTEDxEvent ? 'text-red-400' : 'text-neon-pink'} />
+                <FaMapMarkerAlt className={isTEDxEvent ? 'text-red-400' : 'text-blue-600'} />
                 <span>{event.location}</span>
               </div>
             </div>
@@ -221,8 +221,8 @@ export default function EventDetail({ event }: { event: any }) {
                     onClick={scrollToTickets}
                     className={`px-8 py-4 ${isTEDxEvent 
                       ? 'bg-red-600 hover:bg-red-700 shadow-red-600/50' 
-                      : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink'} 
-                             text-white text-lg font-bold rounded-3xl shadow-xl
+                      : 'bg-blue-600 hover:bg-blue-700'} 
+                             text-white text-lg font-bold rounded-xl shadow-sm
                              hover:shadow-2xl hover:scale-105 hover:-translate-y-1 
                              active:scale-95 transition-all duration-300 transform
                              flex items-center gap-3 group`}
@@ -276,7 +276,7 @@ export default function EventDetail({ event }: { event: any }) {
                       <div key={index} className={`${isTEDxEvent 
                         ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' 
                         : 'glass-card'} p-6 hover-lift`}>
-                        <h3 className={`text-xl font-bold mb-3 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'}`}>
+                        <h3 className={`text-xl font-bold mb-3 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-blue-600 dark:text-blue-500'}`}>
                           {pillar.name}
                         </h3>
                         <p className={`${isTEDxEvent ? 'text-gray-800 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'}`}>
@@ -339,7 +339,7 @@ export default function EventDetail({ event }: { event: any }) {
                 </h2>
                 <div className={`${isTEDxEvent ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' : 'glass-card'} p-6 space-y-4`}>
                   <div className="flex items-start gap-3">
-                    <FaMapMarkerAlt className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} text-2xl mt-1 flex-shrink-0`} />
+                    <FaMapMarkerAlt className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-blue-600'} text-2xl mt-1 flex-shrink-0`} />
                     <div className="flex-1">
                       <h3 className={`text-xl font-bold mb-2 ${isTEDxEvent ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'}`}>
                         {event.venue}
@@ -348,7 +348,7 @@ export default function EventDetail({ event }: { event: any }) {
                         href="https://maps.app.goo.gl/phYNNYQyWgacvBA59"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-neon-blue hover:text-neon-purple'} transition-colors duration-300 
+                        className={`${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-blue-600 hover:text-blue-700'} transition-colors duration-300 
                                  flex items-center gap-2 group cursor-pointer font-medium`}
                       >
                         <span className="group-hover:underline">{event.location}</span>
@@ -390,7 +390,7 @@ export default function EventDetail({ event }: { event: any }) {
                       <div key={index} className={`flex items-start space-x-4 ${isTEDxEvent 
                         ? 'bg-red-50 dark:bg-black/40 border-2 border-red-200 dark:border-red-600/20 rounded-3xl shadow-sm' 
                         : 'glass-card'} p-4 hover-lift`}>
-                        <div className={`flex-shrink-0 w-24 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} font-bold`}>
+                        <div className={`flex-shrink-0 w-24 ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-blue-600'} font-bold`}>
                           {item.time}
                         </div>
                         <div className="flex-1">
@@ -466,7 +466,7 @@ export default function EventDetail({ event }: { event: any }) {
                             ) : (
                               <div className={`w-20 h-20 ${isTEDxEvent 
                                 ? 'bg-gradient-to-br from-red-600 to-red-800' 
-                                : 'bg-gradient-to-br from-neon-blue to-neon-purple'} rounded-full 
+                                : 'bg-blue-600'} rounded-full 
                                           flex items-center justify-center text-white text-2xl font-bold mb-4`}>
                                 {speaker.name.charAt(0)}
                               </div>
@@ -483,7 +483,7 @@ export default function EventDetail({ event }: { event: any }) {
                               </p>
                             )}
                             {speaker.topic && (
-                              <p className={`text-sm ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} font-medium`}>
+                              <p className={`text-sm ${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-blue-600 dark:text-blue-500'} font-medium`}>
                                 {speaker.topic}
                               </p>
                             )}
@@ -494,7 +494,7 @@ export default function EventDetail({ event }: { event: any }) {
                                     href={speaker.socialLinks.linkedin}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-neon-blue'} hover:underline`}
+                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-blue-600 hover:text-blue-700'} hover:underline`}
                                   >
                                     LinkedIn
                                   </a>
@@ -504,7 +504,7 @@ export default function EventDetail({ event }: { event: any }) {
                                     href={speaker.socialLinks.website}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-neon-blue'} hover:underline`}
+                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-blue-600 hover:text-blue-700'} hover:underline`}
                                   >
                                     Website
                                   </a>
@@ -514,7 +514,7 @@ export default function EventDetail({ event }: { event: any }) {
                                     href={speaker.socialLinks.instagram}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-neon-blue'} hover:underline`}
+                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-blue-600 hover:text-blue-700'} hover:underline`}
                                   >
                                     Instagram
                                   </a>
@@ -524,7 +524,7 @@ export default function EventDetail({ event }: { event: any }) {
                                     href={speaker.socialLinks.facebook}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-neon-blue'} hover:underline`}
+                                    className={`text-xs ${isTEDxEvent ? 'text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' : 'text-blue-600 hover:text-blue-700'} hover:underline`}
                                   >
                                     Facebook
                                   </a>
@@ -582,8 +582,8 @@ export default function EventDetail({ event }: { event: any }) {
                         <>
                           <div className={`w-16 h-16 mx-auto mb-2 ${isTEDxEvent 
                             ? 'bg-red-600/20 border border-red-600/30' 
-                            : 'bg-gradient-to-br from-neon-blue/20 to-neon-purple/20'} 
-                                        rounded-full flex items-center justify-center text-2xl font-bold ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'gradient-text'}`}>
+                            : 'bg-blue-100 dark:bg-blue-900/30'} 
+                                        rounded-full flex items-center justify-center text-2xl font-bold ${isTEDxEvent ? 'text-red-600 dark:text-red-500' : 'text-blue-600 dark:text-blue-500'}`}>
                             {org.charAt(0)}
                           </div>
                           <p className={`text-sm font-medium ${isTEDxEvent ? 'text-gray-700 dark:text-gray-300' : 'text-gray-700 dark:text-gray-300'}`}>
@@ -636,7 +636,7 @@ export default function EventDetail({ event }: { event: any }) {
                         key={ticket.id}
                         className={`border-2 ${isTEDxEvent 
                           ? 'border-red-300 bg-red-50 dark:bg-gray-900/30 hover:border-red-500 hover:bg-red-100 dark:hover:bg-gray-900/50 rounded-3xl shadow-sm' 
-                          : 'border-gray-200 dark:border-gray-700 hover:border-neon-blue'} rounded-xl p-4 
+                          : 'border-gray-200 dark:border-gray-700 hover:border-blue-500'} rounded-xl p-4 
                                  transition-all duration-300`}
                       >
                         <div className="flex items-start justify-between mb-3">
@@ -667,7 +667,7 @@ export default function EventDetail({ event }: { event: any }) {
                               .filter((perk: string) => !perk.toLowerCase().includes('participation certificate'))
                               .map((perk: string, i: number) => (
                               <div key={i} className={`flex items-center text-sm ${isTEDxEvent ? 'text-gray-800 dark:text-gray-400' : 'text-gray-600 dark:text-gray-400'}`}>
-                                <span className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-neon-blue'} mr-2`}>✓</span>
+                                <span className={`${isTEDxEvent ? 'text-red-700 dark:text-red-500' : 'text-blue-600'} mr-2`}>✓</span>
                                 {perk}
                               </div>
                             ))}
@@ -682,7 +682,7 @@ export default function EventDetail({ event }: { event: any }) {
                               ? 'bg-gray-400 dark:bg-gray-600 text-gray-700 dark:text-gray-400 cursor-not-allowed opacity-60'
                               : isTEDxEvent
                               ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 hover:shadow-red-600/50 hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
-                              : 'bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink text-white shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 animate-pulse-slow'
+                              : 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md'
                           }`}
                         >
                           <span className="flex items-center justify-center gap-2">

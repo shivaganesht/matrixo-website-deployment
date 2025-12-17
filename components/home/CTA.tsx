@@ -6,11 +6,10 @@ import { FaArrowRight } from 'react-icons/fa'
 
 export default function CTA() {
   return (
-    <section className="section-padding bg-gradient-to-br from-gray-100 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-black relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-10 dark:opacity-20">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400 dark:bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl" />
+    <section className="section-padding bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+      {/* Subtle Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.05),transparent_70%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_70%)]" />
       </div>
 
       <div className="container-custom relative z-10">
@@ -18,36 +17,35 @@ export default function CTA() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center max-w-4xl mx-auto"
+          className="text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-6 text-gray-900 dark:text-white">
+          <h2 className="section-title mb-4">
             Ready to Level Up
-            <span className="gradient-text block mt-2">Your Technical Skills?</span>
+            <span className="text-blue-600 dark:text-blue-500 block mt-1">Your Technical Skills?</span>
           </h2>
           
-          <p className="text-xl text-gray-700 dark:text-gray-300 mb-12">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-10">
             Join thousands of students building their careers with matriXO&apos;s workshops, 
             hackathons, and bootcamps.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-primary flex items-center justify-center space-x-2 text-lg"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="btn-primary inline-flex items-center gap-2"
               >
                 <span>Collaborate with Us</span>
-                <FaArrowRight />
+                <FaArrowRight className="text-sm" />
               </motion.button>
             </Link>
 
             <Link href="/events">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white font-semibold rounded-full 
-                         hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all duration-300"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="btn-secondary"
               >
                 Explore Programs
               </motion.button>
@@ -58,19 +56,19 @@ export default function CTA() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="mt-12 flex flex-wrap justify-center gap-8 text-gray-400"
+            transition={{ delay: 0.3 }}
+            className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400"
           >
-            <div className="flex items-center space-x-2">
-              <span className="text-neon-blue text-2xl">✓</span>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
               <span>Industry Experts</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-neon-blue text-2xl">✓</span>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
               <span>Hands-On Learning</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-neon-blue text-2xl">✓</span>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
               <span>Career Support</span>
             </div>
           </motion.div>

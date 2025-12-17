@@ -184,8 +184,8 @@ export default function ShippingPage() {
 
           <section className="mb-8">
             <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-              matriXO is committed to providing timely and reliable delivery of all digital services. As an MSME 
-              Registered organization, we maintain the highest standards of service delivery and customer satisfaction.
+              matriXO is committed to providing timely and reliable delivery of all digital services.
+              As an Ed-Tech Startup, we maintain the highest standards of service delivery and customer satisfaction.
             </p>
           </section>
         </div>

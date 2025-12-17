@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="min-h-screen pt-20">
-      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white section-padding">
+      <section className="bg-white dark:bg-gray-950 text-gray-900 dark:text-white section-padding">
         <div className="container-custom px-6">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
-              Blog & <span className="gradient-text">News</span>
+            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6 text-gray-900 dark:text-white">
+              Blog & <span className="text-blue-600 dark:text-blue-500">News</span>
             </h1>
-            <p className="text-2xl text-gray-300">
+            <p className="text-2xl text-gray-600 dark:text-gray-400">
               Coming Soon
             </p>
           </div>

@@ -51,17 +51,17 @@ export default function ContactContent() {
   return (
     <div className="min-h-screen pt-0">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white section-padding">
+      <section className="bg-gray-950 text-white section-padding">
         <div className="container-custom px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-4xl mx-auto"
+            className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
-              Get In <span className="gradient-text">Touch</span>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              Get In <span className="text-blue-500">Touch</span>
             </h1>
-            <p className="text-2xl text-gray-300">
+            <p className="text-xl text-gray-400">
               Have questions? We&apos;d love to hear from you.
             </p>
           </motion.div>
@@ -74,11 +74,11 @@ export default function ContactContent() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <h2 className="text-3xl font-bold mb-8 gradient-text">Send Us a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Send Us a <span className="text-blue-600 dark:text-blue-500">Message</span></h2>
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                     Full Name *
@@ -89,8 +89,8 @@ export default function ContactContent() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 
-                             dark:border-gray-800 focus:border-neon-blue focus:outline-none transition-colors 
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 
+                             dark:border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors 
                              text-gray-900 dark:text-white"
                     placeholder="John Doe"
                   />
@@ -106,8 +106,8 @@ export default function ContactContent() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 
-                             dark:border-gray-800 focus:border-neon-blue focus:outline-none transition-colors
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 
+                             dark:border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors
                              text-gray-900 dark:text-white"
                     placeholder="john@example.com"
                   />
@@ -122,8 +122,8 @@ export default function ContactContent() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 
-                             dark:border-gray-800 focus:border-neon-blue focus:outline-none transition-colors
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 
+                             dark:border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors
                              text-gray-900 dark:text-white"
                     placeholder="+91 98765 43210"
                   />
@@ -138,8 +138,8 @@ export default function ContactContent() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 
-                             dark:border-gray-800 focus:border-neon-blue focus:outline-none transition-colors
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 
+                             dark:border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors
                              text-gray-900 dark:text-white"
                   >
                     <option value="">Select a subject</option>
@@ -160,9 +160,9 @@ export default function ContactContent() {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={6}
-                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 
-                             dark:border-gray-800 focus:border-neon-blue focus:outline-none transition-colors
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 
+                             dark:border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors
                              text-gray-900 dark:text-white resize-none"
                     placeholder="Tell us more about your inquiry..."
                   />
@@ -180,39 +180,45 @@ export default function ContactContent() {
 
             {/* Contact Info */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="space-y-8"
+              className="space-y-6"
             >
               <div>
-                <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Contact Information</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Contact Information</h2>
                 
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4 glass-card p-6">
-                    <FaEnvelope className="text-2xl text-neon-blue flex-shrink-0 mt-1" />
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-500 flex-shrink-0">
+                      <FaEnvelope size={18} />
+                    </div>
                     <div>
-                      <h3 className="font-bold mb-1 text-gray-900 dark:text-white">Email</h3>
-                      <a href="mailto:hello@matrixo.in" className="text-gray-600 dark:text-gray-400 hover:text-neon-blue">
+                      <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">Email</h3>
+                      <a href="mailto:hello@matrixo.in" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">
                         hello@matrixo.in
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-4 glass-card p-6">
-                    <FaPhone className="text-2xl text-neon-purple flex-shrink-0 mt-1" />
+                  <div className="flex items-start space-x-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-500 flex-shrink-0">
+                      <FaPhone size={18} />
+                    </div>
                     <div>
-                      <h3 className="font-bold mb-1 text-gray-900 dark:text-white">Phone</h3>
-                      <a href="tel:+918297024365" className="text-gray-600 dark:text-gray-400 hover:text-neon-purple">
+                      <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">Phone</h3>
+                      <a href="tel:+918297024365" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">
                         +91 82970 24365
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-4 glass-card p-6">
-                    <FaMapMarkerAlt className="text-2xl text-neon-pink flex-shrink-0 mt-1" />
+                  <div className="flex items-start space-x-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-500 flex-shrink-0">
+                      <FaMapMarkerAlt size={18} />
+                    </div>
                     <div>
-                      <h3 className="font-bold mb-1 text-gray-900 dark:text-white">Address</h3>
-                      <p className="text-gray-600 dark:text-gray-400">
+                      <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">Address</h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                         25, Heaven Down Residency<br />
                         RTC Colony, Nagaram<br />
                         Hyderabad, Telangana - 501302
@@ -223,36 +229,36 @@ export default function ContactContent() {
               </div>
 
               {/* Social Links */}
-              <div className="glass-card p-6">
-                <h3 className="font-bold mb-4 text-gray-900 dark:text-white">Follow Us</h3>
-                <div className="flex space-x-4">
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
+                <h3 className="font-semibold mb-4 text-gray-900 dark:text-white">Follow Us</h3>
+                <div className="flex space-x-3">
                   <a
                     href="https://linkedin.com/company/matrixo"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center 
-                             hover:bg-gradient-to-br hover:from-neon-blue hover:to-neon-purple hover:text-white 
+                    className="w-10 h-10 bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center 
+                             text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white 
                              transition-all duration-300"
                   >
-                    <FaLinkedin size={24} />
+                    <FaLinkedin size={20} />
                   </a>
                   <a
                     href="https://instagram.com/matrixo_official"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center 
-                             hover:bg-gradient-to-br hover:from-neon-blue hover:to-neon-purple hover:text-white 
+                    className="w-10 h-10 bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center 
+                             text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white 
                              transition-all duration-300"
                   >
-                    <FaInstagram size={24} />
+                    <FaInstagram size={20} />
                   </a>
                 </div>
               </div>
 
               {/* Business Hours */}
-              <div className="glass-card p-6">
-                <h3 className="font-bold mb-4 text-gray-900 dark:text-white">Business Hours</h3>
-                <div className="space-y-2 text-gray-600 dark:text-gray-400">
+              <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5">
+                <h3 className="font-semibold mb-4 text-gray-900 dark:text-white">Business Hours</h3>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex justify-between">
                     <span>Monday - Friday:</span>
                     <span className="font-medium">9:00 AM - 6:00 PM</span>

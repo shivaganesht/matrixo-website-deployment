@@ -281,7 +281,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
         className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl"
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
+        <div className="sticky top-0 z-10 bg-blue-600 text-white p-6">
           <button
             onClick={() => onClose(false)}
             className="absolute top-4 right-4 text-white hover:text-gray-200 transition-colors"
@@ -413,7 +413,7 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
           {/* Academic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <FaGraduationCap className="text-purple-500" />
+              <FaGraduationCap className="text-blue-600" />
               Academic Information
             </h3>
 
@@ -692,10 +692,10 @@ export default function EventRegistrationForm({ event, ticket, onClose }: EventR
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 
-                       text-white rounded-lg font-semibold shadow-lg
-                       hover:shadow-xl transform hover:scale-105 transition-all
-                       disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700
+                       text-white rounded-lg font-semibold shadow-sm
+                       hover:shadow-md transition-all
+                       disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Submitting...' : 'Complete Registration'}
             </button>

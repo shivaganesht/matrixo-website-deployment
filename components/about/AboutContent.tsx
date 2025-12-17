@@ -7,17 +7,17 @@ export default function AboutContent() {
   return (
     <div className="min-h-screen pt-0">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white section-padding">
+      <section className="bg-gray-950 text-white section-padding">
         <div className="container-custom px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-4xl mx-auto"
+            className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
-              About <span className="gradient-text">matriXO</span>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              About <span className="text-blue-500">matriXO</span>
             </h1>
-            <p className="text-2xl text-gray-300 mb-8">
+            <p className="text-xl text-gray-400">
               Empowering students through technical workshops, hackathons, and career-focused bootcamps
             </p>
           </motion.div>
@@ -29,23 +29,23 @@ export default function AboutContent() {
         <div className="container-custom px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-display font-bold mb-6">
-                Our <span className="gradient-text">Story</span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-gray-900 dark:text-white">
+                Our <span className="text-blue-600 dark:text-blue-500">Story</span>
               </h2>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                matriXO is an MSME-registered organization dedicated to bridging the gap between academic learning 
+              <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                matriXO is an An Ed-Tech Startup dedicated to bridging the gap between academic learning 
                 and industry requirements. We specialize in conducting hands-on technical workshops, competitive hackathons, 
                 intensive bootcamps, and career-focused events exclusively for students.
               </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
                 Our journey began when we recognized that traditional education often lacks practical, industry-relevant training. 
                 Students were graduating without the real-world skills that companies demand. We set out to change that.
               </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 Today, we partner with leading educational institutions across India to deliver technical training programs 
                 that transform students into industry-ready professionals. From full-stack development bootcamps to AI/ML workshops, 
                 we focus on what matters: building skills that lead to careers.
@@ -53,38 +53,22 @@ export default function AboutContent() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="glass-card p-12"
+              className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8"
             >
-              <div className="space-y-8">
-                <div>
-                  <h3 className="text-4xl font-bold gradient-text mb-4">Why Choose matriXO?</h3>
-                  <ul className="space-y-4 text-gray-600 dark:text-gray-400 text-lg">
-                    <li className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span>Hands-on technical training programs</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span>Industry-relevant curriculum</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span>Expert mentorship and guidance</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span>Growing partner network</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-500 mr-2">✓</span>
-                      <span>Career-focused approach</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-500 mb-5">Why Choose matriXO?</h3>
+              <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+                {['Hands-on technical training programs', 'Industry-relevant curriculum', 'Expert mentorship and guidance', 'Growing partner network', 'Career-focused approach'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-500" />
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           </div>
         </div>
@@ -93,16 +77,18 @@ export default function AboutContent() {
       {/* Mission & Vision */}
       <section className="section-padding bg-gray-50 dark:bg-gray-900">
         <div className="container-custom px-6">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="glass-card p-8"
+              className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-2xl p-8"
             >
-              <FaRocket className="text-5xl text-neon-blue mb-6" />
-              <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Our Mission</h2>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-500">
+                <FaRocket size={22} />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Our Mission</h2>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 To empower every student with industry-relevant technical skills through hands-on workshops, 
                 competitive hackathons, and intensive bootcamps. We believe that practical learning, combined 
                 with expert mentorship, is the key to building successful tech careers. Our mission is to make 
@@ -115,11 +101,13 @@ export default function AboutContent() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="glass-card p-8"
+              className="bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-2xl p-8"
             >
-              <FaLightbulb className="text-5xl text-neon-purple mb-6" />
-              <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Our Vision</h2>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-500">
+                <FaLightbulb size={22} />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Our Vision</h2>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 To become India's most trusted technical education platform for students, creating a vibrant 
                 ecosystem where learning meets career opportunities. We envision a future where every engineering 
                 student graduates not just with a degree, but with real project experience, competitive coding skills, 
@@ -137,17 +125,17 @@ export default function AboutContent() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              Our <span className="gradient-text">Values</span>
+            <h2 className="section-title mb-3">
+              Our <span className="text-blue-600 dark:text-blue-500">Values</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="section-subtitle">
               The principles that guide everything we do
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: FaGraduationCap,
@@ -182,20 +170,19 @@ export default function AboutContent() {
             ].map((value, index) => (
               <motion.div
                 key={value.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="glass-card p-8 hover-lift text-center"
+                transition={{ delay: index * 0.05 }}
+                className="group bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-7 hover:border-blue-300 dark:hover:border-blue-600/50 transition-colors duration-300 text-center"
               >
-                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-neon-blue to-neon-purple rounded-2xl 
-                              flex items-center justify-center mb-6 text-white">
-                  <value.icon size={28} />
+                <div className="w-12 h-12 mx-auto bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                  <value.icon size={22} />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
                   {value.description}
                 </p>
               </motion.div>
@@ -205,35 +192,35 @@ export default function AboutContent() {
       </section>
 
       {/* Incubation */}
-      <section className="section-padding bg-gradient-to-br from-neon-blue/10 to-neon-purple/10">
+      <section className="section-padding bg-gray-50 dark:bg-gray-900">
         <div className="container-custom px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto glass-card p-12"
+            className="text-center max-w-3xl mx-auto bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-2xl p-10"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
-              Supported by <span className="gradient-text">KPRISE</span>
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-5 text-gray-900 dark:text-white">
+              Supported by <span className="text-blue-600 dark:text-blue-500">KPRISE</span>
             </h2>
-            <div className="flex justify-center mb-6">
-              <div className="dark:bg-white p-4 rounded-xl">
+            <div className="flex justify-center mb-5">
+              <div className="bg-white dark:bg-white p-3 rounded-xl border border-gray-200">
                 <img 
                   src="/logos/kprise-logo.png" 
                   alt="KPRISE Logo" 
-                  className="h-16 w-auto object-contain"
+                  className="h-12 w-auto object-contain"
                 />
               </div>
             </div>
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
               We&apos;re proud to be supported by <strong>KPR Foundation for Innovation and Social Empowerment (KPRISE)</strong>, 
               which has provided us with mentorship, resources, and a collaborative environment to grow. This partnership 
               has been instrumental in our journey from an idea to a thriving platform serving thousands of students.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-              <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">EdTech Startup</span>
-              <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">Supported 2023</span>
-              <span className="px-4 py-2 bg-white dark:bg-gray-800 rounded-full">Hyderabad, India</span>
+            <div className="flex flex-wrap justify-center gap-3 text-sm">
+              <span className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">EdTech Startup</span>
+              <span className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">Supported 2023</span>
+              <span className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">Hyderabad, India</span>
             </div>
           </motion.div>
         </div>

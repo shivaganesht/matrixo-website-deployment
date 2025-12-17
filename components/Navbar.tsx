@@ -135,7 +135,7 @@ export default function Navbar() {
               <motion.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-full animate-pulse"
+                className="px-2 py-0.5 text-xs font-bold bg-blue-600 text-white rounded-md"
               >
                 BETA
               </motion.span>
@@ -153,11 +153,11 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 
+                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-500 
                            font-medium transition-colors duration-200 relative group"
                 >
                   {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 
                                  group-hover:w-full transition-all duration-200" />
                 </Link>
               </motion.div>
@@ -171,8 +171,8 @@ export default function Navbar() {
                 onMouseLeave={() => setShowFeaturesDropdown(false)}
               >
                 <button
-                  className="flex items-center gap-1 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 
-                           font-bold transition-colors duration-200 relative group px-3 py-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                  className="flex items-center gap-1 text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 
+                           font-semibold transition-colors duration-200 relative group px-3 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 >
                   Features
                   <FaChevronDown className={`text-xs transition-transform duration-200 ${showFeaturesDropdown ? 'rotate-180' : ''}`} />
@@ -185,18 +185,18 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden"
                     >
                       {betaLinks.map((link, index) => (
                         <Link
                           key={link.name}
                           href={link.href}
-                          className="block px-6 py-4 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                          className="block px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-100 dark:border-gray-800 last:border-b-0"
                         >
-                          <div className="font-bold text-purple-600 dark:text-purple-400 mb-1">
+                          <div className="font-semibold text-blue-600 dark:text-blue-500 mb-0.5 text-sm">
                             {link.name}
                           </div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
                             {link.description}
                           </div>
                         </Link>
@@ -256,8 +256,8 @@ export default function Navbar() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                           rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-blue-500 text-blue-600 dark:text-blue-500 
+                           rounded-xl font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
                 >
                   <FaUser className="text-sm" />
                   {user.displayName || user.email?.split('@')[0]}
@@ -270,9 +270,9 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                      className="absolute top-full right-0 mt-2 w-52 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 overflow-hidden"
                     >
-                      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
                         <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                           {user.displayName || 'User'}
                         </p>
@@ -284,7 +284,7 @@ export default function Navbar() {
                         href={EMPLOYEE_PORTAL_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full px-4 py-3 text-left flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors border-b border-gray-200 dark:border-gray-700"
+                        className="w-full px-4 py-3 text-left flex items-center gap-2 text-blue-600 dark:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors border-b border-gray-200 dark:border-gray-800"
                       >
                         <FaIdBadge />
                         <span>Employee Portal</span>
@@ -308,8 +308,8 @@ export default function Navbar() {
               >
                 <Link
                   href="/auth"
-                  className="inline-flex items-center gap-2 px-4 py-2 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                           rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                  className="inline-flex items-center gap-2 px-4 py-2 border border-blue-500 text-blue-600 dark:text-blue-500 
+                           rounded-xl font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
                 >
                   <FaUser className="text-sm" />
                   Login
@@ -372,8 +372,8 @@ export default function Navbar() {
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
                     <button
                       onClick={() => setShowMobileFeaturesDropdown(!showMobileFeaturesDropdown)}
-                      className="w-full flex items-center justify-between px-4 py-2 text-purple-600 dark:text-purple-400 
-                               font-bold hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-2 text-blue-600 dark:text-blue-500 
+                               font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                     >
                       <span>Features</span>
                       <FaChevronDown className={`text-xs transition-transform duration-200 ${showMobileFeaturesDropdown ? 'rotate-180' : ''}`} />
@@ -396,10 +396,10 @@ export default function Navbar() {
                                   setIsOpen(false)
                                   setShowMobileFeaturesDropdown(false)
                                 }}
-                                className="block px-4 py-3 bg-purple-50 dark:bg-purple-900/10 hover:bg-purple-100 dark:hover:bg-purple-900/20 
+                                className="block px-4 py-3 bg-blue-50 dark:bg-blue-900/10 hover:bg-blue-100 dark:hover:bg-blue-900/20 
                                          rounded-lg transition-colors"
                               >
-                                <div className="font-bold text-purple-600 dark:text-purple-400 text-sm mb-1">
+                                <div className="font-semibold text-blue-600 dark:text-blue-500 text-sm mb-0.5">
                                   {link.name}
                                 </div>
                                 <div className="text-xs text-gray-600 dark:text-gray-400">
@@ -418,7 +418,7 @@ export default function Navbar() {
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3 space-y-2">
                   {user ? (
                     <>
-                      <div className="px-4 py-3 bg-purple-50 dark:bg-purple-900/10 rounded-lg">
+                      <div className="px-4 py-3 bg-blue-50 dark:bg-blue-900/10 rounded-lg">
                         <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                           {user.displayName || 'User'}
                         </p>
@@ -431,8 +431,8 @@ export default function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                                 rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-blue-500 text-blue-600 dark:text-blue-500 
+                                 rounded-xl font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
                       >
                         <FaIdBadge className="text-sm" />
                         Employee Portal
@@ -442,8 +442,8 @@ export default function Navbar() {
                           handleLogout()
                           setIsOpen(false)
                         }}
-                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-red-500 text-red-600 dark:text-red-400 
-                                 rounded-full font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-red-500 text-red-600 dark:text-red-400 
+                                 rounded-xl font-medium hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
                       >
                         <FaSignOutAlt className="text-sm" />
                         Logout
@@ -453,8 +453,8 @@ export default function Navbar() {
                     <Link
                       href="/auth"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border-2 border-purple-500 text-purple-600 dark:text-purple-400 
-                               rounded-full font-semibold hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-blue-500 text-blue-600 dark:text-blue-500 
+                               rounded-xl font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
                     >
                       <FaUser className="text-sm" />
                       Login
@@ -463,8 +463,8 @@ export default function Navbar() {
                   <Link
                     href="/contact"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center w-full px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 
-                             text-white rounded-full font-semibold hover:shadow-lg transition-all duration-200"
+                    className="flex items-center justify-center w-full px-6 py-2.5 bg-blue-600 
+                             text-white rounded-xl font-medium hover:bg-blue-700 transition-all duration-200"
                   >
                     Get Started
                   </Link>

@@ -6,7 +6,7 @@ import { FaHome, FaRocket, FaCompass, FaBug } from 'react-icons/fa'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-blue-950 dark:to-purple-950 flex items-center justify-center px-6 py-24">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center px-6 py-24">
       <div className="max-w-4xl mx-auto text-center">
         {/* Animated 404 */}
         <motion.div
@@ -16,11 +16,11 @@ export default function NotFound() {
           className="relative mb-8"
         >
           {/* Background Glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl rounded-full" />
+          <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full" />
           
           {/* 404 Text */}
           <h1 className="relative text-[150px] md:text-[250px] font-black leading-none">
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-blue-600 dark:text-blue-500">
               404
             </span>
           </h1>
@@ -38,7 +38,7 @@ export default function NotFound() {
           </h2>
           
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Looks like you've ventured into the <span className="text-purple-600 dark:text-purple-400 font-semibold">void</span>
+            Looks like you've ventured into the <span className="text-blue-600 dark:text-blue-500 font-semibold">void</span>
           </p>
           
           <div className="space-y-2 max-w-xl mx-auto">
@@ -91,15 +91,15 @@ export default function NotFound() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10"
         >
           <Link href="/">
-            <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-3">
+            <button className="group px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3">
               <FaHome className="text-xl group-hover:rotate-12 transition-transform" />
               <span>Back to Home</span>
             </button>
           </Link>
 
           <Link href="/events">
-            <button className="group px-8 py-4 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-3">
-              <FaRocket className="text-xl text-purple-600 group-hover:translate-y-[-4px] transition-transform" />
+            <button className="group px-8 py-4 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-3">
+              <FaRocket className="text-xl text-blue-600 group-hover:translate-y-[-4px] transition-transform" />
               <span>Explore Events</span>
             </button>
           </Link>
@@ -112,11 +112,11 @@ export default function NotFound() {
           transition={{ delay: 0.6 }}
           className="mt-12 relative z-10"
         >
-          <div className="inline-block bg-white/50 dark:bg-gray-900/50 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-2xl px-6 py-4">
+          <div className="inline-block bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl px-6 py-4">
             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
               <FaBug className="text-red-500" />
               <code className="font-mono">
-                ERROR_CODE: <span className="text-purple-600 dark:text-purple-400 font-bold">PAGE_NOT_FOUND</span>
+                ERROR_CODE: <span className="text-blue-600 dark:text-blue-500 font-bold">PAGE_NOT_FOUND</span>
               </code>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function NotFound() {
           transition={{ delay: 0.8 }}
           className="mt-8 text-sm text-gray-500 dark:text-gray-500 relative z-10"
         >
-          Need help? <Link href="/contact" className="text-purple-600 dark:text-purple-400 hover:underline font-semibold">Contact us</Link> or check out our <Link href="/events" className="text-purple-600 dark:text-purple-400 hover:underline font-semibold">upcoming events</Link>
+          Need help? <Link href="/contact" className="text-blue-600 dark:text-blue-500 hover:underline font-semibold">Contact us</Link> or check out our <Link href="/events" className="text-blue-600 dark:text-blue-500 hover:underline font-semibold">upcoming events</Link>
         </motion.p>
 
         {/* Fun Suggestions */}
@@ -139,19 +139,19 @@ export default function NotFound() {
           transition={{ delay: 1 }}
           className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto relative z-10"
         >
-          <div className="glass-card p-6 hover-lift">
+          <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="text-3xl mb-3">🏠</div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">Go Home</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Start fresh from the homepage</p>
           </div>
 
-          <div className="glass-card p-6 hover-lift">
+          <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="text-3xl mb-3">🎯</div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">Find Events</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Discover amazing workshops</p>
           </div>
 
-          <div className="glass-card p-6 hover-lift">
+          <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="text-3xl mb-3">📧</div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">Get Support</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">We're here to help you</p>
