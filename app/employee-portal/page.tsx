@@ -44,47 +44,20 @@ const statusConfig = {
   H: { label: 'Holiday', color: 'bg-purple-500', icon: FaPlane, textColor: 'text-purple-500' }
 }
 
-// Helper function to convert Google Drive URLs to direct image URLs
-const getProfileImageUrl = (url: string | undefined): string => {
-  if (!url) return '/team/default-avatar.png'
+// Default avatar placeholder
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=7c3aed&color=fff&size=200'
+
+// Simple helper to get profile image - just use the URL from Firebase directly
+const getProfileImageUrl = (url: string | undefined, name?: string): string => {
+  if (url) return url
   
-  // Check if it's a Google Drive URL
-  if (url.includes('drive.google.com')) {
-    // Extract file ID from various Google Drive URL formats
-    let fileId = ''
-    
-    // Format: https://drive.google.com/file/d/FILE_ID/view
-    const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)
-    if (fileMatch) {
-      fileId = fileMatch[1]
-    }
-    
-    // Format: https://drive.google.com/open?id=FILE_ID
-    const openMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/)
-    if (openMatch) {
-      fileId = openMatch[1]
-    }
-    
-    // Format: https://drive.google.com/u/2/drive-viewer/...
-    // For drive-viewer URLs, extract from the path
-    const viewerMatch = url.match(/drive-viewer\/([a-zA-Z0-9_-]+)/)
-    if (viewerMatch) {
-      fileId = viewerMatch[1]
-    }
-    
-    // Format: /d/FILE_ID in the URL
-    const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/)
-    if (dMatch) {
-      fileId = dMatch[1]
-    }
-    
-    if (fileId) {
-      // Return direct thumbnail URL
-      return `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`
-    }
+  // Fallback to initials-based avatar if no URL
+  if (name) {
+    const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2)
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=7c3aed&color=fff&size=200`
   }
   
-  return url
+  return DEFAULT_AVATAR
 }
 
 // Login Component
@@ -312,10 +285,10 @@ function DashboardHeader({ activeTab, setActiveTab }: { activeTab: string, setAc
                 className="flex items-center gap-2 p-2 rounded-xl bg-gray-800/50 hover:bg-gray-700/50 transition-colors"
               >
                 <img
-                  src={getProfileImageUrl(employee?.profileImage)}
+                  src={getProfileImageUrl(employee?.profileImage, employee?.name)}
                   alt={employee?.name}
                   className="w-8 h-8 rounded-full object-cover border-2 border-purple-500"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/team/default-avatar.png' }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_AVATAR }}
                 />
                 <span className="hidden sm:block text-white text-sm font-medium">
                   {employee?.name?.split(' ')[0]}
@@ -335,10 +308,10 @@ function DashboardHeader({ activeTab, setActiveTab }: { activeTab: string, setAc
                     <div className="p-4 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border-b border-gray-700">
                       <div className="flex items-center gap-3">
                         <img
-                          src={getProfileImageUrl(employee?.profileImage)}
+                          src={getProfileImageUrl(employee?.profileImage, employee?.name)}
                           alt={employee?.name}
                           className="w-12 h-12 rounded-full object-cover border-2 border-purple-500"
-                          onError={(e) => { (e.target as HTMLImageElement).src = '/team/default-avatar.png' }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_AVATAR }}
                         />
                         <div>
                           <p className="text-white font-semibold">{employee?.name}</p>
@@ -1227,7 +1200,7 @@ function AdminPanel() {
                     <motion.tr key={emp.employeeId} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }} className="border-b border-gray-700/50 hover:bg-gray-700/20 transition-colors">
                       <td className="py-4 pr-4">
                         <div className="flex items-center gap-3">
-                          <img src={getProfileImageUrl(emp.profileImage)} alt={emp.name} className="w-10 h-10 rounded-full object-cover border-2 border-gray-600" onError={(e) => { (e.target as HTMLImageElement).src = '/team/default-avatar.png' }} />
+                          <img src={getProfileImageUrl(emp.profileImage, emp.name)} alt={emp.name} className="w-10 h-10 rounded-full object-cover border-2 border-gray-600" onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_AVATAR }} />
                           <div>
                             <p className="text-white font-medium">{emp.name}</p>
                             <p className="text-gray-500 text-xs">{emp.employeeId}</p>
