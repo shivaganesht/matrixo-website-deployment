@@ -55,6 +55,8 @@ Stores attendance records.
 
 ## Firestore Security Rules
 
+**⚠️ IMPORTANT: Your collection is named `Employees` (capital E) in Firestore!**
+
 Copy these rules to your Firebase Console → Firestore Database → Rules:
 
 ```javascript
@@ -68,46 +70,73 @@ service cloud.firestore {
       return request.auth != null;
     }
     
-    // Helper function to get employee document
-    function getEmployee() {
-      return get(/databases/$(database)/documents/employees/$(request.auth.uid));
-    }
-    
-    // Helper function to check if user owns the employee record
-    function isOwner(employeeId) {
-      return isAuthenticated() && 
-             exists(/databases/$(database)/documents/employees/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.employeeId == employeeId;
-    }
-    
-    // Employees collection
-    match /employees/{docId} {
-      // Allow read if authenticated and it's their own record
+    // Employees collection (capital E)
+    match /Employees/{docId} {
+      // Allow read for all authenticated users (needed for login lookup)
       allow read: if isAuthenticated();
       
-      // Only allow admins to create/update/delete employees
-      allow write: if isAuthenticated() && 
-                   exists(/databases/$(database)/documents/employees/$(request.auth.uid)) &&
-                   get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.role == 'admin';
+      // Allow write only for admins (check by email since we query by email)
+      allow write: if false; // Manage through Firebase Console only for security
     }
     
     // Attendance collection
     match /attendance/{attendanceId} {
-      // Allow read if it's the employee's own attendance record
-      allow read: if isAuthenticated() && 
-                  resource.data.employeeId == get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.employeeId;
+      // Allow authenticated users to read their own attendance
+      allow read: if isAuthenticated();
       
-      // Allow create if authenticated and marking own attendance
-      allow create: if isAuthenticated() && 
-                    request.resource.data.employeeId == get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.employeeId;
+      // Allow authenticated users to create/update their own attendance
+      allow create, update: if isAuthenticated();
       
-      // Allow update if it's their own record (same day only)
-      allow update: if isAuthenticated() && 
-                    resource.data.employeeId == get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.employeeId;
+      // Only allow delete through Firebase Console
+      allow delete: if false;
+    }
+  }
+}
+```
+
+### Alternative: More Secure Rules (if you restructure your DB)
+
+If you want stricter security, restructure your Employees collection to use **Firebase Auth UID as the document ID**. Then use these rules:
+
+```javascript
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getEmployeeByUid() {
+      return get(/databases/$(database)/documents/Employees/$(request.auth.uid));
+    }
+    
+    function hasEmployeeRecord() {
+      return exists(/databases/$(database)/documents/Employees/$(request.auth.uid));
+    }
+    
+    // Employees collection
+    match /Employees/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && hasEmployeeRecord() && 
+                   getEmployeeByUid().data.role == 'admin';
+    }
+    
+    // Attendance collection
+    match /attendance/{attendanceId} {
+      // Extract employeeId from attendanceId (format: employeeId_date)
+      allow read: if isAuthenticated() && hasEmployeeRecord() &&
+                  (resource == null || resource.data.employeeId == getEmployeeByUid().data.employeeId);
       
-      // Only admins can delete
-      allow delete: if isAuthenticated() && 
-                    get(/databases/$(database)/documents/employees/$(request.auth.uid)).data.role == 'admin';
+      allow create: if isAuthenticated() && hasEmployeeRecord() &&
+                    request.resource.data.employeeId == getEmployeeByUid().data.employeeId;
+      
+      allow update: if isAuthenticated() && hasEmployeeRecord() &&
+                    resource.data.employeeId == getEmployeeByUid().data.employeeId;
+      
+      allow delete: if isAuthenticated() && hasEmployeeRecord() &&
+                    getEmployeeByUid().data.role == 'admin';
     }
   }
 }

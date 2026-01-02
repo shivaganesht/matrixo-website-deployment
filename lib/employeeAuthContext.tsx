@@ -34,7 +34,7 @@ export interface EmployeeProfile {
   joiningDate: string
   profileImage: string
   phone?: string
-  role: 'employee' | 'admin'
+  role: 'employee' | 'admin' | 'Intern' | string
 }
 
 export interface AttendanceRecord {
@@ -79,10 +79,27 @@ export function EmployeeAuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user)
       if (user) {
-        // Fetch employee profile from Firestore
-        const employeeDoc = await getDoc(doc(db, 'Employees', user.uid))
-        if (employeeDoc.exists()) {
-          setEmployee(employeeDoc.data() as EmployeeProfile)
+        try {
+          // Fetch employee profile from Firestore
+          const employeeDoc = await getDoc(doc(db, 'Employees', user.uid))
+          if (employeeDoc.exists()) {
+            const data = employeeDoc.data() as EmployeeProfile
+            console.log('Employee data loaded:', data)
+            setEmployee(data)
+          } else {
+            console.log('No employee document found for user:', user.uid)
+            // Try to find by email as fallback
+            const employeesRef = collection(db, 'Employees')
+            const q = query(employeesRef, where('email', '==', user.email))
+            const querySnapshot = await getDocs(q)
+            if (!querySnapshot.empty) {
+              const data = querySnapshot.docs[0].data() as EmployeeProfile
+              console.log('Employee found by email:', data)
+              setEmployee(data)
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching employee data:', error)
         }
       } else {
         setEmployee(null)
