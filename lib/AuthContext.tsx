@@ -11,9 +11,18 @@ import {
   GoogleAuthProvider,
   GithubAuthProvider,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  ConfirmationResult
 } from 'firebase/auth'
-import { auth } from '@/lib/firebaseConfig'
+import { auth, RecaptchaVerifier, signInWithPhoneNumber } from '@/lib/firebaseConfig'
+
+// Extend Window interface for recaptchaVerifier
+declare global {
+  interface Window {
+    recaptchaVerifier: any;
+    confirmationResult: ConfirmationResult | null;
+  }
+}
 
 interface AuthContextType {
   user: User | null
@@ -24,6 +33,9 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>
   signInWithGithub: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
+  setupRecaptcha: (elementId: string) => void
+  sendPhoneOTP: (phoneNumber: string) => Promise<ConfirmationResult>
+  verifyPhoneOTP: (otp: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -79,6 +91,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await sendPasswordResetEmail(auth, email)
   }
 
+  const setupRecaptcha = (elementId: string) => {
+    if (typeof window !== 'undefined') {
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
+          'size': 'invisible',
+          'callback': () => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber
+          },
+          'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            window.recaptchaVerifier = null;
+          }
+        });
+      }
+    }
+  }
+
+  const sendPhoneOTP = async (phoneNumber: string): Promise<ConfirmationResult> => {
+    if (typeof window === 'undefined') {
+      throw new Error('Phone auth only works in browser')
+    }
+    
+    const appVerifier = window.recaptchaVerifier
+    if (!appVerifier) {
+      throw new Error('Please setup reCAPTCHA first')
+    }
+    
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    window.confirmationResult = confirmationResult
+    return confirmationResult
+  }
+
+  const verifyPhoneOTP = async (otp: string): Promise<void> => {
+    if (typeof window === 'undefined') {
+      throw new Error('Phone auth only works in browser')
+    }
+    
+    const confirmationResult = window.confirmationResult
+    if (!confirmationResult) {
+      throw new Error('Please request OTP first')
+    }
+    
+    await confirmationResult.confirm(otp)
+  }
+
   const value = {
     user,
     loading,
@@ -87,7 +144,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     signInWithGoogle,
     signInWithGithub,
-    resetPassword
+    resetPassword,
+    setupRecaptcha,
+    sendPhoneOTP,
+    verifyPhoneOTP
   }
 
   return (

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGoogle, FaGithub, FaArrowRight, FaShieldAlt, FaBolt, FaLock } from 'react-icons/fa'
+import { FaGoogle, FaGithub, FaArrowRight, FaShieldAlt, FaBolt, FaLock, FaPhone } from 'react-icons/fa'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/AuthContext'
@@ -10,6 +10,10 @@ import { toast } from 'sonner'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
+  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [otp, setOtp] = useState('')
+  const [otpSent, setOtpSent] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,7 +23,14 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false)
   
   const router = useRouter()
-  const { signIn, signUp, signInWithGoogle, signInWithGithub } = useAuth()
+  const { signIn, signUp, signInWithGoogle, signInWithGithub, setupRecaptcha, sendPhoneOTP, verifyPhoneOTP } = useAuth()
+
+  // Setup reCAPTCHA when phone auth is selected
+  useEffect(() => {
+    if (authMethod === 'phone' && typeof window !== 'undefined') {
+      setupRecaptcha('recaptcha-container')
+    }
+  }, [authMethod, setupRecaptcha])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -114,6 +125,72 @@ export default function AuthPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSendOTP = async () => {
+    if (!phoneNumber) {
+      toast.error('Please enter a phone number')
+      return
+    }
+
+    // Format phone number to E.164 format if not already
+    let formattedNumber = phoneNumber.trim()
+    if (!formattedNumber.startsWith('+')) {
+      // Assume Indian number if no country code
+      formattedNumber = '+91' + formattedNumber.replace(/\D/g, '')
+    }
+
+    setLoading(true)
+    try {
+      await sendPhoneOTP(formattedNumber)
+      setOtpSent(true)
+      toast.success('OTP sent to ' + formattedNumber)
+    } catch (error: any) {
+      console.error('Send OTP error:', error)
+      if (error.code === 'auth/invalid-phone-number') {
+        toast.error('Invalid phone number format')
+      } else if (error.code === 'auth/too-many-requests') {
+        toast.error('Too many attempts. Please try again later.')
+      } else if (error.code === 'auth/quota-exceeded') {
+        toast.error('SMS quota exceeded. Please try again later.')
+      } else {
+        toast.error(error.message || 'Failed to send OTP')
+      }
+      // Reset reCAPTCHA on error
+      if (typeof window !== 'undefined' && window.recaptchaVerifier) {
+        window.recaptchaVerifier = null
+        setupRecaptcha('recaptcha-container')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleVerifyOTP = async () => {
+    if (!otp || otp.length < 6) {
+      toast.error('Please enter a valid 6-digit OTP')
+      return
+    }
+
+    setLoading(true)
+    try {
+      await verifyPhoneOTP(otp)
+      toast.success('Phone verified successfully!')
+      router.push('/')
+    } catch (error: any) {
+      console.error('Verify OTP error:', error)
+      if (error.code === 'auth/invalid-verification-code') {
+        toast.error('Invalid OTP. Please try again.')
+      } else if (error.code === 'auth/code-expired') {
+        toast.error('OTP expired. Please request a new one.')
+        setOtpSent(false)
+        setOtp('')
+      } else {
+        toast.error(error.message || 'Failed to verify OTP')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -275,11 +352,120 @@ export default function AuthPage() {
                   <div className="w-full border-t border-gray-300 dark:border-gray-800" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-500">Or continue with email</span>
+                  <span className="px-4 bg-white/50 dark:bg-gray-900/50 text-gray-500 dark:text-gray-500">Or continue with</span>
                 </div>
               </div>
 
-              {/* Form */}
+              {/* Auth Method Toggle */}
+              <div className="flex gap-2 mb-6 p-1 bg-gray-200 dark:bg-gray-800/50 rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => { setAuthMethod('email'); setOtpSent(false); setOtp(''); }}
+                  className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                    authMethod === 'email'
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  Email
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAuthMethod('phone'); setOtpSent(false); setOtp(''); }}
+                  className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                    authMethod === 'phone'
+                      ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <FaPhone className="text-sm" />
+                  Phone
+                </button>
+              </div>
+
+              {/* reCAPTCHA container (invisible) */}
+              <div id="recaptcha-container"></div>
+
+              {/* Phone Auth Form */}
+              {authMethod === 'phone' ? (
+                <div className="space-y-4">
+                  {!otpSent ? (
+                    <>
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          placeholder="Phone Number (e.g., +91 9876543210)"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleSendOTP}
+                        disabled={loading || !phoneNumber}
+                        className="w-full py-3 px-5 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                      >
+                        {loading ? (
+                          <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <span>Send OTP</span>
+                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-center mb-4">
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                          OTP sent to <span className="font-semibold text-purple-500">{phoneNumber}</span>
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => { setOtpSent(false); setOtp(''); }}
+                          className="text-purple-500 hover:text-purple-400 text-sm mt-1"
+                        >
+                          Change number
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Enter 6-digit OTP"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        maxLength={6}
+                        className="w-full py-3 px-5 bg-gray-100 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-500 text-center text-2xl tracking-widest"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleVerifyOTP}
+                        disabled={loading || otp.length < 6}
+                        className="w-full py-3 px-5 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                      >
+                        {loading ? (
+                          <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <>
+                            <span>Verify OTP</span>
+                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSendOTP}
+                        disabled={loading}
+                        className="w-full text-center text-purple-500 hover:text-purple-400 text-sm"
+                      >
+                        Resend OTP
+                      </button>
+                    </>
+                  )}
+                </div>
+              ) : (
+              /* Email Form */
               <form onSubmit={handleSubmit} className="space-y-4">
                 <AnimatePresence mode="wait">
                   {!isLogin && (
@@ -366,6 +552,7 @@ export default function AuthPage() {
                   )}
                 </button>
               </form>
+              )}
 
               <div className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
                 By continuing, you agree to our{' '}

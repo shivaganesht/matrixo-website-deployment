@@ -1,7 +1,7 @@
 // Firebase Configuration
 // Replace these values with your actual Firebase project credentials
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
+import { getAuth, Auth, RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getAnalytics, Analytics } from 'firebase/analytics';
 
@@ -31,4 +31,6 @@ if (typeof window !== 'undefined') {
 }
 
 export { analytics };
+export { RecaptchaVerifier, signInWithPhoneNumber };
+export type { ConfirmationResult };
 export default app;
