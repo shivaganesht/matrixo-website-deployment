@@ -93,39 +93,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setupRecaptcha = (elementId: string) => {
     if (typeof window !== 'undefined') {
-      // Clear existing verifier if it exists to prevent "already rendered" error
+      // Don't re-initialize if already exists and is valid
       if (window.recaptchaVerifier) {
-        try {
-          window.recaptchaVerifier.clear();
-        } catch (e) {
-          // Ignore clear errors
-        }
-        window.recaptchaVerifier = null;
+        return; // Already set up
       }
       
-      // Check if element exists and is empty
+      // Check if element exists
       const container = document.getElementById(elementId);
-      if (container) {
-        container.innerHTML = ''; // Clear the container
+      if (!container) {
+        console.warn('reCAPTCHA container not found:', elementId);
+        return;
       }
       
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
-        'size': 'invisible',
-        'callback': () => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber
-        },
-        'expired-callback': () => {
-          // Response expired. Ask user to solve reCAPTCHA again.
-          if (window.recaptchaVerifier) {
-            try {
-              window.recaptchaVerifier.clear();
-            } catch (e) {
-              // Ignore
-            }
+      try {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
+          'size': 'invisible',
+          'callback': () => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber
+            console.log('reCAPTCHA verified');
+          },
+          'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            console.log('reCAPTCHA expired');
+            window.recaptchaVerifier = null;
           }
-          window.recaptchaVerifier = null;
+        });
+      } catch (error: any) {
+        console.error('reCAPTCHA setup error:', error);
+        // If already rendered, just keep the existing one
+        if (error.message?.includes('already been rendered')) {
+          console.log('Using existing reCAPTCHA');
         }
-      });
+      }
+    }
+  }
+
+  const clearRecaptcha = () => {
+    if (typeof window !== 'undefined' && window.recaptchaVerifier) {
+      try {
+        window.recaptchaVerifier.clear();
+      } catch (e) {
+        // Ignore
+      }
+      window.recaptchaVerifier = null;
+      
+      // Also clear the grecaptcha widget if it exists
+      const container = document.getElementById('recaptcha-container');
+      if (container) {
+        container.innerHTML = '';
+      }
     }
   }
 
@@ -134,14 +150,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error('Phone auth only works in browser')
     }
     
-    const appVerifier = window.recaptchaVerifier
-    if (!appVerifier) {
-      throw new Error('Please setup reCAPTCHA first')
+    // Ensure recaptcha is set up
+    if (!window.recaptchaVerifier) {
+      setupRecaptcha('recaptcha-container');
     }
     
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-    window.confirmationResult = confirmationResult
-    return confirmationResult
+    const appVerifier = window.recaptchaVerifier
+    if (!appVerifier) {
+      throw new Error('reCAPTCHA not initialized. Please refresh the page.')
+    }
+    
+    try {
+      const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      window.confirmationResult = confirmationResult
+      return confirmationResult
+    } catch (error: any) {
+      // Clear recaptcha on error so it can be re-initialized
+      clearRecaptcha();
+      throw error;
+    }
   }
 
   const verifyPhoneOTP = async (otp: string): Promise<void> => {

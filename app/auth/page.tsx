@@ -26,16 +26,29 @@ export default function AuthPage() {
   const router = useRouter()
   const { signIn, signUp, signInWithGoogle, signInWithGithub, setupRecaptcha, sendPhoneOTP, verifyPhoneOTP } = useAuth()
 
-  // Setup reCAPTCHA when phone auth is selected - only once
+  // Setup reCAPTCHA when phone auth is selected - only once on mount
   useEffect(() => {
     if (authMethod === 'phone' && typeof window !== 'undefined') {
       // Small delay to ensure DOM is ready
       const timer = setTimeout(() => {
         setupRecaptcha('recaptcha-container')
-      }, 100)
+      }, 300)
       return () => clearTimeout(timer)
     }
-  }, [authMethod]) // Remove setupRecaptcha from deps to avoid re-renders
+  }, []) // Only run once on mount when phone is selected
+  
+  // Also setup when switching to phone
+  useEffect(() => {
+    if (authMethod === 'phone' && typeof window !== 'undefined') {
+      // Check if recaptcha container exists and setup
+      const container = document.getElementById('recaptcha-container')
+      if (container && !window.recaptchaVerifier) {
+        setTimeout(() => {
+          setupRecaptcha('recaptcha-container')
+        }, 100)
+      }
+    }
+  }, [authMethod])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
