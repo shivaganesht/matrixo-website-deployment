@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [formattedPhoneNumber, setFormattedPhoneNumber] = useState('')
   const [otp, setOtp] = useState('')
   const [otpSent, setOtpSent] = useState(false)
   const [formData, setFormData] = useState({
@@ -25,12 +26,16 @@ export default function AuthPage() {
   const router = useRouter()
   const { signIn, signUp, signInWithGoogle, signInWithGithub, setupRecaptcha, sendPhoneOTP, verifyPhoneOTP } = useAuth()
 
-  // Setup reCAPTCHA when phone auth is selected
+  // Setup reCAPTCHA when phone auth is selected - only once
   useEffect(() => {
     if (authMethod === 'phone' && typeof window !== 'undefined') {
-      setupRecaptcha('recaptcha-container')
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(() => {
+        setupRecaptcha('recaptcha-container')
+      }, 100)
+      return () => clearTimeout(timer)
     }
-  }, [authMethod, setupRecaptcha])
+  }, [authMethod]) // Remove setupRecaptcha from deps to avoid re-renders
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -142,9 +147,17 @@ export default function AuthPage() {
 
     setLoading(true)
     try {
+      console.log('Sending OTP to:', formattedNumber)
       await sendPhoneOTP(formattedNumber)
+      setFormattedPhoneNumber(formattedNumber)
       setOtpSent(true)
-      toast.success('OTP sent to ' + formattedNumber)
+      
+      // Check if this is a test number
+      if (formattedNumber === '+918297024365') {
+        toast.success('Test number detected! Use code: 123456')
+      } else {
+        toast.success('OTP sent to ' + formattedNumber)
+      }
     } catch (error: any) {
       console.error('Send OTP error:', error)
       if (error.code === 'auth/invalid-phone-number') {
@@ -420,11 +433,16 @@ export default function AuthPage() {
                     <>
                       <div className="text-center mb-4">
                         <p className="text-gray-600 dark:text-gray-400 text-sm">
-                          OTP sent to <span className="font-semibold text-purple-500">{phoneNumber}</span>
+                          OTP sent to <span className="font-semibold text-purple-500">{formattedPhoneNumber}</span>
                         </p>
+                        {formattedPhoneNumber === '+918297024365' && (
+                          <p className="text-yellow-500 text-xs mt-1">
+                            ⚠️ Test number - Use code: <span className="font-bold">123456</span>
+                          </p>
+                        )}
                         <button
                           type="button"
-                          onClick={() => { setOtpSent(false); setOtp(''); }}
+                          onClick={() => { setOtpSent(false); setOtp(''); setFormattedPhoneNumber(''); }}
                           className="text-purple-500 hover:text-purple-400 text-sm mt-1"
                         >
                           Change number

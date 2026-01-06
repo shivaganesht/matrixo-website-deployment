@@ -93,18 +93,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const setupRecaptcha = (elementId: string) => {
     if (typeof window !== 'undefined') {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
-          'size': 'invisible',
-          'callback': () => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber
-          },
-          'expired-callback': () => {
-            // Response expired. Ask user to solve reCAPTCHA again.
-            window.recaptchaVerifier = null;
-          }
-        });
+      // Clear existing verifier if it exists to prevent "already rendered" error
+      if (window.recaptchaVerifier) {
+        try {
+          window.recaptchaVerifier.clear();
+        } catch (e) {
+          // Ignore clear errors
+        }
+        window.recaptchaVerifier = null;
       }
+      
+      // Check if element exists and is empty
+      const container = document.getElementById(elementId);
+      if (container) {
+        container.innerHTML = ''; // Clear the container
+      }
+      
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
+        'size': 'invisible',
+        'callback': () => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber
+        },
+        'expired-callback': () => {
+          // Response expired. Ask user to solve reCAPTCHA again.
+          if (window.recaptchaVerifier) {
+            try {
+              window.recaptchaVerifier.clear();
+            } catch (e) {
+              // Ignore
+            }
+          }
+          window.recaptchaVerifier = null;
+        }
+      });
     }
   }
 
